@@ -18,24 +18,28 @@
     <!-- CSS Files -->
     <link href="{{ asset('assets/css/material-dashboard.css?v=2.1.1') }}" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" />
+    {{-- <link href="{{ asset('assets/css/demo.css') }}" rel="stylesheet" /> --}}
 </head>
 
 <body class="{{ $class ?? '' }}">
-
-    @include('layouts.navbar')
-    <div class="wrapper wrapper-full-page">
+    <div id="preloader">
+        <div class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+    <div class="wrapper ">
         @include('layouts.sidebar')
-        <div class="page-header login-page header-filter" filter-color="black"
-            style="background-image: url('{{ asset('material/img/login.jpg') }}'); background-size: cover; background-position: top center;align-items: center;"
-            data-color="purple">
-            <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
-
+        <div class="main-panel">
+            @include('layouts.navbar')
             @yield('content')
             @include('layouts.footer')
         </div>
     </div>
-
+    {{-- 
     <div class="fixed-plugin">
         <div class="dropdown show-dropdown">
             <a href="#" data-toggle="dropdown">
@@ -116,7 +120,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div> --}}
 
     <!--   Core JS Files   -->
     <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
@@ -162,6 +166,7 @@
     <!-- Material Dashboard DEMO methods, don't include it in your project! -->
     {{-- <script src="{{ asset('assets/demo/demo.js') }}"></script> --}}
     <script src="{{ asset('assets/js/settings.js') }}"></script>
+    <script src="{{ asset('assets/js/preloader.js') }}"></script>
     @stack('js')
 </body>
 
