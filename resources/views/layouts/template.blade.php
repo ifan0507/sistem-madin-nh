@@ -31,6 +31,7 @@
             <div class="dot"></div>
         </div>
     </div>
+
     <div class="wrapper ">
         @include('layouts.sidebar')
         <div class="main-panel">
@@ -39,7 +40,7 @@
             @include('layouts.footer')
         </div>
     </div>
-    {{-- 
+    {{--
     <div class="fixed-plugin">
         <div class="dropdown show-dropdown">
             <a href="#" data-toggle="dropdown">
