@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('santris', function (Blueprint $table) {
+        Schema::create('pengampu_mapels', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('nis')->unique();
-            $table->date('tanggal_lahir');
-            $table->string('alamat');
+            $table->foreignId('guru_id')->constrained('users')->cascadeOnUpdate();
+            $table->foreignId('mapel_id')->constrained('mapels')->cascadeOnUpdate();
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnUpdate();
+            $table->enum('semester', ['Ganjil', 'Genap']);
+            $table->year('tahun_ajaran');
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('santris');
+        Schema::dropIfExists('pengampu_mapels');
     }
 };
