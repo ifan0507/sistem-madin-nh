@@ -18,6 +18,9 @@ return new class extends Migration
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['1', '2', '3'])->default('3')->comment('1=superadmin,2=admin,3=guru');
+            $table->string('kode_guru')->unique()->nullable();
+            $table->string('qr_activation')->nullable()->unique();
+            $table->string('device_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

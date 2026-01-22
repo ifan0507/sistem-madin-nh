@@ -1,5 +1,6 @@
 @php
-    $activePage = $activePage ?? '';
+    $activePageMaster = $active->activePageMaster ?? '';
+    $activePage = $active->activePage ?? '';
 @endphp
 
 <div class="sidebar" data-color="green" data-background-color="white"
@@ -16,8 +17,8 @@
         <ul class="nav">
 
             <!-- Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="#">
+            <li class="nav-item {{ $activePage == 'dashboard' ? ' active' : '' }}">
+                <a class="nav-link" href="/">
                     <i class="material-icons">dashboard</i>
                     <p>{{ __('Dashboard') }}</p>
                 </a>
@@ -26,23 +27,22 @@
             <ul class="nav" id="sidebarAccordion">
 
                 <!-- Management User -->
-                <li
-                    class="nav-item {{ $activePage == 'profile' || $activePage == 'user-management' ? ' active' : '' }}">
+                <li class="nav-item {{ $activePageMaster == 'user-management' ? ' active' : '' }}">
                     <a class="nav-link" data-toggle="collapse" href="#laravelExample"
-                        aria-expanded="{{ $activePage == 'profile' || $activePage == 'user-management' ? 'true' : 'false' }}">
+                        aria-expanded="{{ $activePageMaster == 'user-management' ? 'true' : 'false' }}">
                         <i class="material-icons">people</i>
                         <p>Management User <b class="caret"></b></p>
                     </a>
 
-                    <div class="collapse {{ $activePage == 'profile' || $activePage == 'user-management' ? 'show' : '' }}"
-                        id="laravelExample" data-parent="#sidebarAccordion">
+                    <div class="collapse {{ $activePageMaster == 'user-management' ? 'show' : '' }}" id="laravelExample"
+                        data-parent="#sidebarAccordion">
                         <ul class="nav">
                             <li class="nav-item{{ $activePage == 'profile' ? ' active' : '' }}">
                                 <a class="nav-link" href="#"><span class="sidebar-mini">ST </span><span
                                         class="sidebar-normal">Santri</span></a>
                             </li>
-                            <li class="nav-item{{ $activePage == 'user-management' ? ' active' : '' }}">
-                                <a class="nav-link" href="#"><span class="sidebar-mini">GR</span><span
+                            <li class="nav-item{{ $activePage == 'guru' ? ' active' : '' }}">
+                                <a class="nav-link" href="/guru"><span class="sidebar-mini">GR</span><span
                                         class="sidebar-normal">Guru</span></a>
                             </li>
                         </ul>
@@ -72,6 +72,10 @@
                             <li class="nav-item{{ $activePage == 'kurikulum-pengampu-mapel' ? ' active' : '' }}">
                                 <a class="nav-link" href="#"><span class="sidebar-mini">PM</span><span
                                         class="sidebar-normal">Pengampu Mapel</span></a>
+                            </li>
+                            <li class="nav-item{{ $activePage == 'kurikulum-abses' ? ' active' : '' }}">
+                                <a class="nav-link" href="#"><span class="sidebar-mini">AB</span><span
+                                        class="sidebar-normal">Absensi</span></a>
                             </li>
                         </ul>
                     </div>

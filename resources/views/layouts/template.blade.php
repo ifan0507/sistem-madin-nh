@@ -37,7 +37,6 @@
         <div class="main-panel">
             @include('layouts.navbar')
             @yield('content')
-            @include('layouts.footer')
         </div>
     </div>
     {{--

@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('nis')->unique();
+            $table->string('nik')->unique();
             $table->date('tanggal_lahir');
-            $table->string('alamat');
+            $table->text('alamat');
+            $table->string('ayah');
+            $table->string('ibu');
+            $table->enum('jenis_kelamin', ['L', 'P']);
+            $table->year('thn_angkatan');
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnUpdate();
             $table->timestamps();
         });

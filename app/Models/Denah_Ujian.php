@@ -1,0 +1,17 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Denah_Ujian extends Model
+{
+    use HasFactory;
+    protected $table = 'denah__ujians';
+    protected $fillable = [
+        'susunan_denah',
+        'total_kursi',
+        'nama_ruangan',
+    ];
+}
