@@ -46,6 +46,13 @@ class MakeDto extends Command
                     // Mapping request ke properti
                 );
             }
+
+            public function toArray(): array
+            {
+                return [
+                    // Konversi properti ke array
+                ];
+            }
         }";
 
         File::put($filePath, $stub);

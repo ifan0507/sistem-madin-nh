@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Bank_Soal extends Model
+class JadwalUjianModel extends Model
 {
     use HasFactory;
-    protected $table = 'bank__soals';
+    protected $table = 'jadwal__ujians';
     protected $fillable = [
-        'soal',
+        'tanggal_ujian',
         'mapel_kelas_id',
     ];
 
     public function mapel_kelas(): BelongsTo
     {
-        return $this->belongsTo(Mapel_Kelas::class, 'mapel_kelas_id');
+        return $this->belongsTo(MapelKelasModel::class, 'mapel_kelas_id');
     }
 }

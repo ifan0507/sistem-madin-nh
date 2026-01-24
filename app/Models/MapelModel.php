@@ -6,21 +6,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Kelas extends Model
+class MapelModel extends Model
 {
     use HasFactory;
-    protected $table = 'kelas';
+    protected $table = 'mapels';
     protected $fillable = [
-        'nama_kelas',
+        'nama_mapel',
     ];
 
     public function mapel_kelas(): HasMany
     {
-        return $this->hasMany(Mapel_Kelas::class, 'kelas_id');
+        return $this->hasMany(MapelKelasModel::class, 'mapel_id', 'id');
     }
 
-    public function santri(): HasMany
+    public function nilai_ujian(): HasMany
     {
-        return $this->hasMany(Santri::class, 'kelas_id');
+        return $this->hasMany(NilaiUjianModel::class, 'mapel_id', 'id');
     }
 }

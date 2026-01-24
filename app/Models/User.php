@@ -53,11 +53,11 @@ class User extends Authenticatable
 
     public function mapel_kelas(): HasMany
     {
-        return $this->hasMany(Mapel_Kelas::class, 'guru_id');
+        return $this->hasMany(MapelKelasModel::class, 'guru_id');
     }
 
     public function pelanggaran(): HasMany
     {
-        return $this->hasMany(Pelanggaran::class, 'user_id');
+        return $this->hasMany(PelanggaranModel::class, 'user_id');
     }
 }

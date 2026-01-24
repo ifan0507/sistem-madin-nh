@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Santri extends Model
+class SantriModel extends Model
 {
     use HasFactory;
     protected $table = 'santris';
@@ -15,10 +15,12 @@ class Santri extends Model
         'nama',
         'nis',
         'nik',
+        'tempat_lahir',
         'tanggal_lahir',
         'alamat',
         'ayah',
         'ibu',
+        'no_telp',
         'jenis_kelamin',
         'thn_angkatan',
         'kelas_id',
@@ -26,16 +28,16 @@ class Santri extends Model
 
     public function kelas(): BelongsTo
     {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
+        return $this->belongsTo(KelasModel::class, 'kelas_id');
     }
 
     public function absensi_santri(): HasMany
     {
-        return $this->hasMany(Absensi_Santri::class, 'santri_id');
+        return $this->hasMany(AbsensiSantriModel::class, 'santri_id');
     }
 
     public function pelanggaran(): HasMany
     {
-        return $this->hasMany(Pelanggaran::class, 'santri_id');
+        return $this->hasMany(PelanggaranModel::class, 'santri_id');
     }
 }

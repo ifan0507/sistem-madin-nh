@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Absensi_Santri extends Model
+class AbsensiSantriModel extends Model
 {
     use HasFactory;
     protected $table = 'absensi__santris';
@@ -17,6 +17,6 @@ class Absensi_Santri extends Model
 
     public function santri(): BelongsTo
     {
-        return $this->belongsTo(Santri::class, 'santri_id');
+        return $this->belongsTo(SantriModel::class, 'santri_id');
     }
 }

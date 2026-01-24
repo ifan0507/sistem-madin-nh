@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Denah_Ujian extends Model
+class DenahUjianModel extends Model
 {
     use HasFactory;
     protected $table = 'denah__ujians';

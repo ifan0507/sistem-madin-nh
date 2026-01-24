@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Jadwal_Ujian extends Model
+class JadwalKBMModel extends Model
 {
     use HasFactory;
-    protected $table = 'jadwal__ujians';
+    protected $table = 'jadwal__kbms';
     protected $fillable = [
-        'tanggal_ujian',
+        'hari',
         'mapel_kelas_id',
     ];
 
     public function mapel_kelas(): BelongsTo
     {
-        return $this->belongsTo(Mapel_Kelas::class, 'mapel_kelas_id');
+        return $this->belongsTo(MapelKelasModel::class, 'mapel_kelas_id');
     }
 }

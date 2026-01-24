@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Nilai_Ujian extends Model
+class NilaiUjianModel extends Model
 {
     use HasFactory;
     protected $table = 'nilai__ujians';
@@ -17,11 +17,11 @@ class Nilai_Ujian extends Model
 
     public function santri()
     {
-        return $this->belongsTo(Santri::class, 'santri_id');
+        return $this->belongsTo(SantriModel::class, 'santri_id');
     }
 
     public function mapel()
     {
-        return $this->belongsTo(Mapel::class, 'mapel_id');
+        return $this->belongsTo(MapelModel::class, 'mapel_id');
     }
 }

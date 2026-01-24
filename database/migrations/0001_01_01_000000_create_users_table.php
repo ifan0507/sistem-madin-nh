@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('username')->unique();
-            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('role', ['1', '2', '3'])->default('3')->comment('1=superadmin,2=admin,3=guru');
             $table->string('kode_guru')->unique()->nullable();
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->string('device_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
+            // $table->timestamp('email_verified_at')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

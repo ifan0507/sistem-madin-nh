@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Mapel_Kelas extends Model
+class MapelKelasModel extends Model
 {
     use HasFactory;
     protected $table = 'mapel__kelas';
@@ -26,31 +26,31 @@ class Mapel_Kelas extends Model
 
     public function kelas(): BelongsTo
     {
-        return $this->belongsTo(Kelas::class, 'kelas_id');
+        return $this->belongsTo(KelasModel::class, 'kelas_id');
     }
 
     public function mapel(): BelongsTo
     {
-        return $this->belongsTo(Mapel::class, 'mapel_id');
+        return $this->belongsTo(MapelModel::class, 'mapel_id');
     }
 
     public function absensi_guru(): HasMany
     {
-        return $this->hasMany(Absensi_Guru::class, 'mapel_kelas_id');
+        return $this->hasMany(AbsensiGuruModel::class, 'mapel_kelas_id');
     }
 
     public function bank_soal(): HasMany
     {
-        return $this->hasMany(Bank_Soal::class, 'mapel_kelas_id');
+        return $this->hasMany(BankSoalModel::class, 'mapel_kelas_id');
     }
 
     public function jadwal_kbm(): HasMany
     {
-        return $this->hasMany(Jadwal_KBM::class, 'mapel_kelas_id');
+        return $this->hasMany(JadwalKBMModel::class, 'mapel_kelas_id');
     }
 
     public function jadwal_ujian(): HasMany
     {
-        return $this->hasMany(Jadwal_Ujian::class, 'mapel_kelas_id');
+        return $this->hasMany(JadwalUjianModel::class, 'mapel_kelas_id');
     }
 }

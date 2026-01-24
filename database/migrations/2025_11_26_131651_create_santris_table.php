@@ -16,10 +16,12 @@ return new class extends Migration
             $table->string('nama');
             $table->string('nis')->unique();
             $table->string('nik')->unique();
+            $table->string('tempat_lahir');
             $table->date('tanggal_lahir');
             $table->text('alamat');
             $table->string('ayah');
             $table->string('ibu');
+            $table->string('no_telp');
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->year('thn_angkatan');
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnUpdate();
