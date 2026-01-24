@@ -8,7 +8,7 @@ class DenahUjianDto
 {
     public function __construct(
         public readonly array $susunan_denah,
-        public readonly int $total_kursi,
+        public readonly string $total_kursi,
         public readonly string $nama_ruangan,
     ) {}
 
@@ -16,7 +16,7 @@ class DenahUjianDto
     {
         return new self(
             susunan_denah: $request->validated('susunan_denah'),
-            total_kursi: (int) $request->validated('total_kursi'),
+            total_kursi: $request->validated('total_kursi'),
             nama_ruangan: $request->validated('nama_ruangan'),
         );
     }

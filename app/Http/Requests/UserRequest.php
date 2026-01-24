@@ -15,7 +15,44 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Tambahkan aturan validasi di sini
+            'name' => [
+                'required',
+                'string',
+                'max:255'
+            ],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                'unique:users,username'
+            ],
+            'password' => [
+                'required',
+                'string',
+                'min:6',
+            ],
+            'role' => [
+                'required',
+                'in:1,2,3',
+            ],
+            'kode_guru' => [
+                'nullable',
+                'string',
+                'max:50',
+                'unique:users,kode_guru'
+            ],
+            'qr_activation' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:users,qr_activation'
+            ],
+            'device_id' => [
+                'nullable',
+                'string',
+                'max:255',
+                'unique:users,device_id'
+            ],
         ];
     }
 
