@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\guru\GuruController;
-use App\Http\Controllers\pegon\PegonController;
+use App\Http\Controllers\Web\DashboardWebController;
+use App\Http\Controllers\Web\GuruWebController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index']);
-Route::get('/guru', [GuruController::class, 'index']);
+Route::get('/', [DashboardWebController::class, 'index']);
+Route::get('/guru', [GuruWebController::class, 'index']);
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

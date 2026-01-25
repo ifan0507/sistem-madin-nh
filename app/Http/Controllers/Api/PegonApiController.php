@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\pegon;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\services\PegonService;
 use Illuminate\Http\Request;
 
-class PegonController extends Controller
+class PegonApiController extends Controller
 {
     protected $pegonService;
 

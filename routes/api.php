@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\pegon\PegonController;
+use App\Http\Controllers\Api\PegonApiController;
+use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -8,4 +9,5 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/transliterate', [PegonController::class, 'transliterate']);
+Route::post('/transliterate', [PegonApiController::class, 'transliterate']);
+Route::post('/users', [UserApiController::class, 'store']);

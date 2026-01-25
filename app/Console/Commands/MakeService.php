@@ -20,7 +20,7 @@ class MakeService extends Command
             File::makeDirectory($path, 0755, true);
         }
 
-        $filePath = $path . '/' . $name . '.php';
+        $filePath = $path . '/' . $name . 'Service.php';
 
         if (File::exists($filePath)) {
             $this->error("Service {$name} sudah ada!");
@@ -29,18 +29,45 @@ class MakeService extends Command
 
         $stub = "<?php
 
-        namespace App\\services;
+        namespace App\Services;
 
-        class {$name}
+        use App\Dto\\" . $name . "Dto;
+
+        class {$name}Service
         {
-            public function __construct()
+            /**
+             * Mengambil semua data
+             */
+            public function getAll()
             {
-                // Constructor logic
+                // return Model::all();
             }
 
-            public function handle()
+            /**
+             * Menyimpan data baru berdasarkan DTO
+             */
+            public function create({$name}Dto \$data)
             {
-                // Business logic here
+                \$payload = \$data->toArray();
+                // return Model::create(\$payload);
+            }
+
+            /**
+             * Memperbarui data berdasarkan ID dan DTO
+             */
+            public function update(int \$id, {$name}Dto \$data)
+            {
+                // \$item = Model::findOrFail(\$id);
+                \$payload = \$data->toArray();
+                // return \$item->update(\$payload);
+            }
+
+            /**
+             * Menghapus data
+             */
+            public function delete(int \$id)
+            {
+                // return Model::destroy(\$id);
             }
         }";
 

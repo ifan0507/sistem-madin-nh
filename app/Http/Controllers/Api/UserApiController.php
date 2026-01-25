@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\guru;
+namespace App\Http\Controllers\Api;
 
+use App\Dto\UserDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
-class GuruController extends Controller
+class UserApiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        protected UserService $userService
+    ) {}
+
     public function index()
     {
-        $active = (object)[
-            'activePage' => 'guru',
-            'activePageMaster' => 'user-management'
-        ];
-
-        return view('pages.guru.index', ['active' => $active]);
+        //
     }
 
     /**
@@ -31,9 +30,14 @@ class GuruController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $dto = UserDto::fromRequest($request);
+        $user = $this->userService->create($dto);
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ], 201);
     }
 
     /**
