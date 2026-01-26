@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -14,6 +15,8 @@ class UserRequest extends FormRequest
 
     public function rules(): array
     {
+        $userId = $this->route('id');
+
         return [
             'name' => [
                 'required',
@@ -24,7 +27,7 @@ class UserRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'unique:users,username'
+                Rule::unique('users', 'username')->ignore($userId),
             ],
             'password' => [
                 'required',
@@ -39,19 +42,19 @@ class UserRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:50',
-                'unique:users,kode_guru'
+                Rule::unique('users', 'kode_guru')->ignore($userId),
             ],
             'qr_activation' => [
                 'nullable',
                 'string',
                 'max:255',
-                'unique:users,qr_activation'
+                Rule::unique('users', 'qr_activation')->ignore($userId)
             ],
             'device_id' => [
                 'nullable',
                 'string',
                 'max:255',
-                'unique:users,device_id'
+                Rule::unique('users', 'device_id')->ignore($userId),
             ],
         ];
     }

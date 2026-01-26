@@ -40,6 +40,15 @@ class UserApiController extends Controller
         ], 201);
     }
 
+    public function getUserById($id)
+    {
+        $user = $this->userService->getById((int) $id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ], 200);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -59,9 +68,14 @@ class UserApiController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UserRequest $request, int $id)
     {
-        //
+        $dto = UserDto::fromRequest($request);
+        $this->userService->update($id, $dto);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User updated successfully'
+        ], 200);
     }
 
     /**

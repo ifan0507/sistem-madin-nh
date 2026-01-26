@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
-    /**
-     * Mengambil semua data
-     */
+
     public function getAll()
     {
-        // return Model::all();
+        return User::select('id', 'name', 'username', 'role', 'kode_guru', 'qr_activation', 'device_id')->get();
     }
 
 
@@ -24,14 +22,16 @@ class UserService
         return User::create($payload);
     }
 
-    /**
-     * Memperbarui data berdasarkan ID dan DTO
-     */
+    public function getById(int $id)
+    {
+        return User::select('id', 'name', 'username', 'role', 'kode_guru', 'qr_activation', 'device_id')->findOrFail($id);
+    }
+
     public function update(int $id, UserDto $data)
     {
-        // $item = Model::findOrFail($id);
+        $item = User::findOrFail($id);
         $payload = $data->toArray();
-        // return $item->update($payload);
+        return $item->update($payload);
     }
 
     /**

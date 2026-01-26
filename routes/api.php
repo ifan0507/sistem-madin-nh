@@ -11,3 +11,5 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/transliterate', [PegonApiController::class, 'transliterate']);
 Route::post('/users', [UserApiController::class, 'store']);
+Route::get('/users/{id}', [UserApiController::class, 'getUserById']);
+Route::put('/users/{id}', [UserApiController::class, 'update']);
