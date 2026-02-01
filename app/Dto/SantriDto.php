@@ -18,7 +18,7 @@ class SantriDto
         public readonly string $ibu,
         public readonly string $no_telp,
         public readonly string $thn_angkatan,
-        public readonly int $kelas_id,
+        public readonly ?string $kelas_id,
     ) {}
 
     public static function fromRequest(Request $request): self
@@ -35,7 +35,7 @@ class SantriDto
             ibu: $request->input('ibu'),
             no_telp: $request->input('no_telp'),
             thn_angkatan: $request->input('thn_angkatan'),
-            kelas_id: (int) $request->input('kelas_id'),
+            kelas_id: $request->input('kelas_id'),
         );
     }
 

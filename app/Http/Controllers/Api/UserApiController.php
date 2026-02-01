@@ -14,22 +14,24 @@ class UserApiController extends Controller
         protected UserService $userService
     ) {}
 
-    public function index()
+    public function findAll()
     {
-        //
+        $users = $this->userService->getAll();
+        return response()->json([
+            'status' => 'success',
+            'data' => $users
+        ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function findById($id)
     {
-        //
+        $user = $this->userService->getById($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ], 200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(UserRequest $request)
     {
         $dto = UserDto::fromRequest($request);
@@ -40,35 +42,7 @@ class UserApiController extends Controller
         ], 201);
     }
 
-    public function getUserById($id)
-    {
-        $user = $this->userService->getById((int) $id);
-        return response()->json([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequest $request, int $id)
+    public function update(UserRequest $request, $id)
     {
         $dto = UserDto::fromRequest($request);
         $this->userService->update($id, $dto);
@@ -78,11 +52,12 @@ class UserApiController extends Controller
         ], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->userService->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User deleted successfully'
+        ], 200);
     }
 }

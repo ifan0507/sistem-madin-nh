@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SantriRequest extends FormRequest
 {
@@ -14,6 +15,7 @@ class SantriRequest extends FormRequest
 
     public function rules(): array
     {
+        $santriId = $this->route('id');
         return [
             'nama' => [
                 'required',
@@ -24,13 +26,14 @@ class SantriRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                'unique:santris,nis'
+                Rule::unique('santris', 'nis')->ignore($santriId, 'id'),
+
             ],
             'nik' => [
                 'required',
                 'string',
                 'max:50',
-                'unique:santris,nik'
+                Rule::unique('santris', 'nik')->ignore($santriId, 'id'),
             ],
             'tempat_lahir' => [
                 'required',
@@ -70,7 +73,7 @@ class SantriRequest extends FormRequest
                 'max:4'
             ],
             'kelas_id' => [
-                'required',
+                'nullable',
                 'integer',
                 'exists:kelas,id'
             ]

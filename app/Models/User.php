@@ -25,7 +25,8 @@ class User extends Authenticatable
         'role',
         'kode_guru',
         'qr_activation',
-        'device_id'
+        'device_id',
+        'delete_at',
     ];
 
     /**

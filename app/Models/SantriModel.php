@@ -24,6 +24,7 @@ class SantriModel extends Model
         'jenis_kelamin',
         'thn_angkatan',
         'kelas_id',
+        'deleted_at',
     ];
 
     public function kelas(): BelongsTo

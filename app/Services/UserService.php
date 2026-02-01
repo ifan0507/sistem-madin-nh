@@ -39,6 +39,8 @@ class UserService
      */
     public function delete(int $id)
     {
-        // return Model::destroy($id);
+        $item = User::findOrFail($id);
+        $item->update(['delete_at' => '1']);
+        return $item;
     }
 }
