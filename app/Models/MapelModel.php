@@ -11,7 +11,9 @@ class MapelModel extends Model
     use HasFactory;
     protected $table = 'mapels';
     protected $fillable = [
+        'kode_mapel',
         'nama_mapel',
+        'delete_at',
     ];
 
     public function mapel_kelas(): HasMany

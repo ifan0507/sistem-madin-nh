@@ -43,6 +43,11 @@ class MakeService extends Command
                 // return Model::all();
             }
 
+            public function getById(\$id)
+            {
+                // return Model::findOrFail(\$id);
+            }
+
             /**
              * Menyimpan data baru berdasarkan DTO
              */
@@ -55,7 +60,7 @@ class MakeService extends Command
             /**
              * Memperbarui data berdasarkan ID dan DTO
              */
-            public function update(int \$id, {$name}Dto \$data)
+            public function update(\$id, {$name}Dto \$data)
             {
                 // \$item = Model::findOrFail(\$id);
                 \$payload = \$data->toArray();
@@ -65,7 +70,7 @@ class MakeService extends Command
             /**
              * Menghapus data
              */
-            public function delete(int \$id)
+            public function delete(\$id)
             {
                 // return Model::destroy(\$id);
             }

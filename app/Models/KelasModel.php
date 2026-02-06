@@ -12,6 +12,7 @@ class KelasModel extends Model
     protected $table = 'kelas';
     protected $fillable = [
         'nama_kelas',
+        'delete_at'
     ];
 
     public function mapel_kelas(): HasMany

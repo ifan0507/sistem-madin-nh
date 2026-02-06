@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class KelasRequest extends FormRequest
+class MapelRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -17,12 +17,19 @@ class KelasRequest extends FormRequest
     {
         $id = $this->route('id');
         return [
-            'nama_kelas' => [
+            'kode_mapel' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('mapels', 'kode_mapel')->ignore($id, 'id'),
+            ],
+            'nama_mapel' => [
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('kelas', 'nama_kelas')->ignore($id, 'id'),
-            ],
+                Rule::unique('mapels', 'nama_mapel')->ignore($id, 'id'),
+            ]
+
         ];
     }
 

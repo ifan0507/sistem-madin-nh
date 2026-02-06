@@ -1,43 +1,50 @@
 <?php
 
-        namespace App\Services;
+namespace App\Services;
 
-        use App\Dto\KelasDto;
+use App\Dto\KelasDto;
+use App\Models\KelasModel;
 
-        class KelasService
-        {
-            /**
-             * Mengambil semua data
-             */
-            public function getAll()
-            {
-                // return Model::all();
-            }
+class KelasService
+{
+    /**
+     * Mengambil semua data
+     */
+    public function getAll()
+    {
+        return KelasModel::select('id', 'nama_kelas')->get();
+    }
 
-            /**
-             * Menyimpan data baru berdasarkan DTO
-             */
-            public function create(KelasDto $data)
-            {
-                $payload = $data->toArray();
-                // return Model::create($payload);
-            }
+    public function getById($id)
+    {
+        return KelasModel::select('id', 'nama_kelas')->findOrFail($id);
+    }
 
-            /**
-             * Memperbarui data berdasarkan ID dan DTO
-             */
-            public function update(int $id, KelasDto $data)
-            {
-                // $item = Model::findOrFail($id);
-                $payload = $data->toArray();
-                // return $item->update($payload);
-            }
+    /**
+     * Menyimpan data baru berdasarkan DTO
+     */
+    public function create(KelasDto $data)
+    {
+        $payload = $data->toArray();
+        return KelasModel::create($payload);
+    }
 
-            /**
-             * Menghapus data
-             */
-            public function delete(int $id)
-            {
-                // return Model::destroy($id);
-            }
-        }
+    /**
+     * Memperbarui data berdasarkan ID dan DTO
+     */
+    public function update($id, KelasDto $data)
+    {
+        $item = KelasModel::findOrFail($id);
+        $payload = $data->toArray();
+        return $item->update($payload);
+    }
+
+    /**
+     * Menghapus data
+     */
+    public function delete($id)
+    {
+        $item = KelasModel::findOrFail($id);
+        return $item->update(['delete_at' => '1']);
+    }
+}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\KelasApiController;
+use App\Http\Controllers\Api\MapelApiController;
 use App\Http\Controllers\Api\PegonApiController;
 use App\Http\Controllers\Api\SantriApiController;
 use App\Http\Controllers\Api\UserApiController;
@@ -28,3 +29,14 @@ Route::delete('/santri/{id}', [SantriApiController::class, 'destroy']);
 
 // Route kelas
 Route::get('/kelas', [KelasApiController::class, 'findAll']);
+Route::get('/kelas/{id}', [KelasApiController::class, 'findById']);
+Route::post('/kelas', [KelasApiController::class, 'store']);
+Route::put('/kelas/{id}', [KelasApiController::class, 'update']);
+Route::delete('/kelas/{id}', [KelasApiController::class, 'destroy']);
+
+// Route Mapel
+Route::get('/mapel', [MapelApiController::class, 'findAll']);
+Route::get('/mapel/{id}', [MapelApiController::class, 'findById']);
+Route::post('/mapel', [MapelApiController::class, 'strore']);
+Route::put('/mapel/{id}', [MapelApiController::class, 'update']);
+Route::delete('/mapel/{id}', [MapelApiController::class, 'destroy']);

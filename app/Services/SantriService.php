@@ -13,6 +13,7 @@ class SantriService
     public function getAll()
     {
         return SantriModel::select(
+            'id',
             'nama',
             'nis',
             'nik',
