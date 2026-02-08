@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class JadwalKBMModel extends Model
 {
     use HasFactory;
-    protected $table = 'jadwal__kbms';
+    protected $table = 'jadwal_kbms';
     protected $fillable = [
         'hari',
         'mapel_kelas_id',

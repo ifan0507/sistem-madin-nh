@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BankSoalModel extends Model
 {
     use HasFactory;
-    protected $table = 'bank__soals';
+    protected $table = 'bank_soals';
     protected $fillable = [
         'soal',
         'mapel_kelas_id',

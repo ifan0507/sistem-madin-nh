@@ -10,13 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MapelKelasModel extends Model
 {
     use HasFactory;
-    protected $table = 'mapel__kelas';
+    protected $table = 'mapel_kelas';
     protected $fillable = [
         'guru_id',
         'kelas_id',
         'mapel_id',
         'semester',
         'tahun_ajaran',
+        'deleted_at',
     ];
 
     public function guru(): BelongsTo

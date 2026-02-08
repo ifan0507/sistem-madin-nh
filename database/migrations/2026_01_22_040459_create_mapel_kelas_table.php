@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('mapel__kelas', function (Blueprint $table) {
+        Schema::create('mapel_kelas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guru_id')->constrained('users')->cascadeOnUpdate();
             $table->foreignId('mapel_id')->constrained('mapels')->cascadeOnUpdate();
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnUpdate();
             $table->enum('semester', ['Ganjil', 'Genap']);
             $table->year('tahun_ajaran');
+            $table->enum('deleted_at', ['0', '1'])->default('0');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('mapel__kelas');
+        Schema::dropIfExists('mapel_kelas');
     }
 };

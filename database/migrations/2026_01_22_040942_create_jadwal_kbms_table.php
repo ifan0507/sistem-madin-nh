@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absensi__gurus', function (Blueprint $table) {
+        Schema::create('jadwal_kbms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mapel_kelas_id')->constrained('mapel__kelas')->cascadeOnUpdate();
-            $table->enum('status', ['1', '2', '3'])->comment('1=Hadir, 2=Izin, 3=Alpha');
-            $table->text('materi_pembelajaran')->nullable();
-            $table->string('ket_izin')->nullable();
+            $table->string('hari');
+            $table->foreignId('mapel_kelas_id')->constrained('mapel_kelas')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absensi__gurus');
+        Schema::dropIfExists('jadwal_kbms');
     }
 };

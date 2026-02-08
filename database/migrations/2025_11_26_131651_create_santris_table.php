@@ -25,7 +25,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['L', 'P']);
             $table->year('thn_angkatan');
             $table->foreignId('kelas_id')->nullable()->constrained('kelas')->cascadeOnUpdate();
-            $table->enum('deleted_at', [0, 1])->default(0);
+            $table->enum('deleted_at', ['0', '1'])->default('0');
             $table->timestamps();
         });
     }

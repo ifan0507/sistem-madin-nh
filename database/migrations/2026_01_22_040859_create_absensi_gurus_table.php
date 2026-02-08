@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jadwal__ujians', function (Blueprint $table) {
+        Schema::create('absensi_gurus', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal_ujian');
-            $table->foreignId('mapel_kelas_id')->constrained('mapel__kelas')->onDelete('cascade');
+            $table->foreignId('mapel_kelas_id')->constrained('mapel_kelas')->cascadeOnUpdate();
+            $table->enum('status', ['1', '2', '3'])->comment('1=Hadir, 2=Izin, 3=Alpha');
+            $table->text('materi_pembelajaran')->nullable();
+            $table->string('ket_izin')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jadwal__ujians');
+        Schema::dropIfExists('absensi_gurus');
     }
 };

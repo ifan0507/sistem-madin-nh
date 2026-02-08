@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absensi__santris', function (Blueprint $table) {
+        Schema::create('bank_soals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('santri_id')->constrained('santris')->onDelete('cascade');
-            $table->enum('status', ['1', '2', '3', '4'])->comment('1=Hadir,2=Sakit,3=Izin,4=Alfa');
+            $table->jsonb('soal');
+            $table->foreignId('mapel_kelas_id')->constrained('mapel_kelas')->cascadeOnUpdate();
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absensi__santris');
+        Schema::dropIfExists('bank_soals');
     }
 };

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class AbsensiGuruModel extends Model
 {
     use HasFactory;
-    protected $table = 'absensi__gurus';
+    protected $table = 'absensi_gurus';
     protected $fillable = [
         'mapel_kelas_id',
         'status',
