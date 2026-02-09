@@ -13,7 +13,7 @@ class GuruWebController extends Controller
             'activePage' => 'guru',
             'activePageMaster' => 'user-management'
         ];
-
+ 
         return view('pages.guru.index', ['active' => $active]);
     }
 
