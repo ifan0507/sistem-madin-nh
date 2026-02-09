@@ -14,11 +14,6 @@ class DenahUjianRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'susunan_denah' => [
-                'required',
-                'array',
-                'min:1'
-            ],
             'total_kursi' => [
                 'required',
                 'string',

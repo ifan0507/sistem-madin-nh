@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AbsensiGuruApiController;
 use App\Http\Controllers\Api\AbsensiSantriApiController;
+use App\Http\Controllers\Api\DenahUjianApiController;
 use App\Http\Controllers\Api\JadwaKbmController;
 use App\Http\Controllers\Api\JadwalKbmApiController;
 use App\Http\Controllers\Api\JadwalUjianApiController;
@@ -88,3 +89,7 @@ Route::get('/pelanggaran-santri/{id}', [PelanggaranApiController::class, 'findBy
 Route::post('/pelanggaran-santri', [PelanggaranApiController::class, 'store']);
 Route::put('/pelanggaran-santri/{id}', [PelanggaranApiController::class, 'update']);
 Route::delete('/pelanggaran-santri/{id}', [PelanggaranApiController::class, 'destroy']);
+
+// Api Denah Ujian
+Route::get('/denah-ujian', [DenahUjianApiController::class, 'findAll']);
+Route::post('/denah-ujian', [DenahUjianApiController::class, 'store']);

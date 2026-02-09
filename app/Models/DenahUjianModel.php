@@ -14,4 +14,9 @@ class DenahUjianModel extends Model
         'total_kursi',
         'nama_ruangan',
     ];
+
+    protected $casts = [
+        'susunan_denah' => 'array',
+        'total_kursi'   => 'integer',
+    ];
 }
