@@ -51,8 +51,9 @@
                                                         <i class="fa-solid fa-pencil" style="font-size: 12px;"></i>
                                                     </button>
 
-                                                    <button class="btn btn-outline-danger btn-sm  btn-icon-round"
-                                                        data-bs-toggle="tooltip" title="Hapus">
+                                                    <button class="btn btn-outline-danger btn-sm btn-icon-round btn-delete"
+                                                        data-bs-toggle="tooltip" title="Hapus"
+                                                        data-url="{{ route('mapel.destroy', $m->id) }}" data-name="Mapel">
                                                         <i class="fa-regular fa-trash-can" style="font-size: 12px;"></i>
                                                     </button>
                                                 </td>
@@ -170,7 +171,7 @@
 
                         Swal.fire({
                             icon: 'error',
-                            title: 'Gagal',
+                            title: 'Error',
                             text: message
                         });
                     }
@@ -198,6 +199,8 @@
                 submitMethod = 'PUT';
                 $('#modal-mapel').modal('show');
             })
+
+
         });
     </script>
 @endsection

@@ -16,7 +16,7 @@ class MapelService
             'id',
             'kode_mapel',
             'nama_mapel',
-        )->orderby('created_at', 'asc')->get();
+        )->active()->orderby('created_at', 'asc')->get();
     }
 
     public function getById($id)

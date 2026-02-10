@@ -15,9 +15,8 @@ Route::get('/guru', [GuruWebController::class, 'index']);
 
 // Mapel
 Route::get('/mapel', [MapelWebController::class, 'index'])->name('mapel');
-Route::get('/mapel/create', [MapelWebController::class, 'create'])->name('mapel.create');
 Route::post('/mapel/store', [MapelWebController::class, 'store'])->name('mapel.store');
 Route::put('/mapel/{id}/update', [MapelWebController::class, 'update'])->name('mapel.update');
-Route::post('/mapel/{id}/delete', [MapelWebController::class, 'destroy'])->name('mapel.delete');
+Route::delete('/mapel/{id}/delete', [MapelWebController::class, 'destroy'])->name('mapel.destroy');
 
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

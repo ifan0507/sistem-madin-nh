@@ -81,8 +81,12 @@ class MapelWebController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->mapel_service->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Mapel berhasil dihapus'
+        ], 200);
     }
 }
