@@ -1,0 +1,16 @@
+.sidenav .nav-link.active {
+    background-image: linear-gradient(195deg, #1b5e20, #66bb6a) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(27, 94, 32, 0.35);
+    border-radius: 0.5rem;
+}
+
+/* icon ikut putih */
+.sidenav .nav-link.active i {
+    color: #ffffff !important;
+}
+
+/* hover tetap hijau lembut */
+.sidenav .nav-link:hover {
+    background-color: rgba(102, 187, 106, 0.15);
+}

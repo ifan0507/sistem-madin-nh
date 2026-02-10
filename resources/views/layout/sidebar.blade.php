@@ -8,10 +8,8 @@
 
     <div class="sidenav-header" style="display:flex; justify-content:center; align-items:center; padding:12px 0;">
         <a class="navbar-brand m-0" href="/" style="display:flex; align-items:center; gap:8px; padding:0;">
-
             <img src="{{ asset('assets/images/logo_pondok.jpg') }}" style="width:40px; height:40px; object-fit:contain;">
-
-            <span class="text-sm text-dark fw-semibold">Nurul Huda</span>
+            <span class="text-sm h2 mt-2 text-dark fw-semibold">Nurul Huda</span>
         </a>
     </div>
 

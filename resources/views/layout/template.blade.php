@@ -41,28 +41,7 @@
     <link id="pagestyle" href="{{ asset('assets/css/material-dashboard.css?v=3.2.0') }}" rel="stylesheet" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
-    <style>
-
-.sidenav .nav-link.active {
-    background-image: linear-gradient(195deg, #1b5e20, #66bb6a) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 20px rgba(27, 94, 32, 0.35);
-    border-radius: 0.5rem;
-}
-
-/* icon ikut putih */
-.sidenav .nav-link.active i {
-    color: #ffffff !important;
-}
-
-/* hover tetap hijau lembut */
-.sidenav .nav-link:hover {
-    background-color: rgba(102, 187, 106, 0.15);
-}
-</style>
-
-
-
+    <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
 </head>
 
 <body class="g-sidenav-show  bg-gray-100 {{ $class ?? '' }}">
