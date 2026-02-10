@@ -14,3 +14,10 @@
 .sidenav .nav-link:hover {
     background-color: rgba(102, 187, 106, 0.15);
 }
+
+.btn-icon-round {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 50% !important;
+}
