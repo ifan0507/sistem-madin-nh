@@ -12,7 +12,8 @@ Route::get('/santri', [SantriWebController::class, 'index']);
 
 // guru
 Route::get('/guru', [GuruWebController::class, 'index']);
-
+Route::get('/guru/generate-token', [GuruWebController::class, 'generateToken'])->name('guru.generate-token');
+Route::post('/guru/store', [GuruWebController::class, 'store'])->name('guru.store');
 // Mapel
 Route::get('/mapel', [MapelWebController::class, 'index'])->name('mapel');
 Route::post('/mapel/store', [MapelWebController::class, 'store'])->name('mapel.store');

@@ -21,13 +21,17 @@ class MapelRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('mapels', 'kode_mapel')->ignore($id, 'id'),
+                Rule::unique('mapels', 'kode_mapel')->ignore($id, 'id')->where(function ($q) {
+                    return $q->where('delete_at', '0');
+                }),
             ],
             'nama_mapel' => [
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('mapels', 'nama_mapel')->ignore($id, 'id'),
+                Rule::unique('mapels', 'nama_mapel')->ignore($id, 'id')->where(function ($q) {
+                    return $q->where('delete_at', '0');
+                })
             ]
 
         ];
