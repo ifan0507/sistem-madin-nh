@@ -11,6 +11,7 @@ Route::get('/', [DashboardWebController::class, 'index']);
 // Santri
 Route::get('/santri', [SantriWebController::class, 'index']);
 Route::delete('/santri/{id}/delete-kelas', [SantriWebController::class, 'destroyKelas']);
+Route::put('/santri/bulk-update-kelas', [SantriWebController::class, 'updateKelasBulk'])->name('santri.updateKelasBulk');
 
 // guru
 Route::get('/guru', [GuruWebController::class, 'index']);

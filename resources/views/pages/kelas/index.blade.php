@@ -104,20 +104,28 @@
                                 <div class="table-responsive p-0">
                                     <table class="table align-items-center mb-0">
                                         <thead>
-                                            <tr>
-                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                                    width="5%">
-                                                    <div class="form-check d-flex justify-content-center">
+                                            <tr class="align-middle">
+                                                <th class="text-center" width="7%">
+                                                    <div
+                                                        class="form-check d-flex justify-content-center align-items-center p-0">
                                                         <input class="form-check-input" type="checkbox" id="check-all">
                                                     </div>
                                                 </th>
+
                                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-                                                    width="5%">No</th>
+                                                    width="5%">
+                                                    No
+                                                </th>
+
                                                 <th
-                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                    Nama Santri</th>
+                                                    class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-3">
+                                                    Nama Santri
+                                                </th>
+
                                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                                    width="15%">Aksi</th>
+                                                    width="15%">
+                                                    Aksi
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody id="tabel-santri-body">
@@ -318,26 +326,39 @@
                 });
 
                 if (selectedIds.length === 0) return;
+                let optionsHtml =
+                    '<option value="" disabled selected class="text-center">--- Pilih Kelas Tujuan ---</option>';
+                for (const [id, nama] of Object.entries(daftarKelas)) {
+                    optionsHtml += `<option value="${id}">${nama}</option>`;
+                }
 
                 Swal.fire({
                     title: 'Pindah Kelas Santri',
-                    html: `Pilih kelas tujuan untuk <b>${selectedIds.length}</b> santri yang dipilih:`,
+                    html: `
+                            <p class="text-sm mb-4">Memindahkan <b>${selectedIds.length}</b> santri ke kelas baru.</p>
+                            <div style="width: 70%; margin: 0 auto;">
+                                <div class="input-group input-group-static mb-2 text-left">
+                                    <select id="swal-kelas-tujuan" class="form-control px-2 border" style="cursor: pointer;">
+                                        ${optionsHtml}
+                                    </select>
+                                </div>
+                            </div>
+                        `,
                     icon: 'question',
-                    input: 'select',
-                    inputOptions: daftarKelas,
-                    inputPlaceholder: '--- Pilih Kelas Tujuan ---',
                     showCancelButton: true,
-                    confirmButtonText: 'Simpan & Pindahkan',
+                    confirmButtonText: 'Simpan',
                     cancelButtonText: 'Batal',
                     confirmButtonColor: '#28a745',
-                    inputValidator: (value) => {
-                        return new Promise((resolve) => {
-                            if (value) {
-                                resolve();
-                            } else {
-                                resolve('Anda harus memilih kelas tujuan!');
-                            }
-                        });
+                    reverseButtons: true,
+                    preConfirm: () => {
+                        const kelasTujuanId = document.getElementById('swal-kelas-tujuan')
+                            .value;
+                        if (!kelasTujuanId) {
+                            Swal.showValidationMessage(
+                                'Silakan pilih kelas tujuan terlebih dahulu!');
+                            return false;
+                        }
+                        return kelasTujuanId;
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -353,12 +374,12 @@
                         });
 
                         $.ajax({
-                            url: "",
+                            url: "{{ route('santri.updateKelasBulk') }}",
                             type: "PUT",
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr("content"),
-                                student_ids: selectedIds,
-                                new_kelas_id: kelasBaruId
+                                santri_id: selectedIds,
+                                kelas_id: kelasBaruId
                             },
                             success: function(res) {
                                 Swal.fire({
@@ -371,7 +392,6 @@
                                     $('.check-item:checked').closest('tr')
                                         .fadeOut(400, function() {
                                             $(this).remove();
-
                                             $('#tabel-santri-body tr').each(
                                                 function(index) {
                                                     $(this).find(
@@ -380,15 +400,26 @@
                                                         index + 1);
                                                 });
                                         });
-
                                     $('#btn-bulk-update').fadeOut();
                                     $('#check-all').prop('checked', false);
                                 });
                             },
                             error: function(xhr) {
-                                Swal.fire('Gagal',
-                                    'Terjadi kesalahan saat memindahkan data.',
-                                    'error');
+                                let message = 'Terjadi kesalahan saat menyimpan data.';
+
+                                if (xhr.status === 422) {
+                                    let errors = xhr.responseJSON.errors;
+                                    message = Object.values(errors)[0][0];
+                                }
+                                if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    message = xhr.responseJSON.message;
+                                }
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: message
+                                });
                             }
                         });
                     }

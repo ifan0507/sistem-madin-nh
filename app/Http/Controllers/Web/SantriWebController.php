@@ -64,6 +64,19 @@ class SantriWebController extends Controller
         //
     }
 
+    public function updateKelasBulk(Request $request)
+    {
+        $request->validate([
+            'santri_id'  => 'required|array',
+            'kelas_id' => 'required|exists:kelas,id'
+        ]);
+
+        $this->santri_service->updateKelasSantriBulk($request->santri_id, $request->kelas_id);
+        return response()->json([
+            'message' => count($request->santri_id) . ' Santri berhasil dipindah kelas!'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

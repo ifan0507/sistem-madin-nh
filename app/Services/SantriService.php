@@ -65,6 +65,12 @@ class SantriService
         return $item->update($payload);
     }
 
+    public function updateKelasSantriBulk($santri_id, $kelas_id)
+    {
+        return SantriModel::whereIn('id', $santri_id)
+            ->update(['kelas_id' => $kelas_id]);
+    }
+
     /**
      * Menghapus data
      */
