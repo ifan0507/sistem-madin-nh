@@ -60,9 +60,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <div class="input-group input-group-outline">
+                                                <div class="input-group input-group-outline is-filled">
                                                     <label class="form-label">NIS</label>
-                                                    <input type="text" name="nis" class="form-control" >
+                                                    <input type="text" name="nis" class="form-control" value="{{ $nis }}"
+                                                        readonly>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
@@ -75,12 +76,12 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="input-group input-group-outline">
                                                     <label class="form-label">Tempat Lahir</label>
-                                                    <input type="text" name="tempat_lahir" class="form-control" id="">
+                                                    <input type="text" name="tempat_lahir" class="form-control" id="tempat_lahir">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Jenis Kelamin</label>
-                                                <select name="jenis_kelamin" class="form-control p-2" >
+                                                <select name="jenis_kelamin" class="form-control p-2" id="jenis_kelamin">
                                                     <option value="">-- Pilih --</option>
                                                     <option value="L">Laki-laki</option>
                                                     <option value="P">Perempuan</option>
@@ -91,7 +92,7 @@
 
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">Tanggal Lahir</label>
-                                                <input type="date" name="tanggal_lahir" class="form-control p-2">
+                                                <input type="date" name="tanggal_lahir" class="form-control p-2" id="tanggal_lahir">
                                             </div>
 
                                         </div>
@@ -102,25 +103,25 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="input-group input-group-outline">
                                                     <label class="form-label">Nama Ayah</label>
-                                                    <input type="text" name="ayah" class="form-control">
+                                                    <input type="text" name="ayah" class="form-control" id="ayah">
                                                 </div>
                                             </div>
 
                                             <div class="col-md-6 mb-3">
                                                 <div class="input-group input-group-outline">
                                                     <label class="form-label">Nama Ibu</label>
-                                                    <input type="text" name="ibu" class="form-control">
+                                                    <input type="text" name="ibu" class="form-control" id="ibu">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <div class="input-group input-group-outline">
                                                     <label class="form-label">No. Telepon</label>
-                                                    <input type="tel" name="no_telp" class="form-control">
+                                                    <input type="tel" name="no_telp" class="form-control" id="no_telp">
                                                 </div>
                                             </div>
                                             <div class="col-12 mb-3">
                                                 <label class="form-label">Alamat Lengkap</label>
-                                                <textarea name="alamat" class="form-control p-2" rows="3"></textarea>
+                                                <textarea name="alamat" class="form-control p-2" rows="3" id="alamat"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -132,7 +133,7 @@
                                             <div class="col-md-6 mb-3">
                                                 <div class="input-group input-group-outline">
                                                     <label class="form-label">Tahun Angkatan</label>
-                                                    <input type="text" name="thn_angkatan" class="form-control">
+                                                    <input type="text" name="thn_angkatan" class="form-control" id="thn_angkatan">
                                                 </div>
                                             </div>
 
@@ -148,7 +149,6 @@
 
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -183,6 +183,27 @@
                 }
             });
 
+            $("#nik").on("input", function() {
+                let nik = $(this).val().trim();
+                let parent = $(this).closest(".input-group-outline");
+
+                if (nik === "") {
+                    parent.addClass("is-invalid").removeClass("is-valid");
+                } else {
+                    parent.removeClass("is-invalid").addClass("is-valid");
+                }
+            });
+
+            $("#tempat_lahir").on("input", function() {
+                let tempat = $(this).val().trim();
+                let parent = $(this).closest(".input-group-outline");
+
+                if (tempat === "") {
+                    parent.addClass("is-invalid").removeClass("is-valid");
+                } else {
+                    parent.removeClass("is-invalid").addClass("is-valid");
+                }
+            });
 
             $('#form-santri').on('submit', function(e) {
                 e.preventDefault();
@@ -245,7 +266,6 @@
                     });
                 }
             });
-
         });
     </script>
 @endsection

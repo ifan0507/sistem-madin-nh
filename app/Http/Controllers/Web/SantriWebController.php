@@ -40,9 +40,10 @@ class SantriWebController extends Controller
             'activePageMaster' => 'user-management'
         ];
 
+        $nis = $this->santri_service->generateNis();
         $kelas = $this->kelas_service->getAll();
         
-        return view('pages.santri.form-santri', compact('active', 'kelas'));
+        return view('pages.santri.form-santri', compact('active', 'kelas', 'nis'));
     }
 
     /**

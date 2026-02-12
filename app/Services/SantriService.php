@@ -47,7 +47,7 @@ class SantriService
         )->with('kelas')->findOrFail($id);
     }
 
-    private function generateNis()
+    public function generateNis()
     {
         $tahun = date('Y');
 
@@ -73,8 +73,6 @@ class SantriService
     public function create(SantriDto $data)
     {
         $payload = $data->toArray();
-        $payload['nis'] = $this->generateNis();
-
         return SantriModel::create($payload);
     }
 
