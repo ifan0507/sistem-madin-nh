@@ -61,10 +61,20 @@
                                                     @endif
                                                 </td>
                                                 <td class="align-middle">
-                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs"
-                                                        data-toggle="tooltip" data-original-title="Edit user">
-                                                        Edit
-                                                    </a>
+                                                    <button
+                                                        class="btn btn-outline-secondary btn-sm btn-icon-round  btn-edit-guru"
+                                                        data-bs-toggle="tooltip" title="Edit"
+                                                        data-id="{{ $g->id }}" data-kode="{{ $g->kode_guru }}"
+                                                        data-nama="{{ $g->name }}"
+                                                        data-qr_activation="{{ $g->qr_activation }}">
+                                                        <i class="fa-solid fa-pencil" style="font-size: 12px;"></i>
+                                                    </button>
+
+                                                    <button class="btn btn-outline-danger btn-sm btn-icon-round btn-delete"
+                                                        data-bs-toggle="tooltip" title="Hapus"
+                                                        data-url="{{ route('guru.destroy', $g->id) }}" data-name="Guru">
+                                                        <i class="fa-regular fa-trash-can" style="font-size: 12px;"></i>
+                                                    </button>
                                                 </td>
                                             </tr>
                                         @empty
@@ -198,10 +208,6 @@
                 generateNewQRCode();
             });
 
-            $('#btn-download-qr').on('click', function() {
-                downloadQR();
-            });
-
             // CRREATE
             $("#form-guru").on('submit', function(e) {
                 e.preventDefault();
@@ -254,6 +260,41 @@
                     }
                 });
 
+            })
+
+            // SHOW EDIT
+            $(".btn-edit-guru").on('click', function() {
+                let id = $(this).data('id');
+                let kode = $(this).data('kode');
+                let nama = $(this).data('nama');
+                let qr_activation = $(this).data('qr_activation');
+
+                $('#modal-title-default').text('Edit Guru Madin');
+
+                $('#kode_guru').val(kode);
+                $('#nama_guru').val(nama);
+                $('#qr_qr_activation').val(qr_activation);
+
+                $('#group-kode, #group-nama').addClass('is-filled');
+
+                let updateUrl = "{{ url('/guru') }}/" + id + "/update";
+                $('#form-guru').attr('action', updateUrl);
+                submitMethod = 'PUT';
+
+                $('#qrcode-container').html('');
+
+                new QRCode(document.getElementById("qrcode-container"), {
+                    text: qr_activation,
+                    width: 110,
+                    height: 110,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+
+                $('#btn-regenerate').html('<i class="fa fa-refresh me-1"></i> Ganti Token');
+
+                $('#modal-guru').modal('show');
             })
 
             let qrPreviewObj = null;

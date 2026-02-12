@@ -3,27 +3,31 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Services\SantriService;
+use App\Services\KelasService;
 use Illuminate\Http\Request;
 
-class SantriWebController extends Controller
+class KelasWebController extends Controller
 {
     public function __construct(
-        protected SantriService $santri_service
+        protected KelasService $kelas_service
     ) {}
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $active = (object)[
-            'activePage' => 'santri',
-            'activePageMaster' => 'user-management'
+            'activePage' => 'akademik-kelas',
+            'activePageMaster' => 'akademik-management',
         ];
 
-        return view('pages.santri.index', ['active' => $active]);
+        $kelas = $this->kelas_service->getAll();
+        return view('pages.kelas.index', compact('active', 'kelas'));
     }
 
+    public function getSantriByKelas($id)
+    {
+        $data = $this->kelas_service->getSantriByKelas($id);
+        return response()->json($data);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -70,14 +74,5 @@ class SantriWebController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    public function destroyKelas($id)
-    {
-        $this->santri_service->deleteKelas($id);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Santri berhasil dihapus dari kelas'
-        ]);
     }
 }

@@ -17,7 +17,7 @@ class UserService
 
     public function getAllGuru()
     {
-        return User::select('id', 'name', 'kode_guru', 'qr_activation', 'device_id')->is_guru()->active()->get();
+        return User::select('id', 'name', 'kode_guru', 'qr_activation', 'device_id')->is_guru()->active()->orderby('kode_guru', 'asc')->get();
     }
 
     public function create(UserDto $data)

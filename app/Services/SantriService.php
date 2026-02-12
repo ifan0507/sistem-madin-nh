@@ -46,8 +46,6 @@ class SantriService
             'kelas_id',
         )->with('kelas')->findOrFail($id);
     }
-
-
     /**
      * Menyimpan data baru berdasarkan DTO
      */
@@ -74,5 +72,11 @@ class SantriService
     {
         $item = SantriModel::findOrFail($id);
         return $item->update(['deleted_at' => 1]);
+    }
+
+    public function deleteKelas(int $id)
+    {
+        $item = SantriModel::findOrFail($id);
+        return $item->update(['kelas_id' => null]);
     }
 }
