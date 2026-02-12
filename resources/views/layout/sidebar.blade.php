@@ -31,9 +31,7 @@
 
             <!-- MANAGEMENT USER -->
             <li class="nav-item">
-                <a class="nav-link
-                    {{ $activePageMaster == 'user-management' ? 'active bg-gradient-primary text-white' : 'text-dark' }}"
-                    data-bs-toggle="collapse" href="#userMenu"
+                <a class="nav-link text-dark" data-bs-toggle="collapse" href="#userMenu"
                     aria-expanded="{{ $activePageMaster == 'user-management' ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">people</i>
                     <span class="nav-link-text ms-1">Management User</span>
@@ -43,7 +41,7 @@
                     <ul class="nav ms-4">
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'santri' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="/santri">
+                                href="{{ route('santri') }}">
                                 Santri
                             </a>
                         </li>
@@ -57,41 +55,47 @@
                 </div>
             </li>
 
-            <!-- KURIKULUM -->
+            <!-- akademik -->
             <li class="nav-item">
                 <a class="nav-link
-                    {{ in_array($activePage, ['kurikulum-mapel', 'kurikulum-kelas', 'kurikulum-pengampu-mapel', 'kurikulum-abses'])
+                    {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
                         : 'text-dark' }}"
-                    data-bs-toggle="collapse" href="#kurikulumMenu"
-                    aria-expanded="{{ in_array($activePage, ['kurikulum-mapel', 'kurikulum-kelas', 'kurikulum-pengampu-mapel', 'kurikulum-abses']) ? 'true' : 'false' }}">
+                    data-bs-toggle="collapse" href="#akademikMenu"
+                    aria-expanded="{{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-pengampu-mapel', 'akademik-abses']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">menu_book</i>
-                    <span class="nav-link-text ms-1">Kurikulum</span>
+                    <span class="nav-link-text ms-1">Managemen Akademik</span>
                 </a>
 
-                <div class="collapse {{ in_array($activePage, ['kurikulum-mapel', 'kurikulum-kelas', 'kurikulum-pengampu-mapel', 'kurikulum-abses']) ? 'show' : '' }}"
-                    id="kurikulumMenu">
+                <div class="collapse {{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-pengampu-mapel', 'akademik-abses']) ? 'show' : '' }}"
+                    id="akademikMenu">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'kurikulum-mapel' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
-                                Mata Pelajaran
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'kurikulum-kelas' ? 'active fw-semibold' : 'text-dark' }}"
+                            <a class="nav-link {{ $activePage == 'akademik-kelas' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="#">
                                 Kelas
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'kurikulum-pengampu-mapel' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
-                                Pengampu
+                            <a class="nav-link {{ $activePage == 'akademik-mapel' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="{{ route('mapel') }}">
+                                Mata Pelajaran
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'kurikulum-abses' ? 'active fw-semibold' : 'text-dark' }}"
+                            <a class="nav-link {{ $activePage == 'akademik-pengampu-mapel' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Mapel Kelas
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'akademik-pengampu-mapel' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Jadwal KBM
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'akademik-abses' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="#">
                                 Absensi
                             </a>

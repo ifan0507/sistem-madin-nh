@@ -47,6 +47,25 @@ class SantriService
         )->with('kelas')->findOrFail($id);
     }
 
+    private function generateNis()
+    {
+        $tahun = date('Y');
+
+        $lastSantri = SantriModel::where('nis', 'like', $tahun . '%')
+            ->orderBy('nis', 'desc')
+            ->first();
+
+        if ($lastSantri) {
+            $lastNumber = (int) substr($lastSantri->nis, 4);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        return $tahun . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    }
+
+
 
     /**
      * Menyimpan data baru berdasarkan DTO
@@ -54,6 +73,8 @@ class SantriService
     public function create(SantriDto $data)
     {
         $payload = $data->toArray();
+        $payload['nis'] = $this->generateNis();
+
         return SantriModel::create($payload);
     }
 
