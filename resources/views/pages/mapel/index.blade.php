@@ -10,9 +10,8 @@
                                 <div class="d-flex justify-content-between align-items-center px-3">
                                     <h6 class="text-white text-capitalize mb-0">Mata Pelajaran</h6>
                                     <button class="btn bg-white mb-0" data-bs-toggle="modal" data-bs-target="#modal-mapel"
-                                        id="btn-tambah-mapel"><i
-                                            class="material-symbols-rounded text-sm">add</i>&nbsp;&nbsp;Tambah
-                                        Mapel</button>
+                                        id="btn-tambah-mapel"><i class="material-symbols-rounded">add</i>&nbsp;&nbsp;Tambah
+                                    </button>
                                 </div>
                             </div>
                         </div>

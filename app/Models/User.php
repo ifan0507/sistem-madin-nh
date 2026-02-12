@@ -3,6 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -60,5 +63,23 @@ class User extends Authenticatable
     public function pelanggaran(): HasMany
     {
         return $this->hasMany(PelanggaranModel::class, 'user_id');
+    }
+
+    #[Scope]
+    public function is_guru(Builder $query)
+    {
+        return $query->where('role', '2');
+    }
+
+    #[Scope]
+    public function is_pengurus(Builder $query)
+    {
+        return $query->where('role', '3');
+    }
+
+    #[Scope]
+    public function active(Builder $query)
+    {
+        return $query->where('delete_at', '0');
     }
 }

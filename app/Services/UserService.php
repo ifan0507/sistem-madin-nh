@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Dto\UserDto;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Pest\Support\Str;
 
 class UserService
 {
@@ -14,6 +15,10 @@ class UserService
         return User::select('id', 'name', 'username', 'role', 'kode_guru', 'qr_activation', 'device_id')->get();
     }
 
+    public function getAllGuru()
+    {
+        return User::select('id', 'name', 'kode_guru', 'qr_activation', 'device_id')->is_guru()->active()->get();
+    }
 
     public function create(UserDto $data)
     {
@@ -42,5 +47,14 @@ class UserService
         $item = User::findOrFail($id);
         $item->update(['delete_at' => '1']);
         return $item;
+    }
+
+    public function generateToken()
+    {
+        do {
+            $token = 'GURU-' . strtoupper(Str::random(20));
+        } while (User::where('qr_activation', $token)->exists());
+
+        return response()->json(['token' => $token]);
     }
 }

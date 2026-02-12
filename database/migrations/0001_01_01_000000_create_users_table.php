@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('username')->unique();
-            $table->string('password');
+            $table->string('username')->nullable()->unique();
+            $table->string('password')->nullable();
             $table->enum('role', ['1', '2', '3'])->default('3')->comment('1=superadmin,2=admin,3=guru');
-            $table->string('kode_guru')->unique()->nullable();
+            $table->string('kode_guru')->nullable();
             $table->string('qr_activation')->nullable()->unique();
             $table->string('device_id')->nullable()->unique();
             $table->string('delete_at')->default('0')->comment('0=active,1=deleted');

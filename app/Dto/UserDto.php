@@ -8,7 +8,7 @@ class UserDto
 {
     public function __construct(
         public readonly string $name,
-        public readonly string $username,
+        public readonly ?string $username,
         public readonly ?string $password,
         public readonly string $role,
         public readonly ?string $kode_guru = null,

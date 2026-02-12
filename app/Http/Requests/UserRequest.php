@@ -24,13 +24,11 @@ class UserRequest extends FormRequest
                 'max:255'
             ],
             'username' => [
-                'required',
                 'string',
                 'max:255',
                 Rule::unique('users', 'username')->ignore($userId),
             ],
             'password' => [
-                'required',
                 'string',
                 'min:6',
             ],
