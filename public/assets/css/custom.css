@@ -148,3 +148,34 @@ body:not(.preload-active) main {
     height: 100%;
     object-fit: contain;
 }
+.select2-container .select2-selection--single {
+    height: 40px;
+    border: 1px solid #d2d6da;
+    border-radius: 0.375rem;
+}
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    line-height: 40px;
+    padding-left: 12px;
+    color: #7b809a;
+}
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 40px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #d2d6da !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem;
+    outline: none !important;
+    transition: all 0.15s ease-in-out;
+    font-family: inherit;
+}
+
+.input-group-static label {
+    z-index: 1051;
+}

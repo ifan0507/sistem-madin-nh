@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,8 +17,6 @@ class MapelKelasModel extends Model
         'guru_id',
         'kelas_id',
         'mapel_id',
-        'semester',
-        'tahun_ajaran',
         'deleted_at',
     ];
 
@@ -53,5 +53,13 @@ class MapelKelasModel extends Model
     public function jadwal_ujian(): HasMany
     {
         return $this->hasMany(JadwalUjianModel::class, 'mapel_kelas_id');
+    }
+
+    #[Scope]
+    public function active(Builder $q)
+    {
+        $q->where('delete_at', '0')->whereHas('guru', function ($query) {
+            $query->where('delete_at', '0');
+        });
     }
 }

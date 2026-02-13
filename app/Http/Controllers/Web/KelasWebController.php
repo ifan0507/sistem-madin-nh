@@ -19,7 +19,7 @@ class KelasWebController extends Controller
             'activePageMaster' => 'akademik-management',
         ];
 
-        $kelas = $this->kelas_service->getAll();
+        $kelas = $this->kelas_service->getAllKelasCountSantri();
         return view('pages.kelas.index', compact('active', 'kelas'));
     }
 

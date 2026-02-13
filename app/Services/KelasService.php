@@ -11,7 +11,13 @@ class KelasService
     /**
      * Mengambil semua data
      */
+
     public function getAll()
+    {
+        return KelasModel::select('id', 'nama_kelas')->get();
+    }
+
+    public function getAllKelasCountSantri()
     {
         return KelasModel::select('id', 'nama_kelas')->withCount('santri')->get();
     }

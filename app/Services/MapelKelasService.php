@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dto\MapelKelasDto;
+use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
 
 class MapelKelasService
@@ -20,6 +21,29 @@ class MapelKelasService
             'mapel_id',
             'deleted_at'
         )->with(['kelas', 'mapel', 'guru'])->get();
+    }
+
+    public function getMapelKelasByKelas($id)
+    {
+        return MapelKelasModel::select(
+            'mapel_kelas.id',
+            'mapel_kelas.guru_id',
+            'mapel_kelas.kelas_id',
+            'mapel_kelas.mapel_id',
+        )
+            ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
+            ->with(['mapel', 'guru'])
+            ->active()
+            ->where('mapel_kelas.kelas_id', $id)
+            ->orderBy('mapels.nama_mapel', 'asc')
+            ->get();
+    }
+
+    public function getKelasCountMapel()
+    {
+        return KelasModel::select('id', 'nama_kelas')
+            ->withCount('mapel_kelas')
+            ->get();
     }
 
     public function getById($id)

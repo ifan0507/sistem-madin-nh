@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MapelKelasRequest extends FormRequest
 {
@@ -21,20 +22,14 @@ class MapelKelasRequest extends FormRequest
             ],
             'mapel_id' => [
                 'required',
-                'exists:mapels,id'
+                'exists:mapels,id',
+                Rule::unique('mapel_kelas', 'mapel_id')->where(function ($query) {
+                    return $query->where('kelas_id', $this->kelas_id);
+                }),
             ],
             'guru_id' => [
                 'required',
-                'exists:gurus,id'
-            ],
-            'semester' => [
-                'required',
-                'in:Ganjil,Genap'
-            ],
-            'tahun_ajaran' => [
-                'required',
-                'string',
-                'max:9'
+                'exists:users,id'
             ],
         ];
     }
@@ -42,7 +37,7 @@ class MapelKelasRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // Tambahkan pesan error custom di sini (opsional)
+            'mapel_id.unique'   => 'Mata Pelajaran ini sudah ada di kelas tersebut.',
         ];
     }
 }

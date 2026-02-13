@@ -27,7 +27,8 @@
                                                 Nama</th>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Qr Code</th>
-                                            <th class="text-secondary opacity-7">Action</th>
+                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
