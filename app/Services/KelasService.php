@@ -60,6 +60,6 @@ class KelasService
     public function delete($id)
     {
         $item = KelasModel::findOrFail($id);
-        return $item->update(['delete_at' => '1']);
+        return $item->update(['deleted_at' => '1']);
     }
 }

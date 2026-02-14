@@ -15,6 +15,7 @@ class MapelKelasRequest extends FormRequest
 
     public function rules(): array
     {
+        $id = $this->route('id');
         return [
             'kelas_id' => [
                 'required',
@@ -23,8 +24,9 @@ class MapelKelasRequest extends FormRequest
             'mapel_id' => [
                 'required',
                 'exists:mapels,id',
-                Rule::unique('mapel_kelas', 'mapel_id')->where(function ($query) {
-                    return $query->where('kelas_id', $this->kelas_id);
+                Rule::unique('mapel_kelas', 'mapel_id')->ignore($id, 'id')->where(function ($query) {
+                    return $query->where('kelas_id', $this->kelas_id)
+                        ->where('deleted_at', '0');
                 }),
             ],
             'guru_id' => [

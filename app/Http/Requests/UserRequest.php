@@ -41,7 +41,7 @@ class UserRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('users', 'kode_guru')->ignore($userId)->where(function ($q) {
-                    return $q->where('delete_at', '0');
+                    return $q->where('deleted_at', '0');
                 }),
             ],
             'qr_activation' => [
@@ -49,7 +49,7 @@ class UserRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('users', 'qr_activation')->ignore($userId)->where(function ($q) {
-                    return $q->where('delete_at', '0');
+                    return $q->where('deleted_at', '0');
                 })
             ],
             'device_id' => [

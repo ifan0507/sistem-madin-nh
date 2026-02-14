@@ -15,7 +15,7 @@ class MapelModel extends Model
     protected $fillable = [
         'kode_mapel',
         'nama_mapel',
-        'delete_at',
+        'deleted_at',
     ];
 
     public function mapel_kelas(): HasMany
@@ -31,6 +31,6 @@ class MapelModel extends Model
     #[Scope]
     protected function active(Builder $query): void
     {
-        $query->where('delete_at', '0');
+        $query->where('deleted_at', '0');
     }
 }

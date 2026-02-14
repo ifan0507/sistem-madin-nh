@@ -56,10 +56,10 @@ class MapelKelasModel extends Model
     }
 
     #[Scope]
-    public function active(Builder $q)
+    protected function active(Builder $q): void
     {
-        $q->where('delete_at', '0')->whereHas('guru', function ($query) {
-            $query->where('delete_at', '0');
+        $q->where('mapel_kelas.deleted_at', '0')->whereHas('guru', function ($query) {
+            $query->where('users.deleted_at', '0');
         });
     }
 }

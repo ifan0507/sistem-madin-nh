@@ -60,16 +60,25 @@ class MapelKelasWebController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $id)
+    public function update($id, MapelKelasRequest $request)
     {
-        //
+        $dto = MapelKelasDto::fromRequest($request);
+        $this->mapelKelasService->update($id, $dto);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data mata pelajaran berhasil diperbarui untuk kelas.',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->mapelKelasService->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data mata pelajaran berhasil dihapus dari kelas.',
+        ]);
     }
 }

@@ -12,12 +12,12 @@ class KelasModel extends Model
     protected $table = 'kelas';
     protected $fillable = [
         'nama_kelas',
-        'delete_at'
+        'deleted_at'
     ];
 
     public function mapel_kelas(): HasMany
     {
-        return $this->hasMany(MapelKelasModel::class, 'kelas_id');
+        return $this->hasMany(MapelKelasModel::class, 'kelas_id')->active();
     }
 
     public function santri(): HasMany

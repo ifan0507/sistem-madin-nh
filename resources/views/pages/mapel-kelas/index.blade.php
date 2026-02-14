@@ -64,7 +64,8 @@
                             <hr class="dark horizontal my-0">
                             <div class="card-footer p-2 ps-3">
                                 <p class="mb-0 text-sm">
-                                    <span class="text-success font-weight-bolder">{{ $k->mapel_kelas_count }} </span> Mapel
+                                    <span class="text-success font-weight-bolder"
+                                        id="count-mapel-{{ $k->id }}">{{ $k->mapel_kelas_count }} </span> Mapel
                                 </p>
                             </div>
                         </div>
@@ -160,7 +161,7 @@
                 <form role="form text-left" id="form-mapel-kelas">
                     @csrf
                     <input type="hidden" name="kelas_id" id="hidden_kelas_id" value="">
-
+                    <input type="hidden" id="hidden_mapel_kelas_id">
                     <div class="modal-body">
 
                         <div class="input-group input-group-static">
@@ -241,7 +242,9 @@
                                         <td class="align-middle text-center">
                                             <button class="btn btn-outline-warning btn-sm btn-icon-round btn-edit-mapelKelas me-1"
                                                 data-bs-toggle="tooltip" title="Edit"
-                                                data-id="${mapelKelas.id}">
+                                                data-id="${mapelKelas.id}"
+                                                data-mapel-id="${mapelKelas.mapel_id}" 
+                                                data-guru-id="${mapelKelas.guru_id}"> 
                                                 <i class="fa-regular fa-pen-to-square" style="font-size: 12px;"></i>
                                             </button>
 
@@ -259,9 +262,28 @@
                             $('#empty-mapel-kelas').show();
                         }
                     },
-                    error: function() {
+                    error: function(xhr) {
                         $('#loading-mapel-kelas').hide();
-                        alert('Gagal mengambil data mapel kelas.');
+                        let message = "Terjadi kesalahan saat menghapus data.";
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            message = Object.values(errors)[0][0];
+                        }
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: message,
+                        });
+                        // Swal.fire({
+                        //     icon: "error",
+                        //     title: "Error",
+                        //     text: "Gagal memuat data mapel kelas.",
+                        // });
                     }
                 });
             });
@@ -287,8 +309,9 @@
                 $('#select-mapel').val(null).trigger('change');
                 $('#select-guru').val(null).trigger('change');
                 $('#hidden_kelas_id').val(selectedKelasId);
+                $('#modal-title-default').text('Tambah Mapel Kelas');
+                $('#hidden_mapel_kelas_id').val('');
                 $('#modal-mapel-kelas').modal('show');
-
                 $.ajax({
                     url: "{{ route('mapel-kelas.getAllMapel') }}",
                     type: "GET",
@@ -324,83 +347,17 @@
                 });
             });
 
-
-            //  $(document).on('click', '.btn-hapus-santri', function() {
-            //     let tombolHapus = $(this);
-            //     let id = $(this).data('id');
-            //     let nama = $(this).data('name');
-            //     let kelas = $(this).data('kelas');
-            //     let url = "{{ url('/santri') }}/" + id + "/delete-kelas"
-            //     Swal.fire({
-            //         title: 'Yakin Hapus?',
-            //         html: `Data Santri ${nama} Dari Kelas ${kelas}`,
-            //         icon: 'warning',
-            //         showCancelButton: true,
-            //         reverseButtons: true,
-            //         confirmButtonColor: "#d33",
-            //         cancelButtonColor: "#6c757d",
-            //         confirmButtonText: "Ya, hapus",
-            //         cancelButtonText: "Batal",
-            //     }).then((result) => {
-            //         if (result.isConfirmed) {
-            //             $.ajax({
-            //                 url: url,
-            //                 type: "DELETE",
-            //                 data: {
-            //                     _token: $('meta[name="csrf-token"]').attr("content"),
-            //                 },
-            //                 success: function(res) {
-            //                     Swal.fire({
-            //                         icon: "success",
-            //                         title: "Berhasil",
-            //                         text: res.message,
-            //                         timer: 1500,
-            //                         showConfirmButton: false,
-            //                     }).then(() => {
-            //                         tombolHapus.closest('tr').remove();
-            //                         $('#tabel-santri-body tr').each(function(
-            //                             index) {
-            //                             $(this).find('td:eq(1) p').text(
-            //                                 index + 1);
-            //                         });
-            //                     });
-
-            //                 },
-            //                 error: function(xhr) {
-            //                     let message = "Terjadi kesalahan saat menghapus data.";
-
-            //                     if (xhr.status === 422) {
-            //                         let errors = xhr.responseJSON.errors;
-            //                         message = Object.values(errors)[0][0];
-            //                     }
-            //                     if (xhr.responseJSON && xhr.responseJSON.message) {
-            //                         message = xhr.responseJSON.message;
-            //                     }
-
-            //                     Swal.fire({
-            //                         icon: "error",
-            //                         title: "Error",
-            //                         text: message,
-            //                     });
-            //                 },
-            //             });
-
-            //         }
-            //     });
-            // });
-
-            // const daftarKelas = {
-            //     @foreach ($kelas as $k)
-            //         "{{ $k->id }}": "Kelas {{ $k->nama_kelas }}",
-            //     @endforeach
-            // };
-
             $('body').on('click', '.btn-simpan-mapel', function(e) {
                 e.preventDefault();
 
                 let mapelVal = $('#select-mapel').val();
                 let guruVal = $('#select-guru').val();
                 let kelasId = $('#hidden_kelas_id').val();
+                let mapelKelasId = $('#hidden_mapel_kelas_id').val();
+
+                let urlAction = mapelKelasId ? `/mapel-kelas/${mapelKelasId}/update` :
+                    "{{ route('mapel-kelas.store') }}";
+                let methodAction = mapelKelasId ? "PUT" : "POST";
 
                 if (!mapelVal || !guruVal) {
                     Swal.fire({
@@ -424,9 +381,10 @@
                 let namaKelasDisplay = $('#judul-kelas-terpilih').text();
 
                 let btn = $(this);
-                let originalText = btn.text();
+                let originalContent = btn.html();
                 btn.prop('disabled', true).html(`
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span class="ms-1">Menyimpan...</span>
                 `);
 
                 let formData = $('#form-mapel-kelas').serialize();
@@ -435,11 +393,12 @@
                 }
 
                 $.ajax({
-                    url: "{{ route('mapel-kelas.store') }}",
-                    type: "POST",
+                    url: urlAction,
+                    type: methodAction,
                     data: formData,
                     success: function(response) {
                         $('#modal-mapel-kelas').modal('hide');
+
                         Swal.fire({
                             icon: 'success',
                             title: 'Berhasil!',
@@ -448,58 +407,81 @@
                             showConfirmButton: false
                         });
 
-                        $('#empty-mapel-kelas').hide();
+                        if (mapelKelasId) {
 
-                        let rowCount = $('#tabel-mapel-kelas-body tr').length;
-                        let newNo = rowCount + 1;
+                            let row = $(`.btn-edit-mapelKelas[data-id="${mapelKelasId}"]`)
+                                .closest('tr');
 
-                        let newId = response.data_id;
+                            row.find('td:eq(1) h6').text(mapelNama);
+                            row.find('td:eq(1) p').text(mapelKode);
+                            row.find('td:eq(2) h6').text(guruNama);
+                            row.find('td:eq(2) p').text(guruKode);
 
-                        let newRowHtml = `
-                       <tr class="animasi-masuk">
-                                    <td class="align-middle ps-4">
-                                        <p class="text-xs font-weight-bold mb-0">${newNo}</p>
-                                    </td>
-                                    
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">${mapelNama}</h6>
-                                                <p class="text-xs text-secondary mb-0">${mapelKode}</p>
-                                            </div>
+                            row.find('.btn-edit-mapelKelas').data('mapel-id', mapelVal).data(
+                                'guru-id', guruVal);
+                            row.find('.btn-hapus-mapelKelas').data('name', mapelNama);
+
+                        } else {
+
+                            $('#empty-mapel-kelas').hide();
+
+                            let rowCount = $('#tabel-mapel-kelas-body tr').length;
+                            let newNo = rowCount + 1;
+                            let newId = response.data_id;
+
+                            let newRowHtml = `
+                            <tr class="animasi-masuk">
+                                <td class="align-middle ps-4">
+                                    <p class="text-xs font-weight-bold mb-0">${newNo}</p>
+                                </td>
+                                
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">${mapelNama}</h6>
+                                            <p class="text-xs text-secondary mb-0">${mapelKode}</p>
                                         </div>
-                                    </td>
+                                    </div>
+                                </td>
 
-                                    <td>
-                                        <div class="d-flex px-2 py-1">
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">${guruNama}</h6>
-                                                <p class="text-xs text-secondary mb-0">${guruKode}</p>
-                                            </div>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">${guruNama}</h6>
+                                            <p class="text-xs text-secondary mb-0">${guruKode}</p>
                                         </div>
-                                    </td>
-                                    
-                                    <td class="align-middle text-center">
-                                        <button class="btn btn-outline-warning btn-sm btn-icon-round btn-edit-mapelKelas me-1"
-                                            data-bs-toggle="tooltip" title="Edit"
-                                            data-id="${newId}">
-                                            <i class="fa-regular fa-pen-to-square" style="font-size: 12px;"></i>
-                                        </button>
+                                    </div>
+                                </td>
+                                
+                                <td class="align-middle text-center">
+                                    <button class="btn btn-outline-warning btn-sm btn-icon-round btn-edit-mapelKelas me-1"
+                                        data-bs-toggle="tooltip" title="Edit"
+                                        data-id="${newId}"
+                                        data-mapel-id="${mapelVal}" 
+                                        data-guru-id="${guruVal}">
+                                        <i class="fa-regular fa-pen-to-square" style="font-size: 12px;"></i>
+                                    </button>
 
-                                        <button class="btn btn-outline-danger btn-sm btn-icon-round btn-hapus-mapelKelas"
-                                            data-bs-toggle="tooltip" title="Hapus"
-                                            data-id="${newId}" data-name="${mapelNama}" data-kelas="${namaKelasDisplay}">
-                                            <i class="fa-regular fa-trash-can" style="font-size: 12px;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                    <button class="btn btn-outline-danger btn-sm btn-icon-round btn-hapus-mapelKelas"
+                                        data-bs-toggle="tooltip" title="Hapus"
+                                        data-id="${newId}" data-name="${mapelNama}" data-kelas="${namaKelasDisplay}">
+                                        <i class="fa-regular fa-trash-can" style="font-size: 12px;"></i>
+                                    </button>
+                                </td>
+                            </tr>
                             `;
 
-                        $('#tabel-mapel-kelas-body').append(newRowHtml);
+                            $('#tabel-mapel-kelas-body').append(newRowHtml);
+
+                            let currentCount = parseInt($('#count-mapel-' + kelasId).text());
+                            $('#count-mapel-' + kelasId).text(currentCount + 1);
+                        }
 
                         $('#form-mapel-kelas')[0].reset();
                         $('#select-mapel').val(null).trigger('change');
                         $('#select-guru').val(null).trigger('change');
+                        $('#hidden_mapel_kelas_id').val('');
+
                     },
                     error: function(xhr) {
                         let message = "Terjadi kesalahan sistem.";
@@ -513,7 +495,115 @@
                         Swal.fire('Error', message, 'error');
                     },
                     complete: function() {
-                        btn.prop('disabled', false).text(originalText);
+                        btn.prop('disabled', false).html(originalContent);
+                    }
+                });
+            });
+            $(document).on('click', '.btn-hapus-mapelKelas', function() {
+                let tombolHapus = $(this);
+                let id = $(this).data('id');
+                let nama = $(this).data('name');
+                let kelas = $(this).data('kelas');
+                let url = "{{ url('/mapel-kelas') }}/" + id + "/delete"
+                Swal.fire({
+                    title: 'Yakin Hapus?',
+                    html: `Data Mapel Kelas ${nama} Dari Kelas ${kelas}`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    reverseButtons: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#6c757d",
+                    confirmButtonText: "Ya, hapus",
+                    cancelButtonText: "Batal",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            type: "DELETE",
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr("content"),
+                            },
+                            success: function(res) {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Berhasil",
+                                    text: res.message,
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                }).then(() => {
+                                    tombolHapus.closest('tr').remove();
+                                    $('#tabel-santri-body tr').each(function(
+                                        index) {
+                                        $(this).find('td:eq(1) p').text(
+                                            index + 1);
+                                    });
+                                    let currentCount = parseInt($(
+                                        '#count-mapel-' +
+                                        selectedKelasId).text());
+                                    $('#count-mapel-' + selectedKelasId).text(
+                                        currentCount - 1);
+                                });
+
+                            },
+                            error: function(xhr) {
+                                let message = "Terjadi kesalahan saat menghapus data.";
+
+                                if (xhr.status === 422) {
+                                    let errors = xhr.responseJSON.errors;
+                                    message = Object.values(errors)[0][0];
+                                }
+                                if (xhr.responseJSON && xhr.responseJSON.message) {
+                                    message = xhr.responseJSON.message;
+                                }
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: message,
+                                });
+                            },
+                        });
+
+                    }
+                });
+            });
+
+            $('body').on('click', '.btn-edit-mapelKelas', function() {
+                let id = $(this).data('id');
+                let mapelId = $(this).data('mapel-id');
+                let guruId = $(this).data('guru-id');
+
+                $('#modal-title-default').text('Edit Mapel Kelas');
+                $('#hidden_mapel_kelas_id').val(id);
+                $('#hidden_kelas_id').val(selectedKelasId);
+
+                $('#modal-mapel-kelas').modal('show');
+
+                $.ajax({
+                    url: "{{ route('mapel-kelas.getAllMapel') }}",
+                    type: "GET",
+                    success: function(data) {
+                        let options = '<option value="">-- Pilih Mapel --</option>';
+                        $.each(data, function(key, item) {
+                            options +=
+                                `<option value="${item.id}">${item.kode_mapel} - ${item.nama_mapel}</option>`;
+                        });
+                        $('#select-mapel').html(options);
+                        $('#select-mapel').val(mapelId).trigger('change');
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('mapel-kelas.getAllGuru') }}",
+                    type: "GET",
+                    success: function(data) {
+                        let options = '<option value="">-- Pilih Guru --</option>';
+                        $.each(data, function(key, item) {
+                            options +=
+                                `<option value="${item.id}">${item.kode_guru} - ${item.name}</option>`;
+                        });
+                        $('#select-guru').html(options);
+                        $('#select-guru').val(guruId).trigger('change');
                     }
                 });
             });
