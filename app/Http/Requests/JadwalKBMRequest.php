@@ -15,13 +15,18 @@ class JadwalKBMRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'jadwal_id' => [
+                'nullable',
+                'integer',
+                'exists:jadwal_kbms,id'
+            ],
             'mapel_kelas_id' => [
                 'required',
                 'exists:mapel_kelas,id'
             ],
             'hari' => [
                 'required',
-                'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu'
+                'in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Ahad'
             ],
         ];
     }

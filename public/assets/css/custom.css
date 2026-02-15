@@ -179,3 +179,45 @@ body:not(.preload-active) main {
 .input-group-static label {
     z-index: 1051;
 }
+
+.box-jadwal-kosong {
+    border: 1px dashed #d2d6da;
+    border-radius: 0.5rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-jadwal-kosong:hover {
+    background-color: #f8f9fa;
+    border-color: #4caf50;
+    color: #4caf50 !important;
+}
+.box-jadwal-kosong:hover i,
+.box-jadwal-kosong:hover p {
+    color: #4caf50 !important;
+}
+
+.box-jadwal-isi {
+    background-color: #f8f9fa;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 60px;
+}
+
+.box-jadwal-isi:hover {
+    background-color: #e9ecef;
+    border-color: #ff9800;
+}
+.modal-header .btn-close {
+    background-size: 0.75rem 0.75rem;
+    opacity: 1;
+}

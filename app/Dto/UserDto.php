@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 class UserDto
 {
     public function __construct(
-        public readonly string $name,
-        public readonly ?string $username,
-        public readonly ?string $password,
-        public readonly string $role,
-        public readonly ?string $kode_guru = null,
-        public readonly ?string $qr_activation = null,
-        public readonly ?string $device_id = null,
+        private readonly string $name,
+        private readonly ?string $username,
+        private readonly ?string $password,
+        private readonly string $role,
+        private readonly ?string $kode_guru = null,
+        private readonly ?string $qr_activation = null,
+        private readonly ?string $device_id = null,
     ) {}
 
     public static function fromRequest(Request $request): self

@@ -60,12 +60,12 @@
                 <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
                         : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#akademikMenu"
-                    aria-expanded="{{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-mapel-kelas', 'akademik-abses']) ? 'true' : 'false' }}">
+                    aria-expanded="{{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-mapel-kelas', 'akademik-jadwal-kbm']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">menu_book</i>
                     <span class="nav-link-text ms-1">Managemen Akademik</span>
                 </a>
 
-                <div class="collapse {{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-mapel-kelas', 'akademik-abses']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-mapel-kelas', 'akademik-jadwal-kbm']) ? 'show' : '' }}"
                     id="akademikMenu">
                     <ul class="nav ms-4">
                         <li class="nav-item">
@@ -87,15 +87,85 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'akademik-pengampu-mapel' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                            <a class="nav-link {{ $activePage == 'akademik-jadwal-kbm' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="{{ route('jadwal-kbm') }}">
                                 Jadwal KBM
                             </a>
                         </li>
+                    </ul>
+                </div>
+            </li>
+
+            {{-- Ujian --}}
+            <li class="nav-item">
+                <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
+                        ? 'active bg-gradient-primary text-white'
+                        : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#ujianMenu"
+                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-kbm', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'true' : 'false' }}">
+                    <i class="material-symbols-rounded">assignment</i>
+                    <span class="nav-link-text ms-1">Managemen Ujian</span>
+                </a>
+
+                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-kbm', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'show' : '' }}"
+                    id="ujianMenu">
+                    <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'akademik-abses' ? 'active fw-semibold' : 'text-dark' }}"
+                            <a class="nav-link {{ $activePage == 'ujian-jadwal-kbm' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="#">
-                                Absensi
+                                Jadwa Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'ujian-denah-ujian' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Denah Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'ujian-bank-soal' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Bank Soal
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            {{-- LAPORAN --}}
+            <li class="nav-item">
+                <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
+                        ? 'active bg-gradient-primary text-white'
+                        : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#laporanMenu"
+                    aria-expanded="{{ in_array($activePage, ['laporan-absensi-guru', 'laporan-absensi-santri', 'laporan-rapor-santri', 'laporan-pelanggaran-santri']) ? 'true' : 'false' }}">
+                    <i class="material-symbols-rounded">description</i>
+                    <span class="nav-link-text ms-1">Managemen Laporan</span>
+                </a>
+
+                <div class="collapse {{ in_array($activePage, ['laporan-absensi-guru', 'laporan-absensi-santri', 'laporan-rapor-santri', 'laporan-pelanggaran-santri']) ? 'show' : '' }}"
+                    id="laporanMenu">
+                    <ul class="nav ms-4">
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'laporan-absensi-guru' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Absensi Guru
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'laporan-absensi-santri' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Absensi Santri
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'laporan-rapor-santri' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Rapor Santri
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'laporan-pelanggaran-santri' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="#">
+                                Pelanggaran Santri
                             </a>
                         </li>
                     </ul>

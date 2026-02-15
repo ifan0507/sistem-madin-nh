@@ -6,7 +6,7 @@
                 <div class="col-12">
                     <div class="card my-4">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-success shadow-dark border-radius-lg pt-4 pb-3">
+                            <div class="bg-gradient-success shadow-info border-radius-lg pt-3 pb-3">
                                 <div class="d-flex justify-content-between align-items-center px-3">
                                     <h6 class="text-white text-capitalize mb-0">Guru Madin</h6>
                                     <button class="btn bg-white mb-0" data-bs-toggle="modal" data-bs-target="#modal-guru"
@@ -101,10 +101,9 @@
         aria-hidden="true">
         <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title font-weight-normal" id="modal-title-default">Tambah Guru</h6>
+                <div class="modal-header bg-gradient-success">
+                    <h6 class="modal-title font-weight-normal text-white" id="modal-title-default">Tambah Guru</h6>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <form role="form text-left" action="{{ route('guru.store') }}" method="POST" id="form-guru">

@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Dto\MapelKelasDto;
+use App\Models\JadwalKBMModel;
 use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
+use Illuminate\Support\Facades\DB;
 
 class MapelKelasService
 {
@@ -35,7 +37,7 @@ class MapelKelasService
             ->with(['mapel', 'guru'])
             ->active()
             ->where('mapel_kelas.kelas_id', $id)
-            ->orderBy('mapels.nama_mapel', 'asc')
+            ->orderBy('mapels.kode_mapel', 'asc')
             ->get();
     }
 
@@ -75,7 +77,17 @@ class MapelKelasService
      */
     public function delete($id)
     {
-        $item = MapelKelasModel::findOrFail($id);
-        return $item->update(['deleted_at' => '1']);
+        DB::beginTransaction();
+
+        try {
+            $item = MapelKelasModel::findOrFail($id);
+            JadwalKBMModel::where('mapel_kelas_id', $id)->delete();
+            $item->update(['deleted_at' => '1']);
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

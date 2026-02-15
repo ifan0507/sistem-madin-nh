@@ -151,10 +151,9 @@
     <div class="modal fade" id="modal-mapel-kelas" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title font-weight-normal" id="modal-title-default">Tambah Mapel Kelas</h6>
+                <div class="modal-header bg-gradient-success">
+                    <h6 class="modal-title font-weight-normal text-white" id="modal-title-default">Tambah Mapel Kelas</h6>
                     <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
 
@@ -499,7 +498,8 @@
                     }
                 });
             });
-            $(document).on('click', '.btn-hapus-mapelKelas', function() {
+
+            $('body').on('click', '.btn-hapus-mapelKelas', function() {
                 let tombolHapus = $(this);
                 let id = $(this).data('id');
                 let nama = $(this).data('name');
@@ -507,7 +507,7 @@
                 let url = "{{ url('/mapel-kelas') }}/" + id + "/delete"
                 Swal.fire({
                     title: 'Yakin Hapus?',
-                    html: `Data Mapel Kelas ${nama} Dari Kelas ${kelas}`,
+                    html: `Data Mapel Kelas ${nama} Dari Kelas ${kelas} dan Jadwal KBM yang terkait`,
                     icon: 'warning',
                     showCancelButton: true,
                     reverseButtons: true,
@@ -532,11 +532,12 @@
                                     showConfirmButton: false,
                                 }).then(() => {
                                     tombolHapus.closest('tr').remove();
-                                    $('#tabel-santri-body tr').each(function(
-                                        index) {
-                                        $(this).find('td:eq(1) p').text(
-                                            index + 1);
-                                    });
+                                    $('#tabel-mapel-kelas-body tr').each(
+                                        function(
+                                            index) {
+                                            $(this).find('td:eq(0) p').text(
+                                                index + 1);
+                                        });
                                     let currentCount = parseInt($(
                                         '#count-mapel-' +
                                         selectedKelasId).text());
