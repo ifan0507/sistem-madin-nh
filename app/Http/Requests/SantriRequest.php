@@ -9,7 +9,6 @@ class SantriRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // Default diset true agar tidak perlu login admin manual saat development awal
         return true;
     }
 

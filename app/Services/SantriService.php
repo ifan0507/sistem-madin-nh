@@ -26,9 +26,9 @@ class SantriService
             'jenis_kelamin',
             'thn_angkatan',
             'kelas_id',
-        )->with('kelas')->get();
+        )->with('kelas')->active()->orderBy('created_at', 'asc')->get();
     }
-
+ 
     public  function getById($id)
     {
         return SantriModel::select(
@@ -99,7 +99,7 @@ class SantriService
     public function delete(int $id)
     {
         $item = SantriModel::findOrFail($id);
-        $item->update(['delete_at' => '1']);
+        $item->update(['deleted_at' => '1']);
         return $item;
     }
 

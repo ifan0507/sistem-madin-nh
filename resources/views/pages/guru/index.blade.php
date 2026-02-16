@@ -27,7 +27,8 @@
                                                 Nama</th>
                                             <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Qr Code</th>
-                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 Action</th>
                                         </tr>
                                     </thead>
@@ -61,7 +62,7 @@
                                                         </div>
                                                     @endif
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="align-middle text-center">
                                                     <button class="btn btn-outline-secondary btn-sm btn-icon-round"
                                                         data-bs-toggle="tooltip" title="Edit"
                                                         data-id="{{ $g->id }}" data-kode="{{ $g->kode_guru }}"

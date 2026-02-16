@@ -230,6 +230,11 @@
                     .addClass("is-valid");
             }
 
+            // Fungsi untuk pindah tab otomatis
+            function activateTab(tabId) {
+                $('[data-bs-toggle="tab"][href="' + tabId + '"]')[0].click();
+            }
+
             $("#nama, #nik, #tempat_lahir, #thn_angkatan, #ayah, #ibu, #no_telp").on("input", function() {
                 let id = $(this).attr("id");
                 let value = $(this).val().trim();
@@ -274,8 +279,10 @@
                 let formData = form.serialize();
 
 
+                // --- Tab Santri ---
                 if ($("#nama").val().trim() === "") {
                     setInvalid("nama");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -290,6 +297,7 @@
                 let nik = $("#nik").val().trim();
                 if (isValid && nik === "") {
                     setInvalid("nik");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -298,6 +306,7 @@
                     isValid = false;
                 } else if (isValid && (!/^\d+$/.test(nik) || nik.length !== 16)) {
                     setInvalid("nik");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -311,6 +320,7 @@
 
                 if (isValid && $("#tempat_lahir").val().trim() === "") {
                     setInvalid("tempat_lahir");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -324,6 +334,7 @@
 
                 if (isValid && $("#jenis_kelamin").val() === "") {
                     $("#jenis_kelamin").addClass("is-invalid").removeClass("is-valid");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -337,6 +348,7 @@
 
                 if (isValid && $("#tanggal_lahir").val() === "") {
                     $("#tanggal_lahir").addClass("is-invalid").removeClass("is-valid");
+                    activateTab('#tab-santri');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -348,8 +360,10 @@
                 }
 
 
+                // --- Tab Ortu ---
                 if (isValid && $("#ayah").val().trim() === "") {
                     setInvalid("ayah");
+                    activateTab('#tab-ortu');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -363,6 +377,7 @@
 
                 if (isValid && $("#ibu").val().trim() === "") {
                     setInvalid("ibu");
+                    activateTab('#tab-ortu');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -377,6 +392,7 @@
                 let telp = $("#no_telp").val().trim();
                 if (isValid && telp === "") {
                     setInvalid("no_telp");
+                    activateTab('#tab-ortu');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -385,6 +401,7 @@
                     isValid = false;
                 } else if (isValid && (!/^\d+$/.test(telp) || telp.length < 10 || telp.length > 13)) {
                     setInvalid("no_telp");
+                    activateTab('#tab-ortu');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -397,6 +414,7 @@
 
                 if (isValid && $("#alamat").val().trim() === "") {
                     $("#alamat").addClass("is-invalid").removeClass("is-valid");
+                    activateTab('#tab-ortu');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',
@@ -408,8 +426,10 @@
                 }
 
 
+                // --- Tab Akademik ---
                 if (isValid && $("#thn_angkatan").val().trim() === "") {
                     setInvalid("thn_angkatan");
+                    activateTab('#tab-akademik');
                     Swal.fire({
                         icon: 'error',
                         title: 'Gagal',

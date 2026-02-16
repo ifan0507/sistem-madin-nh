@@ -7,20 +7,20 @@
                 <div class="card shadow-sm border-0" style="border-radius: 1rem; overflow: hidden;">
                     <div class="card-body p-4">
                         <div class="row align-items-center">
-                            <div class="col-auto">
+                            {{-- <div class="col-auto">
                                 <div class="avatar avatar-2xl rounded-circle border border-3 border-white shadow-sm"
-                                    style="width: 100px; height: 100px; background: linear-gradient(135deg, #2dce89 0%, #11cdef 100%);">
+                                    style="width: 100px; height: 100px; background: linear-gradient(135deg, #2dce89 0%);">
                                     <span class="text-white fw-bold" style="font-size: 2.5rem; line-height: 100px;">
                                         {{ strtoupper(substr($santri->nama, 0, 1)) }}
                                     </span>
                                 </div>
-                            </div>
-                            <div class="col">
+                            </div> --}}
+                            <div class="col-12 col-md">
                                 <div class="d-flex align-items-center gap-3 mb-2">
                                     <h4 class="mb-0 fw-bold">{{ $santri->nama }}</h4>
 
                                 </div>
-                                <div class="d-flex gap-4 text-sm text-muted">
+                                <div class="d-flex flex-wrap gap-2 gap-md-4 text-sm text-muted">
                                     <div class="d-flex align-items-center gap-1">
                                         <span class="material-symbols-rounded" style="font-size: 18px;">badge</span>
                                         <span>NIS: <strong>{{ $santri->nis }}</strong></span>
@@ -37,7 +37,7 @@
                                     @endif
                                 </div>
                             </div>
-                            <div class="col-auto">
+                            <div class="col-12 col-md-auto mt-3 mt-md-0">
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('santri') }}"
                                         class="btn btn-outline-secondary mb-0 d-flex align-items-center gap-1"
@@ -61,7 +61,7 @@
                 <div class="card shadow-sm border-0 mb-4" style="border-radius: 1rem;">
                     <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center rounded-circle"
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle"
                                 style="width: 40px; height: 40px;">
                                 <span class="material-symbols-rounded text-white"
                                     style="font-size: 20px; line-height: 40px;">person</span>
@@ -125,7 +125,7 @@
                 <div class="card shadow-sm border-0" style="border-radius: 1rem;">
                     <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <div class="icon icon-shape bg-gradient-info shadow text-center rounded-circle"
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle"
                                 style="width: 40px; height: 40px;">
                                 <span class="material-symbols-rounded text-white"
                                     style="font-size: 20px; line-height: 40px;">family_restroom</span>
@@ -139,9 +139,9 @@
                     <div class="card-body px-4 pb-4">
                         <div class="row g-3">
                             <div class="col-12">
-                                <div class="p-3 rounded-3" style="background: #f8f9fa; border-left: 3px solid #17a2b8;">
+                                <div class="p-3 rounded-3" style="background: #f8f9fa; border-left: 3px solid #2dce89;">
                                     <div class="d-flex align-items-center gap-2 mb-2">
-                                        <span class="material-symbols-rounded text-primary"
+                                        <span class="material-symbols-rounded text-success"
                                             style="font-size: 20px;">man</span>
                                         <div class="text-xs text-muted">Nama Ayah</div>
                                     </div>
@@ -149,9 +149,9 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="p-3 rounded-3" style="background: #f8f9fa; border-left: 3px solid #17a2b8;">
+                                <div class="p-3 rounded-3" style="background: #f8f9fa; border-left: 3px solid #2dce89;">
                                     <div class="d-flex align-items-center gap-2 mb-2">
-                                        <span class="material-symbols-rounded text-primary"
+                                        <span class="material-symbols-rounded text-success"
                                             style="font-size: 20px;">woman</span>
                                         <div class="text-xs text-muted">Nama Ibu</div>
                                     </div>
@@ -216,7 +216,7 @@
                 <div class="card shadow-sm border-0" style="border-radius: 1rem;">
                     <div class="card-header bg-transparent border-0 pt-4 pb-0 px-4">
                         <div class="d-flex align-items-center gap-2 mb-3">
-                            <div class="icon icon-shape bg-gradient-warning shadow text-center rounded-circle"
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle"
                                 style="width: 40px; height: 40px;">
                                 <span class="material-symbols-rounded text-white"
                                     style="font-size: 20px; line-height: 40px;">contact_phone</span>
@@ -232,13 +232,13 @@
                             <div class="col-12">
                                 <div class="p-3 rounded-3" style="background: #f8f9fa;">
                                     <div class="d-flex align-items-center gap-2 mb-2">
-                                        <span class="material-symbols-rounded text-warning"
+                                        <span class="material-symbols-rounded text-success"
                                             style="font-size: 20px;">phone</span>
                                         <div class="text-xs text-muted">Nomor Telepon Orang Tua</div>
                                     </div>
                                     <div class="fw-bold text-dark">{{ $santri->no_telp }}</div>
                                     <a href="tel:{{ $santri->no_telp }}"
-                                        class="btn btn-sm btn-outline-warning mt-2 mb-0">
+                                        class="btn btn-sm btn-outline-success mt-2 mb-0">
                                         <span class="material-symbols-rounded"
                                             style="font-size: 16px; vertical-align: middle;">call</span>
                                         Hubungi
@@ -248,7 +248,7 @@
                             <div class="col-12">
                                 <div class="p-3 rounded-3" style="background: #f8f9fa;">
                                     <div class="d-flex align-items-center gap-2 mb-2">
-                                        <span class="material-symbols-rounded text-warning"
+                                        <span class="material-symbols-rounded text-success"
                                             style="font-size: 20px;">location_on</span>
                                         <div class="text-xs text-muted">Alamat Lengkap</div>
                                     </div>

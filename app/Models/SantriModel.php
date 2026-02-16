@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,5 +42,10 @@ class SantriModel extends Model
     public function pelanggaran(): HasMany
     {
         return $this->hasMany(PelanggaranModel::class, 'santri_id');
+    }
+     #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where('deleted_at', '0');
     }
 }
