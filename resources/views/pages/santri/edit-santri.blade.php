@@ -6,13 +6,14 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header pb-0">
-                        <h5 class="mb-0">Tambah Data Santri</h5>
-                        <p class="text-sm text-muted mb-0">Lengkapi data santri sesuai identitas dan akademik</p>
+                        <h5 class="mb-0">Edit Data Santri</h5>
+                        <p class="text-sm text-muted mb-0">Perbarui data santri sesuai identitas dan akademik</p>
                     </div>
 
                     <div class="card-body">
-                        <form action="{{ route('santri.store') }}" id="form-santri" method="POST">
+                        <form action="{{ route('santri.update', $santri->id) }}" id="form-edit-santri" method="POST">
                             @csrf
+                            @method('PUT')
                             <ul class="nav nav-pills nav-fill p-1 mb-4" role="tablist"
                                 style="background: #f0f2f5; border-radius: 0.5rem;">
                                 <li class="nav-item">
@@ -47,24 +48,25 @@
                                                     Identitas
                                                 </h6>
                                                 <div class="mb-3">
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">Nama Santri</label>
                                                         <input type="text" name="nama" class="form-control"
-                                                            id="nama">
+                                                            id="nama" value="{{ old('nama', $santri->nama) }}">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">NIS</label>
                                                         <input type="text" name="nis" class="form-control"
-                                                            value="{{ $nis }}" readonly>
+                                                            value="{{ old('nis', $santri->nis) }}" readonly>
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">NIK (16 Digit)</label>
                                                         <input type="text" name="nik" class="form-control"
-                                                            id="nik" maxlength="16">
+                                                            id="nik" maxlength="16"
+                                                            value="{{ old('nik', $santri->nik) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -77,24 +79,32 @@
                                                     Kelahiran
                                                 </h6>
                                                 <div class="mb-3">
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">Tempat Lahir</label>
                                                         <input type="text" name="tempat_lahir" class="form-control"
-                                                            id="tempat_lahir">
+                                                            id="tempat_lahir"
+                                                            value="{{ old('tempat_lahir', $santri->tempat_lahir) }}">
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label text-xs mb-1">Tanggal Lahir</label>
                                                     <input type="date" name="tanggal_lahir"
-                                                        class="form-control border px-3" id="tanggal_lahir">
+                                                        class="form-control border px-3" id="tanggal_lahir"
+                                                        value="{{ old('tanggal_lahir', $santri->tanggal_lahir) }}">
                                                 </div>
                                                 <div>
                                                     <label class="form-label text-xs mb-1">Jenis Kelamin</label>
                                                     <select name="jenis_kelamin" class="form-control border px-3"
                                                         id="jenis_kelamin">
                                                         <option value="">-- Pilih --</option>
-                                                        <option value="L">Laki-laki</option>
-                                                        <option value="P">Perempuan</option>
+                                                        <option value="L"
+                                                            {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'L' ? 'selected' : '' }}>
+                                                            Laki-laki
+                                                        </option>
+                                                        <option value="P"
+                                                            {{ old('jenis_kelamin', $santri->jenis_kelamin) == 'P' ? 'selected' : '' }}>
+                                                            Perempuan
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -111,17 +121,17 @@
                                                     Data Orang Tua
                                                 </h6>
                                                 <div class="mb-3">
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">Nama Ayah</label>
                                                         <input type="text" name="ayah" class="form-control"
-                                                            id="ayah">
+                                                            id="ayah" value="{{ old('ayah', $santri->ayah) }}">
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">Nama Ibu</label>
                                                         <input type="text" name="ibu" class="form-control"
-                                                            id="ibu">
+                                                            id="ibu" value="{{ old('ibu', $santri->ibu) }}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -134,16 +144,16 @@
                                                     Kontak & Alamat
                                                 </h6>
                                                 <div class="mb-3">
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">No. Telepon</label>
                                                         <input type="tel" name="no_telp" class="form-control"
-                                                            id="no_telp">
+                                                            id="no_telp"
+                                                            value="{{ old('no_telp', $santri->no_telp) }}">
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <label class="form-label text-xs mb-1">Alamat Lengkap</label>
-                                                    <textarea name="alamat" class="form-control border px-3" rows="3" id="alamat"
-                                                        placeholder="Masukkan alamat lengkap..."></textarea>
+                                                    <textarea name="alamat" class="form-control border px-3" rows="3" id="alamat">{{ old('alamat', $santri->alamat) }}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,10 +170,11 @@
                                                     Tahun & Kelas
                                                 </h6>
                                                 <div class="mb-3">
-                                                    <div class="input-group input-group-outline">
+                                                    <div class="input-group input-group-outline is-filled">
                                                         <label class="form-label">Tahun Angkatan</label>
                                                         <input type="text" name="thn_angkatan" class="form-control"
-                                                            id="thn_angkatan">
+                                                            id="thn_angkatan"
+                                                            value="{{ old('thn_angkatan', $santri->thn_angkatan) }}">
                                                     </div>
                                                 </div>
                                                 <div>
@@ -171,7 +182,9 @@
                                                     <select name="kelas_id" class="form-control border px-3">
                                                         <option value="">-- Pilih Kelas --</option>
                                                         @foreach ($kelas as $k)
-                                                            <option value="{{ $k->id }}">{{ $k->nama_kelas }}
+                                                            <option value="{{ $k->id }}"
+                                                                {{ old('kelas_id', $santri->kelas_id) == $k->id ? 'selected' : '' }}>
+                                                                {{ $k->nama_kelas }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -189,8 +202,7 @@
                                                     Informasi
                                                 </h6>
                                                 <p class="text-sm text-muted mb-0">
-                                                    Pastikan data akademik sudah sesuai. Kelas dapat diubah sewaktu-waktu
-                                                    melalui menu edit santri.
+                                                    Perbarui data akademik sesuai kebutuhan.
                                                 </p>
                                             </div>
                                         </div>
@@ -204,9 +216,9 @@
                                     <span class="material-symbols-rounded align-middle me-1">arrow_back</span>
                                     Kembali
                                 </a>
-                                <button type="submit" class="btn bg-gradient-success mb-0" id="btnSave">
-                                    <span class="material-symbols-rounded align-middle me-1">save</span>
-                                    Simpan Data
+                                <button type="submit" class="btn bg-gradient-success mb-0" id="btnUpdate">
+                                    <span class="material-symbols-rounded align-middle me-1">update</span>
+                                    Update Data
                                 </button>
                             </div>
                         </form>
@@ -265,7 +277,7 @@
                 }
             });
 
-            $('#form-santri').on('submit', function(e) {
+            $('#form-edit-santri').on('submit', function(e) {
                 e.preventDefault();
 
                 let isValid = true;
@@ -423,10 +435,10 @@
 
                 if (isValid) {
 
-                    $("#btnSave").attr("disabled", true);
+                    $("#btnUpdate").attr("disabled", true);
 
                     $.ajax({
-                        type: "POST",
+                        type: "PUT",
                         url: formAction,
                         data: formData,
                         dataType: "json",
@@ -440,7 +452,7 @@
                             });
                         },
                         error: function(xhr) {
-                            $("#btnSave").attr("disabled", false);
+                            $("#btnUpdate").attr("disabled", false);
 
                             let message = 'Terjadi kesalahan';
 

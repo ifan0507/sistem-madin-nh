@@ -32,6 +32,7 @@ class SantriService
     public  function getById($id)
     {
         return SantriModel::select(
+            'id',
             'nama',
             'nis',
             'nik',
@@ -86,12 +87,27 @@ class SantriService
         return $item->update($payload);
     }
 
+    public function updateKelasSantriBulk($santri_id, $kelas_id)
+    {
+        return SantriModel::whereIn('id', $santri_id)
+            ->update(['kelas_id' => $kelas_id]);
+    }
+
     /**
      * Menghapus data
      */
     public function delete(int $id)
     {
         $item = SantriModel::findOrFail($id);
-        return $item->update(['deleted_at' => 1]);
+        $item->update(['delete_at' => '1']);
+        return $item;
+    }
+
+
+    public function deleteKelas(int $id)
+    {
+        $item = SantriModel::findOrFail($id);
+        return $item->update(['kelas_id' => null]);
     }
 }
+

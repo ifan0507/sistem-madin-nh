@@ -40,13 +40,17 @@ class UserRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:50',
-                Rule::unique('users', 'kode_guru')->ignore($userId),
+                Rule::unique('users', 'kode_guru')->ignore($userId)->where(function ($q) {
+                    return $q->where('delete_at', '0');
+                }),
             ],
             'qr_activation' => [
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('users', 'qr_activation')->ignore($userId)
+                Rule::unique('users', 'qr_activation')->ignore($userId)->where(function ($q) {
+                    return $q->where('delete_at', '0');
+                })
             ],
             'device_id' => [
                 'nullable',

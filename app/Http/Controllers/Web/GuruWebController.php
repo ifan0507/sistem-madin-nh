@@ -72,16 +72,25 @@ class GuruWebController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update($id, UserRequest $request)
     {
-        //
+        $dto = UserDto::fromRequest($request);
+        $this->user_service->update($id, $dto);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data guru berhasil diperbarui'
+        ]);
     }
 
-    /**
+    /** 
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $this->user_service->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data guru berhasil dihapus'
+        ]);
     }
 }

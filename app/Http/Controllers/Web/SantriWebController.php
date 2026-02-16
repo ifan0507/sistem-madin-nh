@@ -65,7 +65,14 @@ class SantriWebController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $active = (object)[
+            'menu' => 'santri',
+            'submenu' => '',
+        ];
+
+        $santri = $this->santri_service->getById($id);
+        
+        return view('pages.santri.detail-santri', compact('active', 'santri'));
     }
 
     /**
@@ -73,15 +80,42 @@ class SantriWebController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $active = (object)[
+            'menu' => 'santri',
+            'submenu' => '',
+        ];
+
+        $santri = $this->santri_service->getById($id);
+        $kelas = $this->kelas_service->getAll();
+        
+        return view('pages.santri.edit-santri', compact('active', 'santri', 'kelas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SantriRequest $request, string $id)
     {
-        //
+        $dto = SantriDto::fromRequest($request);
+        $this->santri_service->update($id, $dto);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data santri berhasil diperbarui',
+            'redirect' => route('santri')
+        ], 200);
+    }
+
+    public function updateKelasBulk(Request $request)
+    {
+        $request->validate([
+            'santri_id'  => 'required|array',
+            'kelas_id' => 'required|exists:kelas,id'
+        ]);
+
+        $this->santri_service->updateKelasSantriBulk($request->santri_id, $request->kelas_id);
+        return response()->json([
+            'message' => count($request->santri_id) . ' Santri berhasil dipindah kelas!'
+        ]);
     }
 
     /**
@@ -89,6 +123,20 @@ class SantriWebController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
+        $this->santri_service->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Santri berhasil dihapus'
+        ]);
+    }
+
+    public function destroyKelas($id)
+    {
+        $this->santri_service->deleteKelas($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Santri berhasil dihapus dari kelas'
+        ]);
     }
 }

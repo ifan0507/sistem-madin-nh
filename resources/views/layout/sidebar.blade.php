@@ -57,11 +57,9 @@
 
             <!-- akademik -->
             <li class="nav-item">
-                <a class="nav-link
-                    {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
+                <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
-                        : 'text-dark' }}"
-                    data-bs-toggle="collapse" href="#akademikMenu"
+                        : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#akademikMenu"
                     aria-expanded="{{ in_array($activePage, ['akademik-kelas', 'akademik-mapel', 'akademik-pengampu-mapel', 'akademik-abses']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">menu_book</i>
                     <span class="nav-link-text ms-1">Managemen Akademik</span>
@@ -72,7 +70,7 @@
                     <ul class="nav ms-4">
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'akademik-kelas' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('kelas') }}">
                                 Kelas
                             </a>
                         </li>

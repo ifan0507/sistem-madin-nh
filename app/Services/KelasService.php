@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dto\KelasDto;
 use App\Models\KelasModel;
+use App\Models\SantriModel;
 
 class KelasService
 {
@@ -12,7 +13,7 @@ class KelasService
      */
     public function getAll()
     {
-        return KelasModel::select('id', 'nama_kelas')->get();
+        return KelasModel::select('id', 'nama_kelas')->withCount('santri')->get();
     }
 
     public function getById($id)
@@ -20,6 +21,14 @@ class KelasService
         return KelasModel::select('id', 'nama_kelas')->findOrFail($id);
     }
 
+    public function getSantriByKelas($kelas_id)
+    {
+        return SantriModel::select(
+            'id',
+            'nis',
+            'nama'
+        )->where('kelas_id', $kelas_id)->orderby('nama', 'asc')->get();
+    }
     /**
      * Menyimpan data baru berdasarkan DTO
      */
