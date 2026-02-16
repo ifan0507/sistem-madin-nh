@@ -2,46 +2,60 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\DTO\JadwalKBMDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\JadwalKBMRequest;
+use App\Services\JadwalKbmService;
 use App\Services\KelasService;
+use App\Services\MapelKelasService;
 use Illuminate\Http\Request;
 
-class KelasWebController extends Controller
+class JadwalKbmWebController extends Controller
 {
     public function __construct(
-        protected KelasService $kelas_service
+        protected JadwalKbmService $jadwalKbmService,
+        protected KelasService $kelasService,
+        protected MapelKelasService $mapelKelasService,
     ) {}
 
     public function index()
     {
         $active = (object)[
-            'activePage' => 'akademik-kelas',
+            'activePage' => 'akademik-jadwal-kbm',
             'activePageMaster' => 'akademik-management',
         ];
 
-        $kelas = $this->kelas_service->getAllKelasCountSantri();
-        return view('pages.kelas.index', compact('active', 'kelas'));
+        $kelas = $this->kelasService->getAll();
+
+        return view('pages.jadwal-kbm.index', [
+            'active' => $active,
+            'kelas' => $kelas,
+        ]);
     }
 
-    public function getSantriByKelas($id)
+    public function getMapelKelasByKelas($kelas_id)
     {
-        $data = $this->kelas_service->getSantriByKelas($id);
+        $data = $this->mapelKelasService->getMapelKelasByKelas($kelas_id);
         return response()->json($data);
     }
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(JadwalKBMRequest $request)
     {
-        //
+        $dto = JadwalKBMDto::fromRequest($request);
+        $jadwal = $this->jadwalKbmService->createOrUpdate($dto);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Jadwal berhasil disimpan!',
+            'data' => $jadwal
+        ]);
     }
 
     /**

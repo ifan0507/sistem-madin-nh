@@ -12,16 +12,28 @@ class KelasModel extends Model
     protected $table = 'kelas';
     protected $fillable = [
         'nama_kelas',
-        'delete_at'
+        'deleted_at'
     ];
 
     public function mapel_kelas(): HasMany
     {
-        return $this->hasMany(MapelKelasModel::class, 'kelas_id');
+        return $this->hasMany(MapelKelasModel::class, 'kelas_id')->active();
     }
 
     public function santri(): HasMany
     {
         return $this->hasMany(SantriModel::class, 'kelas_id');
+    }
+
+    public function jadwal_kbms()
+    {
+        return $this->hasManyThrough(
+            JadwalKBMModel::class,
+            MapelKelasModel::class,
+            'kelas_id',
+            'mapel_kelas_id',
+            'id',
+            'id'
+        );
     }
 }

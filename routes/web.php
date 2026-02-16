@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Web\DashboardWebController;
 use App\Http\Controllers\Web\GuruWebController;
+use App\Http\Controllers\Web\JadwalKbmWebController;
 use App\Http\Controllers\Web\KelasWebController;
+use App\Http\Controllers\Web\MapelKelasWebController;
 use App\Http\Controllers\Web\MapelWebController;
 use App\Http\Controllers\Web\SantriWebController;
 use Illuminate\Support\Facades\Route;
@@ -37,5 +39,18 @@ Route::get('/mapel', [MapelWebController::class, 'index'])->name('mapel');
 Route::post('/mapel/store', [MapelWebController::class, 'store'])->name('mapel.store');
 Route::put('/mapel/{id}/update', [MapelWebController::class, 'update'])->name('mapel.update');
 Route::delete('/mapel/{id}/delete', [MapelWebController::class, 'destroy'])->name('mapel.destroy');
+
+// Mapel Kelas
+Route::get('/mapel-kelas', [MapelKelasWebController::class, 'index'])->name('mapel-kelas');
+Route::get('/mapel-kelas/kelas/{kelas_id}', [MapelKelasWebController::class, 'getMapelKelasByKelas'])->name('mapel-kelas.getMapelKelasByKelas');
+Route::get('/mapel-kelas/guru', [MapelKelasWebController::class, 'getAllGuru'])->name('mapel-kelas.getAllGuru');
+Route::get('/mapel-kelas/mapel', [MapelKelasWebController::class, 'getAllMapel'])->name('mapel-kelas.getAllMapel');
+Route::post('/mapel-kelas/store', [MapelKelasWebController::class, 'store'])->name('mapel-kelas.store');
+Route::put('/mapel-kelas/{id}/update', [MapelKelasWebController::class, 'update'])->name('mapel-kelas.update');
+Route::delete('/mapel-kelas/{id}/delete', [MapelKelasWebController::class, 'destroy'])->name('mapel-kelas.destroy');
+
+Route::get('/jadwal-kbm', [JadwalKbmWebController::class, 'index'])->name('jadwal-kbm');
+Route::get('/jadwal-kbm/get-mapel-kelas/{kelas_id}', [JadwalKbmWebController::class, 'getMapelKelasByKelas'])->name('jadwal-kbm.getMapelKelasByKelas');
+Route::post('/jadwal-kbm/store', [JadwalKbmWebController::class, 'store'])->name('jadwal-kbm.store');
 
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

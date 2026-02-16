@@ -148,3 +148,76 @@ body:not(.preload-active) main {
     height: 100%;
     object-fit: contain;
 }
+.select2-container .select2-selection--single {
+    height: 40px;
+    border: 1px solid #d2d6da;
+    border-radius: 0.375rem;
+}
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    line-height: 40px;
+    padding-left: 12px;
+    color: #7b809a;
+}
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 40px;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #d2d6da !important;
+    border-radius: 0.375rem !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.875rem;
+    outline: none !important;
+    transition: all 0.15s ease-in-out;
+    font-family: inherit;
+}
+
+.input-group-static label {
+    z-index: 1051;
+}
+
+.box-jadwal-kosong {
+    border: 1px dashed #d2d6da;
+    border-radius: 0.5rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.box-jadwal-kosong:hover {
+    background-color: #f8f9fa;
+    border-color: #4caf50;
+    color: #4caf50 !important;
+}
+.box-jadwal-kosong:hover i,
+.box-jadwal-kosong:hover p {
+    color: #4caf50 !important;
+}
+
+.box-jadwal-isi {
+    background-color: #f8f9fa;
+    border: 1px solid transparent;
+    border-radius: 0.5rem;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 60px;
+}
+
+.box-jadwal-isi:hover {
+    background-color: #e9ecef;
+    border-color: #ff9800;
+}
+.modal-header .btn-close {
+    background-size: 0.75rem 0.75rem;
+    opacity: 1;
+}

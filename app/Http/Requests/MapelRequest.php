@@ -22,7 +22,7 @@ class MapelRequest extends FormRequest
                 'string',
                 'max:10',
                 Rule::unique('mapels', 'kode_mapel')->ignore($id, 'id')->where(function ($q) {
-                    return $q->where('delete_at', '0');
+                    return $q->where('deleted_at', '0');
                 }),
             ],
             'nama_mapel' => [
@@ -30,7 +30,7 @@ class MapelRequest extends FormRequest
                 'string',
                 'max:50',
                 Rule::unique('mapels', 'nama_mapel')->ignore($id, 'id')->where(function ($q) {
-                    return $q->where('delete_at', '0');
+                    return $q->where('deleted_at', '0');
                 })
             ]
 

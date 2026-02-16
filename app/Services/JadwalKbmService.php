@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dto\JadwalKbmDto;
 use App\Models\JadwalKBMModel;
+use App\Models\MapelKelasModel;
 
 class JadwalKbmService
 {
@@ -12,7 +13,10 @@ class JadwalKbmService
      */
     public function getAll()
     {
-        return JadwalKBMModel::select('hari', 'mapel_kelas_id')->with('mapel_kelas')->get();
+        return JadwalKBMModel::select('hari', 'mapel_kelas_id')->with([
+            'jadwal_kbms.mapel_kelas.mapel',
+            'jadwal_kbms.mapel_kelas.guru'
+        ])->get();
     }
 
     public function getById($id)
@@ -23,20 +27,12 @@ class JadwalKbmService
     /**
      * Menyimpan data baru berdasarkan DTO
      */
-    public function create(JadwalKbmDto $data)
+    public function createOrUpdate(JadwalKbmDto $data,)
     {
-        $payload = $data->toArray();
-        return JadwalKBMModel::create($payload);
-    }
-
-    /**
-     * Memperbarui data berdasarkan ID dan DTO
-     */
-    public function update($id, JadwalKbmDto $data)
-    {
-        $item = JadwalKBMModel::findOrFail($id);
-        $payload = $data->toArray();
-        return $item->update($payload);
+        return JadwalKBMModel::updateOrCreate(
+            ['id' => $data->getId()],
+            $data->toArray()
+        );
     }
 
     /**

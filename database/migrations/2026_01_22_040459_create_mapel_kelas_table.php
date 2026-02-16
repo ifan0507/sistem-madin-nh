@@ -16,8 +16,6 @@ return new class extends Migration
             $table->foreignId('guru_id')->constrained('users')->cascadeOnUpdate();
             $table->foreignId('mapel_id')->constrained('mapels')->cascadeOnUpdate();
             $table->foreignId('kelas_id')->constrained('kelas')->cascadeOnUpdate();
-            $table->enum('semester', ['Ganjil', 'Genap']);
-            $table->year('tahun_ajaran');
             $table->enum('deleted_at', ['0', '1'])->default('0');
             $table->timestamps();
         });

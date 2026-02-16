@@ -29,7 +29,7 @@ class User extends Authenticatable
         'kode_guru',
         'qr_activation',
         'device_id',
-        'delete_at',
+        'deleted_at',
     ];
 
     /**
@@ -80,6 +80,6 @@ class User extends Authenticatable
     #[Scope]
     public function active(Builder $query)
     {
-        return $query->where('delete_at', '0');
+        return $query->where('deleted_at', '0');
     }
 }

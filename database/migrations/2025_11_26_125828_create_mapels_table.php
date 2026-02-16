@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_mapel');
             $table->string('nama_mapel');
-            $table->enum('delete_at', ['0', '1'])->default('0');
+            $table->enum('deleted_at', ['0', '1'])->default('0');
             $table->timestamps();
         });
     }

@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Dto\MapelKelasDto;
+use App\Models\JadwalKBMModel;
+use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
+use Illuminate\Support\Facades\DB;
 
 class MapelKelasService
 {
@@ -20,6 +23,29 @@ class MapelKelasService
             'mapel_id',
             'deleted_at'
         )->with(['kelas', 'mapel', 'guru'])->get();
+    }
+
+    public function getMapelKelasByKelas($id)
+    {
+        return MapelKelasModel::select(
+            'mapel_kelas.id',
+            'mapel_kelas.guru_id',
+            'mapel_kelas.kelas_id',
+            'mapel_kelas.mapel_id',
+        )
+            ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
+            ->with(['mapel', 'guru'])
+            ->active()
+            ->where('mapel_kelas.kelas_id', $id)
+            ->orderBy('mapels.kode_mapel', 'asc')
+            ->get();
+    }
+
+    public function getKelasCountMapel()
+    {
+        return KelasModel::select('id', 'nama_kelas')
+            ->withCount('mapel_kelas')
+            ->get();
     }
 
     public function getById($id)
@@ -51,7 +77,17 @@ class MapelKelasService
      */
     public function delete($id)
     {
-        $item = MapelKelasModel::findOrFail($id);
-        return $item->update(['deleted_at' => '1']);
+        DB::beginTransaction();
+
+        try {
+            $item = MapelKelasModel::findOrFail($id);
+            JadwalKBMModel::where('mapel_kelas_id', $id)->delete();
+            $item->update(['deleted_at' => '1']);
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 }

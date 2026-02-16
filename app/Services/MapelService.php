@@ -53,6 +53,6 @@ class MapelService
     public function delete(int $id)
     {
         $item = MapelModel::findOrFail($id);
-        return $item->update(['delete_at' => '1']);
+        return $item->update(['deleted_at' => '1']);
     }
 }

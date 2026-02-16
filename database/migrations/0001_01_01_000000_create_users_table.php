@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('kode_guru')->nullable();
             $table->string('qr_activation')->nullable()->unique();
             $table->string('device_id')->nullable()->unique();
-            $table->string('delete_at')->default('0')->comment('0=active,1=deleted');
+            $table->string('deleted_at')->default('0')->comment('0=active,1=deleted');
             $table->rememberToken();
             $table->timestamps();
             // $table->timestamp('email_verified_at')->nullable();
