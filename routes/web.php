@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\DashboardWebController;
+use App\Http\Controllers\Web\DenahUjianWebController;
 use App\Http\Controllers\Web\GuruWebController;
 use App\Http\Controllers\Web\JadwalKbmWebController;
 use App\Http\Controllers\Web\KelasWebController;
@@ -41,8 +42,13 @@ Route::post('/mapel-kelas/store', [MapelKelasWebController::class, 'store'])->na
 Route::put('/mapel-kelas/{id}/update', [MapelKelasWebController::class, 'update'])->name('mapel-kelas.update');
 Route::delete('/mapel-kelas/{id}/delete', [MapelKelasWebController::class, 'destroy'])->name('mapel-kelas.destroy');
 
+// Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmWebController::class, 'index'])->name('jadwal-kbm');
 Route::get('/jadwal-kbm/get-mapel-kelas/{kelas_id}', [JadwalKbmWebController::class, 'getMapelKelasByKelas'])->name('jadwal-kbm.getMapelKelasByKelas');
 Route::post('/jadwal-kbm/store', [JadwalKbmWebController::class, 'store'])->name('jadwal-kbm.store');
+
+// Denah Ujian
+Route::get('/denah-ujian', [DenahUjianWebController::class, 'index'])->name('denah-ujian');
+Route::post('/denah-ujian/generate', [DenahUjianWebController::class, 'generate'])->name('denah-ujian.generate');
 
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

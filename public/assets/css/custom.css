@@ -221,3 +221,91 @@ body:not(.preload-active) main {
     background-size: 0.75rem 0.75rem;
     opacity: 1;
 }
+
+.card-header-action {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.card-header-action:hover {
+    background-color: #f8f9fa;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.denah-grid-container {
+    background-color: #f1f3f5;
+    padding: 20px;
+    border-radius: 0 0 8px 8px;
+}
+.denah-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.seat-cell {
+    display: flex;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    min-height: 80px;
+}
+
+.seat-badge {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    font-size: 0.75rem;
+    padding: 5px;
+}
+
+.seat-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+}
+
+.seat-santri-name {
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #343a40;
+    margin-bottom: 4px;
+    line-height: 1.2;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-wrap: break-word;
+}
+.seat-exam-number {
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #0d6efd;
+}
+
+.seat-empty-number {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #e9ecef;
+}
+
+.seat-cell.empty .seat-details {
+    background-color: #fdfdfe;
+}

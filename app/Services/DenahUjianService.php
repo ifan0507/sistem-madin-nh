@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Dto\DenahUjianDto;
 use App\Models\DenahUjianModel;
-use App\Models\KelasModel;
 use App\Models\SantriModel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -16,31 +15,41 @@ class DenahUjianService
     public function generate(DenahUjianDto $dto)
     {
         return DB::transaction(function () use ($dto) {
-            $totalKursi = (int) $dto->total_kursi;
+            $totalKursi = $dto->total_kursi;
+
+            $kelasIds = $dto->kelas_ids;
+            $jumlahKelas = count($kelasIds);
 
             $existingDenahs = DenahUjianModel::get(['susunan_denah']);
             $usedSantriIds = [];
+            $currentYear = date('Y');
+            $maxSequence = 0;
 
             foreach ($existingDenahs as $denah) {
-                if (!empty($denah->susunan_denah) && is_array($denah->susunan_denah)) {
-                    foreach ($denah->susunan_denah as $seat) {
+                $susunan = is_string($denah->susunan_denah) ? json_decode($denah->susunan_denah, true) : $denah->susunan_denah;
+                if (!empty($susunan) && is_array($susunan)) {
+                    foreach ($susunan as $seat) {
                         if (!empty($seat['santri_id'])) {
                             $usedSantriIds[] = $seat['santri_id'];
+                            if (!empty($seat['nomor_ujian'])) {
+                                $parts = explode('-', $seat['nomor_ujian']);
+                                if (count($parts) == 2 && $parts[0] == $currentYear) {
+                                    $seq = (int) $parts[1];
+                                    if ($seq > $maxSequence) {
+                                        $maxSequence = $seq;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
-
             $usedSantriIds = array_unique($usedSantriIds);
-
-            $kelasIds = KelasModel::pluck('id')->toArray();
-            $jumlahKelas = count($kelasIds);
-
 
             $baseQuota = floor($totalKursi / $jumlahKelas);
             $sisaQuota = $totalKursi % $jumlahKelas;
 
-            $kandidatSantri = collect();
+            $kandidatPerKelas = [];
 
             foreach ($kelasIds as $index => $kelasId) {
                 $limit = $baseQuota + ($index < $sisaQuota ? 1 : 0);
@@ -53,16 +62,35 @@ class DenahUjianService
                         ->limit($limit)
                         ->get();
 
-                    $kandidatSantri = $kandidatSantri->merge($santri);
+                    $kandidatPerKelas[$kelasId] = $santri;
+                } else {
+                    $kandidatPerKelas[$kelasId] = collect();
                 }
             }
 
-            $shuffledSantri = $kandidatSantri->shuffle();
+            $shuffledSantri = collect();
+            $hasMore = true;
+
+            while ($hasMore) {
+                $hasMore = false;
+                foreach ($kelasIds as $kelasId) {
+                    if ($kandidatPerKelas[$kelasId]->isNotEmpty()) {
+                        $shuffledSantri->push($kandidatPerKelas[$kelasId]->shift());
+                        $hasMore = true;
+                    }
+                }
+            }
+
             $susunanDenah = [];
 
             for ($i = 1; $i <= $totalKursi; $i++) {
                 $santri = $shuffledSantri->get($i - 1);
 
+                $nomorUjian = null;
+                if ($santri) {
+                    $maxSequence++;
+                    $nomorUjian = $currentYear . '-' . str_pad($maxSequence, 3, '0', STR_PAD_LEFT);
+                }
                 $susunanDenah[] = [
                     'nomor_kursi' => $i,
                     'is_filled'   => $santri ? true : false,
@@ -70,9 +98,9 @@ class DenahUjianService
                     'nama_santri' => $santri ? $santri->nama : 'KOSONG',
                     'nis'         => $santri ? $santri->nis : '-',
                     'kelas_id'    => $santri ? $santri->kelas_id : null,
+                    'nomor_ujian' => $nomorUjian,
                 ];
             }
-
             DenahUjianModel::insert([
                 'nama_ruangan'  => $dto->nama_ruangan,
                 'total_kursi'   => $dto->total_kursi,

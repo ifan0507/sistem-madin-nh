@@ -24,6 +24,16 @@ class DenahUjianRequest extends FormRequest
                 'string',
                 'max:3'
             ],
+            'kelas_ids' => [
+                'required',
+                'array',
+                'min:1'
+            ],
+            'kelas_ids.*' => [
+                'required',
+                'integer',
+                'exists:kelas,id'
+            ],
         ];
     }
 

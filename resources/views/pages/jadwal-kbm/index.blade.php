@@ -40,35 +40,13 @@
                             </thead>
                             <tbody>
                                 @foreach ($kelas as $index => $k)
-                                    @php
-                                        $textArab = $k->nama_kelas;
-                                        $iconArab = '0';
-
-                                        $cleanName = strtolower(trim($k->nama_kelas));
-
-                                        if ($cleanName == 'sifir' || $cleanName == '0' || $index == 0) {
-                                            $textArab = 'صفر';
-                                        } elseif ($cleanName == '1') {
-                                            $textArab = 'الأول';
-                                        } elseif ($cleanName == '2') {
-                                            $textArab = 'الثاني';
-                                        } elseif ($cleanName == '3') {
-                                            $textArab = 'الثالث';
-                                        } elseif ($cleanName == '4') {
-                                            $textArab = 'الرابع';
-                                        } elseif ($cleanName == '5') {
-                                            $textArab = 'الخامس';
-                                        } elseif ($cleanName == '6') {
-                                            $textArab = 'السادس';
-                                        }
-                                    @endphp
                                     <tr>
                                         <td class="align-middle text-center text-sm">
                                             <p class="text-xs font-weight-bold mb-0">{{ $index + 1 }}</p>
                                         </td>
 
                                         <td class="align-middle text-center text-sm">
-                                            <h6 class="mb-0 text-sm">{{ $textArab }}</h6>
+                                            <h6 class="mb-0 text-sm">{{ getKelasArab($k->id) }}</h6>
                                         </td>
 
                                         @foreach (['Sabtu', 'Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis'] as $hari)
@@ -255,7 +233,7 @@
                                 <p class="text-xxs text-secondary mb-0">${guruNama}</p>
                             `);
                             kotakJadwalTerpilih.attr('data-jadwal-id', response.data.id);
-                            kotakJadwalTerpilih.attr('data-mapel-kelas-id', mapelVal);
+                            kotakJadwalTerpilih.attr('data-mapel-kelas-id', mapelKelasId);
                             kotakJadwalTerpilih.hide().fadeIn(400);
                         }
 

@@ -112,12 +112,12 @@
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'ujian-jadwal-kbm' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="#">
-                                Jadwa Ujian
+                                Jadwal Ujian
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'ujian-denah-ujian' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('denah-ujian') }}">
                                 Denah Ujian
                             </a>
                         </li>
