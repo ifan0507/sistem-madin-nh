@@ -171,7 +171,7 @@
                     type: "GET",
                     success: function(data) {
                         $('#loading-santri').hide();
-
+                        
                         if (data.length > 0) {
                             let html = '';
                             $.each(data, function(index, santri) {

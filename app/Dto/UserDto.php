@@ -9,7 +9,7 @@ class UserDto
     public function __construct(
         private readonly string $name,
         private readonly ?string $username,
-        private readonly ?string $password,
+        public  readonly ?string $password,
         private readonly string $role,
         private readonly ?string $kode_guru = null,
         private readonly ?string $qr_activation = null,

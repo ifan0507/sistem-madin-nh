@@ -26,12 +26,13 @@ class SantriService
             'jenis_kelamin',
             'thn_angkatan',
             'kelas_id',
-        )->with('kelas')->get();
+        )->with('kelas')->active()->orderBy('created_at', 'asc')->get();
     }
-
+ 
     public  function getById($id)
     {
         return SantriModel::select(
+            'id',
             'nama',
             'nis',
             'nik',
@@ -46,6 +47,27 @@ class SantriService
             'kelas_id',
         )->with('kelas')->findOrFail($id);
     }
+
+    public function generateNis()
+    {
+        $tahun = date('Y');
+
+        $lastSantri = SantriModel::where('nis', 'like', $tahun . '%')
+            ->orderBy('nis', 'desc')
+            ->first();
+
+        if ($lastSantri) {
+            $lastNumber = (int) substr($lastSantri->nis, 4);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        return $tahun . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+    }
+
+
+
     /**
      * Menyimpan data baru berdasarkan DTO
      */
@@ -77,8 +99,10 @@ class SantriService
     public function delete(int $id)
     {
         $item = SantriModel::findOrFail($id);
-        return $item->update(['deleted_at' => 1]);
+        $item->update(['deleted_at' => '1']);
+        return $item;
     }
+
 
     public function deleteKelas(int $id)
     {
@@ -86,3 +110,4 @@ class SantriService
         return $item->update(['kelas_id' => null]);
     }
 }
+

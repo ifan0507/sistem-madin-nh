@@ -41,7 +41,7 @@
                     <ul class="nav ms-4">
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'santri' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="/santri">
+                                href="{{ route('santri') }}">
                                 Santri
                             </a>
                         </li>

@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\DTO\SantriDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SantriRequest;
+use App\Services\KelasService;
 use App\Services\SantriService;
 use Illuminate\Http\Request;
 
 class SantriWebController extends Controller
 {
     public function __construct(
-        protected SantriService $santri_service
+        protected SantriService $santri_service,
+        protected KelasService $kelas_service
     ) {}
     /**
      * Display a listing of the resource.
@@ -21,7 +25,9 @@ class SantriWebController extends Controller
             'activePageMaster' => 'user-management'
         ];
 
-        return view('pages.santri.index', ['active' => $active]);
+        $santris = $this->santri_service->getAll(); // Placeholder for santri data retrieval logic
+
+        return view('pages.santri.index', ['active' => $active, 'santris' => $santris]);
     }
 
     /**
@@ -29,15 +35,29 @@ class SantriWebController extends Controller
      */
     public function create()
     {
-        //
+        $active = (object)[
+            'activePage' => 'santri',
+            'activePageMaster' => 'user-management'
+        ];
+
+        $nis = $this->santri_service->generateNis();
+        $kelas = $this->kelas_service->getAll();
+        
+        return view('pages.santri.form-santri', compact('active', 'kelas', 'nis'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SantriRequest $request)
     {
-        //
+        $dto = SantriDto::fromRequest($request);
+        $this->santri_service->create($dto);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Santri berhasil ditambahkan',
+            'redirect' => route('santri')
+        ], 201);
     }
 
     /**
@@ -45,7 +65,14 @@ class SantriWebController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $active = (object)[
+            'menu' => 'santri',
+            'submenu' => '',
+        ];
+
+        $santri = $this->santri_service->getById($id);
+        
+        return view('pages.santri.detail-santri', compact('active', 'santri'));
     }
 
     /**
@@ -53,15 +80,29 @@ class SantriWebController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $active = (object)[
+            'menu' => 'santri',
+            'submenu' => '',
+        ];
+
+        $santri = $this->santri_service->getById($id);
+        $kelas = $this->kelas_service->getAll();
+        
+        return view('pages.santri.edit-santri', compact('active', 'santri', 'kelas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SantriRequest $request, string $id)
     {
-        //
+        $dto = SantriDto::fromRequest($request);
+        $this->santri_service->update($id, $dto);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data santri berhasil diperbarui',
+            'redirect' => route('santri')
+        ], 200);
     }
 
     public function updateKelasBulk(Request $request)
@@ -82,7 +123,12 @@ class SantriWebController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        
+        $this->santri_service->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Santri berhasil dihapus'
+        ]);
     }
 
     public function destroyKelas($id)

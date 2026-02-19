@@ -24,7 +24,7 @@ class UserService
     {
         $payload = $data->toArray();
         $payload['password'] = Hash::make($data->password);
-        return User::create($payload);
+        return User::create($payload); 
     }
 
     public function getById(int $id)

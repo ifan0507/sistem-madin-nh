@@ -309,3 +309,27 @@ body:not(.preload-active) main {
 .seat-cell.empty .seat-details {
     background-color: #fdfdfe;
 }
+
+@media (max-width: 767.98px) {
+    .nav-pills.nav-fill,
+    .card-body .nav-pills.nav-fill,
+    form .nav-pills.nav-fill {
+        flex-direction: column !important;
+        flex-wrap: nowrap !important;
+        display: flex !important;
+    }
+
+    .nav-pills.nav-fill .nav-item,
+    .card-body .nav-pills.nav-fill .nav-item,
+    form .nav-pills.nav-fill .nav-item {
+        width: 100% !important;
+        flex: 0 0 auto !important;
+    }
+
+    .nav-pills.nav-fill .nav-link,
+    .card-body .nav-pills.nav-fill .nav-link,
+    form .nav-pills.nav-fill .nav-link {
+        justify-content: center !important;
+        width: 100% !important;
+    }
+}
