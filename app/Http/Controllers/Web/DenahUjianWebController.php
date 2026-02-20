@@ -39,4 +39,23 @@ class DenahUjianWebController extends Controller
 
         ]);
     }
+
+    public function acakUlang($id)
+    {
+        try {
+            $this->denah_ujian_service->acakUlang($id);
+            return response()->json(['status' => 'success', 'message' => 'Posisi duduk berhasil diacak ulang!']);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $this->denah_ujian_service->delete($id);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Denah ujian berhasil dihapus',
+        ]);
+    }
 }

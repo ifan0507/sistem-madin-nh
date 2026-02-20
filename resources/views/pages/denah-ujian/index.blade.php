@@ -5,48 +5,50 @@
             <div class="card mb-4 shadow-sm">
                 <div class="card-header pb-2 bg-white">
                     <h6 class="mb-0">
-                        <i class="fa-solid fa-wand-magic-sparkles text-success me-2"></i> Generate Ruang Ujian Baru
+                        <i class="fa-solid fa-wand-magic-sparkles text-success me-2"></i> Generate Ruang Ujian
                     </h6>
                 </div>
-                <div class="card-body py-3">
+                <div class="card-body py-3 p-5">
                     <form id="form-generate-denah">
                         @csrf
-                        <div class="row g-3">
-
-                            <div class="col-md-4">
-                                <div class="input-group input-group-outline mb-3">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-3">
+                                <div class="input-group input-group-outline">
                                     <label class="form-label">Nama Ruangan</label>
                                     <input type="text" name="nama_ruangan" class="form-control" required>
                                 </div>
-                                <div class="input-group input-group-outline mb-0">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group input-group-outline">
                                     <label class="form-label">Kapasitas Kursi</label>
-                                    <input type="number" name="total_kursi" class="form-control" required min="1">
+                                    <input type="text" inputmode="numeric" name="total_kursi"
+                                        class="form-control only-number" required min="1">
                                 </div>
                             </div>
-
-                            <div class="col-md-8 d-flex flex-column">
-                                <div class="p-2  rounded d-flex flex-wrap gap-2 flex-grow-1">
+                            <div class="col-md-6 d-flex flex-column">
+                                <div class=" rounded d-flex flex-wrap gap-2 flex-grow-1 align-middle">
                                     @foreach ($kelas as $k)
                                         <div class="form-check mb-0 bg-white px-2 py-1 rounded border"
-                                            style="min-width: 100px;">
+                                            style="min-width: 80px;">
                                             <input class="form-check-input mt-1" type="checkbox" name="kelas_ids[]"
                                                 value="{{ $k->id }}" id="kelas_{{ $k->id }}">
                                             <label class="form-check-label text-sm font-weight-bold"
-                                                style="cursor: pointer;" for="kelas_{{ $k->id }}">
+                                                for="kelas_{{ $k->id }}">
                                                 {{ getKelasArab($k->id) }}
                                             </label>
                                         </div>
                                     @endforeach
                                 </div>
-
-                                <div class="mt-2">
-                                    <button type="submit"
-                                        class="btn btn-success mb-0 btn-generate d-flex align-items-center justify-content-center gap-2 w-100">
-                                        <i class="fa-solid fa-gears"></i> Generate
-                                    </button>
-                                </div>
                             </div>
-
+                        </div>
+                        <div class="row g-3 mt-2 align-items-center">
+                            <div class="col-md-12">
+                                <button type="submit"
+                                    class="btn btn-success btn-generate mt-auto d-flex align-items-center justify-content-center gap-2 w-100"
+                                    style="height: 40px;">
+                                    <i class="fa-solid fa-gears"></i> Generate
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -74,7 +76,7 @@
                         $ariaExpanded = $index === 0 ? 'true' : 'false';
                     @endphp
 
-                    <div class="card mb-4 shadow-sm overflow-hidden">
+                    <div class="card mb-4 shadow-sm">
                         <div
                             class="card-header p-3 bg-white border-bottom d-flex justify-content-between align-items-center">
 
@@ -105,19 +107,21 @@
                                 <div class="btn-group shadow-none">
                                     <button type="button" class="btn btn-sm btn-outline-dark mb-0 dropdown-toggle px-3"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end px-2 py-2 shadow-lg border-0">
                                         <li><button
                                                 class="dropdown-item border-radius-md mb-1 text-warning font-weight-bold"
                                                 onclick="acakUlang({{ $denah->id }})"><i
-                                                    class="fa-solid fa-sync me-2"></i> Acak
+                                                    class="fa-solid fa-sync me-2"></i>
+                                                Acak
                                                 Ulang Posisi</button></li>
                                         <li>
                                             <hr class="dropdown-divider my-1">
                                         </li>
-                                        <li><button class="dropdown-item border-radius-md text-danger font-weight-bold"
-                                                onclick="hapusDenah({{ $denah->id }})"><i
+                                        <li><button
+                                                class="dropdown-item border-radius-md text-danger font-weight-bold btn-delete"
+                                                data-url="{{ route('denah.destroy', $denah->id) }}"
+                                                data-name="Denah Ujian Ruangan {{ $denah->nama_ruangan }}"><i
                                                     class="fa-solid fa-trash-can me-2"></i> Hapus Ruangan</button></li>
                                     </ul>
                                 </div>
@@ -224,6 +228,54 @@
                 });
             });
         });
+
+        function acakUlang(id) {
+            Swal.fire({
+                title: 'Acak Ulang Posisi?',
+                text: "Posisi duduk santri di ruangan ini akan diacak ulang secara selang-seling.",
+                icon: 'question',
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonColor: "#4caf50",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: '<i class="fa fa-sync"></i> Ya, Acak!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Mengacak Posisi...',
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    $.ajax({
+                        url: `/denah-ujian/${id}/acak-ulang`,
+                        type: "POST",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil!',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Error!', xhr.responseJSON.message ||
+                                'Gagal mengacak denah',
+                                'error');
+                        }
+                    });
+                }
+            });
+        }
     </script>
 
 @endsection

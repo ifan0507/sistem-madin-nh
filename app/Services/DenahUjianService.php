@@ -113,10 +113,70 @@ class DenahUjianService
         });
     }
 
+    public function acakUlang($id)
+    {
+        return DB::transaction(function () use ($id) {
+            $denah = DenahUjianModel::findOrFail($id);
+            $susunan = is_string($denah->susunan_denah) ? json_decode($denah->susunan_denah, true) : $denah->susunan_denah;
+
+            $groupedStudents = [];
+            $urutanNomorUjian = [];
+
+            foreach ($susunan as $seat) {
+                if ($seat['is_filled']) {
+                    $groupedStudents[$seat['kelas_id']][] = $seat;
+                    $urutanNomorUjian[] = $seat['nomor_ujian'];
+                }
+            }
+
+            $kelasIds = array_keys($groupedStudents);
+            foreach ($kelasIds as $kelasId) {
+                shuffle($groupedStudents[$kelasId]);
+            }
+
+            $shuffledStudents = collect();
+            $hasMore = true;
+
+            while ($hasMore) {
+                $hasMore = false;
+                foreach ($kelasIds as $kelasId) {
+                    if (count($groupedStudents[$kelasId]) > 0) {
+                        $shuffledStudents->push(array_shift($groupedStudents[$kelasId]));
+                        $hasMore = true;
+                    }
+                }
+            }
+
+            $newSusunan = [];
+            $totalKursi = $denah->total_kursi;
+            $nomorUjianIndex = 0;
+
+            for ($i = 1; $i <= $totalKursi; $i++) {
+                $santri = $shuffledStudents->get($i - 1);
+
+                $newSusunan[] = [
+                    'nomor_kursi' => $i,
+                    'is_filled'   => $santri ? true : false,
+                    'santri_id'   => $santri ? $santri['santri_id'] : null,
+                    'nama_santri' => $santri ? $santri['nama_santri'] : 'KOSONG',
+                    'nis'         => $santri ? $santri['nis'] : '-',
+                    'kelas_id'    => $santri ? $santri['kelas_id'] : null,
+                    'nomor_ujian' => $santri ? $urutanNomorUjian[$nomorUjianIndex++] : null,
+                ];
+            }
+
+            $denah->update([
+                'susunan_denah' => json_encode($newSusunan),
+                'updated_at'    => Carbon::now(),
+            ]);
+
+            return true;
+        });
+    }
 
     public function getAll()
     {
-        return DenahUjianModel::select('id', 'nama_ruangan', 'total_kursi', 'susunan_denah')->get();
+        return DenahUjianModel::select('id', 'nama_ruangan', 'total_kursi', 'susunan_denah')->orderby('nama_ruangan')->get();
     }
 
     public function getById($id)
@@ -148,6 +208,6 @@ class DenahUjianService
      */
     public function delete($id)
     {
-        // return Model::destroy($id);
+        return DenahUjianModel::destroy($id);
     }
 }

@@ -58,5 +58,6 @@ Route::post('/jadwal-kbm/store', [JadwalKbmWebController::class, 'store'])->name
 // Denah Ujian
 Route::get('/denah-ujian', [DenahUjianWebController::class, 'index'])->name('denah-ujian');
 Route::post('/denah-ujian/generate', [DenahUjianWebController::class, 'generate'])->name('denah-ujian.generate');
-
+Route::post('/denah-ujian/{id}/acak-ulang', [DenahUjianWebController::class, 'acakUlang'])->name('denah-ujian.acak-ulang');
+Route::delete('/denah-ujian/{id}/delete', [DenahUjianWebController::class, 'destroy'])->name('denah.destroy');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

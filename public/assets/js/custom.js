@@ -54,3 +54,6 @@ $(document).on("click", ".btn-delete", function (e) {
         }
     });
 });
+$(document).on("input", ".only-number", function () {
+    this.value = this.value.replace(/[^0-9]/g, "");
+});
