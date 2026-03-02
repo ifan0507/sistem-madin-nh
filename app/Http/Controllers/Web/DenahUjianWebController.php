@@ -50,6 +50,15 @@ class DenahUjianWebController extends Controller
         }
     }
 
+    public function cetakKartu($id)
+    {
+        $data = $this->denah_ujian_service->getDataCetakKartu($id);
+        return view('pages.denah-ujian.cetak-kartu', [
+            'denah'   => $data['denah'],
+            'peserta' => $data['peserta']
+        ]);
+    }
+
     public function destroy($id)
     {
         $this->denah_ujian_service->delete($id);

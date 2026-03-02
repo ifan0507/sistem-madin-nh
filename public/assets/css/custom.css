@@ -310,6 +310,27 @@ body:not(.preload-active) main {
     background-color: #fdfdfe;
 }
 
+.nav-tabs-arab {
+    border-bottom: none;
+}
+
+.nav-tabs-arab .nav-link {
+    color: #000000 !important;
+    border: none !important;
+    background: transparent !important;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-tabs-arab .nav-link.active {
+    color: #28a745 !important;
+    font-weight: bold;
+}
+
+.nav-tabs-arab .nav-link:hover {
+    color: #28a745 !important;
+}
+
 @media (max-width: 767.98px) {
     .nav-pills.nav-fill,
     .card-body .nav-pills.nav-fill,

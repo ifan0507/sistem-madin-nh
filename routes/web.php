@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\BankSoalWebController;
 use App\Http\Controllers\Web\DashboardWebController;
 use App\Http\Controllers\Web\DenahUjianWebController;
 use App\Http\Controllers\Web\GuruWebController;
@@ -60,4 +61,12 @@ Route::get('/denah-ujian', [DenahUjianWebController::class, 'index'])->name('den
 Route::post('/denah-ujian/generate', [DenahUjianWebController::class, 'generate'])->name('denah-ujian.generate');
 Route::post('/denah-ujian/{id}/acak-ulang', [DenahUjianWebController::class, 'acakUlang'])->name('denah-ujian.acak-ulang');
 Route::delete('/denah-ujian/{id}/delete', [DenahUjianWebController::class, 'destroy'])->name('denah.destroy');
+Route::get('/denah-ujian/{id}/cetak-kartu', [DenahUjianWebController::class, 'cetakKartu'])->name('denah-ujian.cetak-kartu');
+
+// Bank Soal
+Route::get('/bank-soal', [BankSoalWebController::class, 'index'])->name('bank-soal');
+Route::get('/bank-soal/{id}/cetak', [BankSoalWebController::class, 'cetakSoal'])->name('bank-soal.cetak');
+Route::get('/bank-soal/{id}/preview', [BankSoalWebController::class, 'show'])->name('bank-soal.preview');
+Route::post('/bank-soal/{id}/update-soal', [BankSoalWebController::class, 'update'])->name('bank-soal.update-soal');
+Route::post('/bank-soal/generate', [BankSoalWebController::class, 'generate'])->name('bank-soal.generate');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

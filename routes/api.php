@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AbsensiGuruApiController;
 use App\Http\Controllers\Api\AbsensiSantriApiController;
+use App\Http\Controllers\Api\BankSoalApiController;
 use App\Http\Controllers\Api\DenahUjianApiController;
 use App\Http\Controllers\Api\JadwaKbmController;
 use App\Http\Controllers\Api\JadwalKbmApiController;
@@ -18,8 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
-Route::post('/transliterate', [PegonApiController::class, 'transliterate']);
 
 Route::get('/users', [UserApiController::class, 'findAll']);
 Route::post('/users', [UserApiController::class, 'store']);
@@ -93,3 +92,7 @@ Route::delete('/pelanggaran-santri/{id}', [PelanggaranApiController::class, 'des
 // Api Denah Ujian
 Route::get('/denah-ujian', [DenahUjianApiController::class, 'findAll']);
 Route::post('/denah-ujian', [DenahUjianApiController::class, 'store']);
+
+// Api Bank Soal
+Route::get('/bank-soal', [BankSoalApiController::class, 'index']);
+Route::post('/bank-soal', [BankSoalApiController::class, 'store']);

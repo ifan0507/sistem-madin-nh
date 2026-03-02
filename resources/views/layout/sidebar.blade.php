@@ -123,7 +123,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'ujian-bank-soal' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('bank-soal') }}">
                                 Bank Soal
                             </a>
                         </li>

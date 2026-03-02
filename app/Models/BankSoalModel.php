@@ -17,6 +17,11 @@ class BankSoalModel extends Model
 
     public function mapel_kelas(): BelongsTo
     {
-        return $this->belongsTo(MapelKelasModel::class, 'mapel_kelas_id');
+        return $this->belongsTo(MapelKelasModel::class, 'mapel_kelas_id')->active();
     }
+
+    protected $casts = [
+        'soal' => 'array',
+        'mapel_kelas_id' => 'integer',
+    ];
 }

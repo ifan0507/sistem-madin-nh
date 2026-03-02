@@ -179,9 +179,15 @@ class DenahUjianService
         return DenahUjianModel::select('id', 'nama_ruangan', 'total_kursi', 'susunan_denah')->orderby('nama_ruangan')->get();
     }
 
-    public function getById($id)
+    public function getDataCetakKartu($id)
     {
-        // return Model::findOrFail($id);
+        $denah = DenahUjianModel::findOrFail($id);
+        $susunan = is_string($denah->susunan_denah) ? json_decode($denah->susunan_denah, true) : $denah->susunan_denah;
+        $peserta = collect($susunan)->where('is_filled', true)->values();
+        return [
+            'denah'   => $denah,
+            'peserta' => $peserta
+        ];
     }
 
     /**

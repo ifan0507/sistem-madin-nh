@@ -54,7 +54,6 @@
                 </div>
             </div>
 
-
             <div id="ruangan-container">
                 @forelse($denahList as $index => $denah)
                     @php
@@ -99,10 +98,10 @@
                                     onclick="cetakDenah({{ $denah->id }})" title="Cetak Denah Tempel">
                                     <i class="fa-solid fa-print me-1"></i> Denah
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary mb-0 px-3"
-                                    onclick="cetakKartu({{ $denah->id }})" title="Cetak Kartu Ujian">
+                                <a href="{{ route('denah-ujian.cetak-kartu', $denah->id) }}" target="_blank"
+                                    class="btn btn-sm btn-outline-secondary mb-0 px-3" title="Cetak Kartu Ujian">
                                     <i class="fa-solid fa-id-card-clip me-1"></i> Kartu
-                                </button>
+                                </a>
 
                                 <div class="btn-group shadow-none">
                                     <button type="button" class="btn btn-sm btn-outline-dark mb-0 dropdown-toggle px-3"

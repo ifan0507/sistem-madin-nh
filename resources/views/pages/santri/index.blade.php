@@ -56,7 +56,7 @@
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $s->kelas->nama_kelas ?? 'Belum ditentukan' }}</span>
+                                                        class="text-secondary text-xs font-weight-bold">{{ getKelasArab($s->kelas_id) ?? 'Belum ditentukan' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span
