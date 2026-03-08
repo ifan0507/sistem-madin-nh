@@ -15,14 +15,15 @@ class BankSoalWebController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $active = (object)[
             'activePage' => 'ujian-bank-soal',
             'activePageMaster' => 'ujian-management',
         ];
-
-        $data = $this->bank_soal_service->getBankSoal();
+        $filterTahun = $request->query('filter_tahun');
+        $filterSemester = $request->query('filter_semester');
+        $data = $this->bank_soal_service->getBankSoal($filterTahun, $filterSemester);
         return view('pages.bank-soal.index', [
             'active'            => $active,
             'kelasList'         => $data['kelasList'],

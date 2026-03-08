@@ -8,19 +8,74 @@
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
             <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-                <div class="input-group input-group-outline">
-                    <label class="form-label">Type here...</label>
-                    <input type="text" class="form-control">
+                <div class="d-flex align-items-center  px-3 py-2 border-radius-lg">
+                    <div class="d-flex flex-column justify-content-center">
+                        <h6 class="text-xs font-weight-bolder mb-0 text-dark">
+                            Tahun Ajaran {{ $pengaturanAktif->tahun_ajaran ?? 'Belum Diatur' }}
+                        </h6>
+                        <p class="text-xs text-secondary mb-0 font-weight-bold">
+                            Semester {{ $pengaturanAktif->semester ?? '-' }}
+                        </p>
+                    </div>
                 </div>
             </div>
             <ul class="navbar-nav d-flex align-items-center  justify-content-end">
 
 
-                {{-- <li class="nav-item px-3 d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-body p-0">
+                <li class="nav-item dropdown pe-3 d-flex align-items-center">
+                    <a href="javascript:;" class="nav-link text-body p-0" id="dropdownSettingButton"
+                        data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="material-symbols-rounded fixed-plugin-button-nav">settings</i>
                     </a>
-                </li> --}}
+                    <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4"
+                        aria-labelledby="dropdownSettingButton">
+                        <li class="mb-2 px-3 py-2" style="min-width: 250px;">
+                            <form id="formUpdatePengaturan" action="{{ route('pengaturan.update', 1) }}" method="POST">
+                                @csrf
+
+                                <h6 class="text-sm font-weight-bold mb-3 text-center border-bottom pb-2">
+                                    <i class="fa-solid fa-sliders text-info me-1"></i> Pengaturan Akademik
+                                </h6>
+
+                                <div class="input-group input-group-static mb-3">
+                                    <label for="tahun_ajaran" class="ms-0 font-weight-bold">Tahun
+                                        Ajaran</label>
+                                    <select class="form-control" id="tahun_ajaran" name="tahun_ajaran" required>
+                                        <option value="2024/2025"
+                                            {{ ($pengaturanAktif->tahun_ajaran ?? '') == '2024/2025' ? 'selected' : '' }}>
+                                            2024/2025</option>
+                                        <option value="2025/2026"
+                                            {{ ($pengaturanAktif->tahun_ajaran ?? '') == '2025/2026' ? 'selected' : '' }}>
+                                            2025/2026</option>
+                                        <option value="2026/2027"
+                                            {{ ($pengaturanAktif->tahun_ajaran ?? '') == '2026/2027' ? 'selected' : '' }}>
+                                            2026/2027</option>
+                                        <option value="2027/2028"
+                                            {{ ($pengaturanAktif->tahun_ajaran ?? '') == '2027/2028' ? 'selected' : '' }}>
+                                            2027/2028</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group input-group-static mb-4">
+                                    <label for="semester" class="ms-0 font-weight-bold">Semester</label>
+                                    <select class="form-control" id="semester" name="semester" required>
+                                        <option value="Ganjil"
+                                            {{ ($pengaturanAktif->semester ?? '') == 'Ganjil' ? 'selected' : '' }}>
+                                            Ganjil</option>
+                                        <option value="Genap"
+                                            {{ ($pengaturanAktif->semester ?? '') == 'Genap' ? 'selected' : '' }}>Genap
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <button type="submit" class="btn btn-sm bg-gradient-info w-100 mb-0"
+                                    id="btnSimpanPengaturan">
+                                    <i class="fa-solid fa-save me-1"></i> Terapkan
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item dropdown pe-3 d-flex align-items-center">
                     <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,3 +177,52 @@
         </div>
     </div>
 </nav>
+<script>
+    $(document).ready(function() {
+        $('#formUpdatePengaturan').on('click', function(e) {
+            e.stopPropagation();
+        });
+        $('#formUpdatePengaturan').on('submit', function(e) {
+            e.preventDefault();
+            let tahunAjaran = $('#tahun_ajaran').val();
+            let semester = $('#semester').val();
+            let $btn = $('#btnSimpanPengaturan');
+            let originalText = $btn.html();
+
+            $btn.html('<i class="fa-solid fa-spinner fa-spin me-1"></i> Menyimpan...').prop('disabled',
+                true);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: $('#formUpdatePengaturan').serialize(),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pengaturan berhasil diperbarui',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else {
+                        Swal.fire('Gagal', response.message, 'error');
+                        $btn.html(originalText).prop('disabled', false);
+                    }
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error Server',
+                        text: 'Gagal memperbarui pengaturan akademik.'
+                    });
+                    $btn.html(originalText).prop('disabled', false);
+                }
+            });
+        });
+    });
+</script>

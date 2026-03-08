@@ -8,17 +8,19 @@ use App\Http\Controllers\Web\JadwalKbmWebController;
 use App\Http\Controllers\Web\KelasWebController;
 use App\Http\Controllers\Web\MapelKelasWebController;
 use App\Http\Controllers\Web\MapelWebController;
+use App\Http\Controllers\Web\PengaturanWebController;
 use App\Http\Controllers\Web\SantriWebController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardWebController::class, 'index']);
-
+Route::post('/pengaturan/{id}/update', [PengaturanWebController::class, 'update'])->name('pengaturan.update');
 // Santri
 
 Route::get('/santri', [SantriWebController::class, 'index'])->name('santri');
 Route::get('/santri/create', [SantriWebController::class, 'create'])->name('santri.create');
 Route::post('/santri/store', [SantriWebController::class, 'store'])->name('santri.store');
 Route::get('/santri/{id}/detail', [SantriWebController::class, 'show'])->name('santri.show');
+Route::get('/santri/nis/{nis}/detail', [SantriWebController::class, 'showByNis'])->name('santri.showByNis');
 Route::get('/santri/{id}/edit', [SantriWebController::class, 'edit'])->name('santri.edit');
 Route::put('/santri/{id}/update', [SantriWebController::class, 'update'])->name('santri.update');
 Route::delete('/santri/{id}/delete', [SantriWebController::class, 'destroy'])->name('santri.destroy');

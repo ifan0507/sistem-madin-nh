@@ -4,33 +4,29 @@ namespace App\DTO;
 
 use Illuminate\Http\Request;
 
-class BankSoalDto
+class PengaturanDto
 {
     public function __construct(
-        public readonly array $soal,
-        public readonly int $mapel_kelas_id,
         public readonly string $tahun_ajaran,
         public readonly string $semester,
+        public readonly ?bool $is_active,
     ) {}
 
     public static function fromRequest(Request $request): self
     {
         return new self(
-            soal: $request->validated('soal'),
-            mapel_kelas_id: (int) $request->validated('mapel_kelas_id'),
-            tahun_ajaran: $request->validated('tahun_ajaran'),
-            semester: $request->validated('semester'),
-
+            $request->tahun_ajaran,
+            $request->semester,
+            $request->is_active
         );
     }
 
     public function toArray(): array
     {
         return [
-            'soal' => json_encode($this->soal),
-            'mapel_kelas_id' => $this->mapel_kelas_id,
             'tahun_ajaran' => $this->tahun_ajaran,
             'semester' => $this->semester,
+            'is_active' => $this->is_active,
         ];
     }
 }

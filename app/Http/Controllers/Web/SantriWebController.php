@@ -42,7 +42,7 @@ class SantriWebController extends Controller
 
         $nis = $this->santri_service->generateNis();
         $kelas = $this->kelas_service->getAll();
-        
+
         return view('pages.santri.form-santri', compact('active', 'kelas', 'nis'));
     }
 
@@ -71,7 +71,19 @@ class SantriWebController extends Controller
         ];
 
         $santri = $this->santri_service->getById($id);
-        
+
+        return view('pages.santri.detail-santri', compact('active', 'santri'));
+    }
+
+    public function showByNis(string $nis)
+    {
+        $active = (object)[
+            'menu' => 'santri',
+            'submenu' => '',
+        ];
+
+        $santri = $this->santri_service->getByNis($nis);
+
         return view('pages.santri.detail-santri', compact('active', 'santri'));
     }
 
@@ -87,7 +99,7 @@ class SantriWebController extends Controller
 
         $santri = $this->santri_service->getById($id);
         $kelas = $this->kelas_service->getAll();
-        
+
         return view('pages.santri.edit-santri', compact('active', 'santri', 'kelas'));
     }
 
@@ -123,7 +135,7 @@ class SantriWebController extends Controller
      */
     public function destroy(string $id)
     {
-        
+
         $this->santri_service->delete($id);
         return response()->json([
             'status' => 'success',

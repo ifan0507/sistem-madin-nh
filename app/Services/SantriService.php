@@ -28,7 +28,7 @@ class SantriService
             'kelas_id',
         )->with('kelas')->active()->orderBy('created_at', 'asc')->get();
     }
- 
+
     public  function getById($id)
     {
         return SantriModel::select(
@@ -46,6 +46,25 @@ class SantriService
             'thn_angkatan',
             'kelas_id',
         )->with('kelas')->findOrFail($id);
+    }
+
+    public  function getByNis($nis)
+    {
+        return SantriModel::select(
+            'id',
+            'nama',
+            'nis',
+            'nik',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat',
+            'ayah',
+            'ibu',
+            'no_telp',
+            'jenis_kelamin',
+            'thn_angkatan',
+            'kelas_id',
+        )->with('kelas')->where('nis', $nis)->firstOrFail();
     }
 
     public function generateNis()
@@ -110,4 +129,3 @@ class SantriService
         return $item->update(['kelas_id' => null]);
     }
 }
-

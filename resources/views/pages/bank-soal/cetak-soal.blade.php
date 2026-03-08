@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* Setup Kertas F4/Folio (215mm x 330mm) */
         @page {
             size: 215mm 330mm;
             margin: 10mm 15mm;
@@ -25,7 +24,6 @@
             line-height: 1.4;
         }
 
-        /* --- HEADER KOP SOAL --- */
         .header {
             display: flex;
             justify-content: space-between;
@@ -69,19 +67,16 @@
             font-weight: normal;
         }
 
-        /* --- KUNCI FIX IDENTITAS & KOTAK PENGAWAS --- */
         .info-section {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            /* Memaksa kotak dan garis lesehan di dasar yang sama */
             margin-bottom: 20px;
         }
 
         .info-text-container {
             flex-grow: 1;
             border-bottom: 1.5px solid #000;
-            /* Garis ditebalkan sedikit biar mirip aslinya */
             padding-bottom: 2px;
         }
 
@@ -99,12 +94,10 @@
             white-space: nowrap;
         }
 
-        /* Kotak Tanda Tangan (Disamakan Proporsinya) */
         .ttd-box {
             border-collapse: collapse;
             text-align: center;
             margin-left: 8px;
-            /* Jarak antara kotak dan putusnya garis */
         }
 
         .ttd-box th,
@@ -116,17 +109,13 @@
             font-weight: bold;
             font-size: 11pt;
             padding: 2px 28px;
-            /* Bikin kotaknya lebih lebar ke samping */
             height: 25px;
-            /* Header dibuat lebih pipih/pendek */
         }
 
         .ttd-box td {
             height: 90px;
-            /* Kotak kosong di bawahnya dibuat lebih luas/tinggi */
         }
 
-        /* --- DAFTAR SOAL --- */
         .soal-list {
             margin: 0;
             padding: 0;
@@ -149,7 +138,6 @@
             text-align: justify;
         }
 
-        /* --- AREA JAWABAN (GARIS-GARIS) --- */
         .jawab-title {
             font-weight: bold;
             font-size: 14pt;
@@ -195,7 +183,8 @@
         <img src="{{ asset('assets/images/logo_pondok.png') }}" class="logo" alt="Logo">
 
         <div class="header-text">
-            <h3>لجنة الامتحان الدور الثانى للمدرسة الدينية</h3>
+            <h3>لجنة الامتحان الدور {{ $pengaturanAktif->semester == 'Ganjil' ? 'الأولى' : 'الثانى' }} للمدرسة الدينية
+            </h3>
             <h1>نور الهدى</h1>
             <h4>ماغون سارى تيكوغ لوماجاغ</h4>
         </div>

@@ -25,15 +25,15 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         // SEEDER KELAS
-        $data = [];
+        // $data = [];
 
-        for ($i = 1; $i <= 6; $i++) {
-            $data[] = [
-                'nama_kelas' => $i
-            ];
-        }
+        // for ($i = 1; $i <= 6; $i++) {
+        //     $data[] = [
+        //         'nama_kelas' => $i
+        //     ];
+        // }
 
-        DB::table('kelas')->insert($data);
+        // DB::table('kelas')->insert($data);
 
         // SEEDER SANTRi
         // $faker = Faker::create('id_ID'); // Pakai locale Indonesia biar namanya relevan
@@ -74,5 +74,13 @@ class DatabaseSeeder extends Seeder
         // // Insert Batch (Cepat)
         // // Kita pecah jadi chunk kecil jika data terlalu banyak, tapi 140 masih aman sekali insert
         // DB::table('santris')->insert($santris);
+
+        DB::table('pengaturans')->insert([
+            'tahun_ajaran' => '2025/2026',
+            'semester' => 'Ganjil',
+            'is_active' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 }

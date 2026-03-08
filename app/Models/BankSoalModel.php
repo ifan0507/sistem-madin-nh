@@ -13,6 +13,8 @@ class BankSoalModel extends Model
     protected $fillable = [
         'soal',
         'mapel_kelas_id',
+        'tahun_ajaran',
+        'semester',
     ];
 
     public function mapel_kelas(): BelongsTo
@@ -23,5 +25,7 @@ class BankSoalModel extends Model
     protected $casts = [
         'soal' => 'array',
         'mapel_kelas_id' => 'integer',
+        'tahun_ajaran' => 'string',
+        'semester' => 'string',
     ];
 }

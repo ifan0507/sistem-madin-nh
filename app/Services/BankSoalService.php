@@ -6,6 +6,7 @@ use App\Dto\BankSoalDto;
 use App\Models\BankSoalModel;
 use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
+use App\Models\PengaturanModel;
 
 class BankSoalService
 {
@@ -15,10 +16,22 @@ class BankSoalService
         $this->rules = config('pegon_rules');
     }
 
-    public function getBankSoal()
+    public function getBankSoal($filterTahun = null, $filterSemester = null)
     {
+        $pengaturan = PengaturanModel::select('semester', 'tahun_ajaran')->first();
+        $tahunAjaranQuery = $filterTahun ?: ($pengaturan ? $pengaturan->tahun_ajaran : null);
+        $semesterQuery = $filterSemester ?: ($pengaturan ? $pengaturan->semester : null);
         $kelasList = KelasModel::orderBy('id', 'asc')->get();
-        $mapelKelas = MapelKelasModel::with(['mapel', 'guru', 'bank_soal'])->active()->get();
+        $mapelKelas = MapelKelasModel::with([
+            'mapel',
+            'guru',
+            'bank_soal' => function ($query) use ($tahunAjaranQuery, $semesterQuery) {
+                if ($tahunAjaranQuery && $semesterQuery) {
+                    $query->where('tahun_ajaran', $tahunAjaranQuery)
+                        ->where('semester', $semesterQuery);
+                }
+            }
+        ])->active()->get();
         $totalMapel = $mapelKelas->count();
         $sudahMengumpulkan = $mapelKelas->filter(function ($item) {
             return $item->bank_soal->isNotEmpty();
@@ -30,7 +43,7 @@ class BankSoalService
             'mapelPerKelas' => $mapelPerKelas,
             'totalMapel'        => $totalMapel,
             'sudahMengumpulkan' => $sudahMengumpulkan,
-            'belumMengumpulkan' => $belumMengumpulkan
+            'belumMengumpulkan' => $belumMengumpulkan,
         ];
     }
 
@@ -64,6 +77,8 @@ class BankSoalService
         return BankSoalModel::create([
             'mapel_kelas_id' => $data->mapel_kelas_id,
             'soal'           => $susunanSoal,
+            'tahun_ajaran'   => $data->tahun_ajaran,
+            'semester'       => $data->semester,
         ]);
     }
 

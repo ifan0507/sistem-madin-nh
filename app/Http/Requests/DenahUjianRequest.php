@@ -22,7 +22,8 @@ class DenahUjianRequest extends FormRequest
             'nama_ruangan' => [
                 'required',
                 'string',
-                'max:3'
+                'max:3',
+                'unique:denah_ujians,nama_ruangan'
             ],
             'kelas_ids' => [
                 'required',
@@ -40,7 +41,7 @@ class DenahUjianRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // Tambahkan pesan error custom di sini (opsional)
+            'nama_ruangan.unique' => 'Nama ruangan sudah ada.',
         ];
     }
 }

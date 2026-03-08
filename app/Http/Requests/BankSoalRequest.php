@@ -23,6 +23,15 @@ class BankSoalRequest extends FormRequest
                 'array',
                 'min:1'
             ],
+            'tahun_ajaran' => [
+                'required',
+                'string',
+                'max:20'
+            ],
+            'semester' => [
+                'required',
+                'in:Ganjil,Genap'
+            ],
         ];
     }
 

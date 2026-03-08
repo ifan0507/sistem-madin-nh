@@ -4,7 +4,7 @@
         <div class="container-fluid py-2">
             {{-- HEADER --}}
             <div class="row mb-4">
-                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body p-3">
                             <div class="row">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body p-3">
                             <div class="row">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-xl-4 col-sm-6">
+                <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body p-3">
                             <div class="row">
@@ -67,7 +67,7 @@
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold text-secondary">Belum
                                             Mengumpulkan
                                         </p>
-                                        <h5 class="font-weight-bolder mb-0 text-danger">
+                                        <h5 class="font-weight-bolder mb-0 text-success">
                                             {{ $belumMengumpulkan }} <span
                                                 class="text-sm font-weight-normal text-secondary">Mapel</span>
                                         </h5>
@@ -75,12 +75,62 @@
                                 </div>
                                 <div class="col-4 text-end">
                                     <div
-                                        class="icon icon-shape bg-gradient-danger shadow-danger text-center rounded-circle">
+                                        class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
                                         <i class="fa-solid fa-clock-rotate-left text-lg opacity-10" aria-hidden="true"
                                             style="color: white;"></i>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-sm-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body p-3">
+                            <form action="{{ route('bank-soal') }}" method="GET" class="row align-items-center">
+                                <div class="row">
+                                    <div class="col-5">
+                                        <div class="input-group input-group-static">
+                                            <select class="form-control text-sm font-weight-bold" name="filter_tahun">
+                                                <option value="">-- Tahun --</option>
+                                                <option value="2024/2025"
+                                                    {{ request('filter_tahun') == '2024/2025' ? 'selected' : '' }}>2024/2025
+                                                </option>
+                                                <option value="2025/2026"
+                                                    {{ request('filter_tahun') == '2025/2026' ? 'selected' : '' }}>2025/2026
+                                                </option>
+                                                <option value="2026/2027"
+                                                    {{ request('filter_tahun') == '2026/2027' ? 'selected' : '' }}>2026/2027
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-5">
+                                        <div class="input-group input-group-static">
+                                            <select class="form-control text-sm font-weight-bold" name="filter_semester">
+                                                <option value="">-- Smt --</option>
+                                                <option value="Ganjil"
+                                                    {{ request('filter_semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil
+                                                </option>
+                                                <option value="Genap"
+                                                    {{ request('filter_semester') == 'Genap' ? 'selected' : '' }}>Genap
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-2 p-0 text-end">
+                                        <div id="btnSubmitFilter"
+                                            class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle"
+                                            style="cursor: pointer">
+                                            <i class="fa-solid fa-filter text-lg opacity-10" aria-hidden="true"
+                                                style="color: white;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -101,7 +151,8 @@
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link {{ $index == 0 ? 'active' : '' }}"
                                                 id="tab-{{ $kelas->id }}" data-bs-toggle="tab"
-                                                data-bs-target="#content-{{ $kelas->id }}" type="button" role="tab">
+                                                data-bs-target="#content-{{ $kelas->id }}" type="button"
+                                                role="tab">
                                                 <span
                                                     style="font-size: 1.2rem; font-family: 'Amiri', serif;">{{ getKelasArab($kelas->id) }}</span>
                                             </button>
@@ -210,7 +261,6 @@
                                                 </tbody>
                                             </table>
                                         </div>
-
                                     </div>
                                 @endforeach
                             </div>
@@ -221,4 +271,11 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#btnSubmitFilter').on('click', function() {
+                $(this).closest('form').submit();
+            });
+        });
+    </script>
 @endsection

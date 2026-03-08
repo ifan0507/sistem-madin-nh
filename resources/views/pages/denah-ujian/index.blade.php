@@ -145,7 +145,8 @@
                                                     </div>
                                                     <div class="seat-details">
                                                         <div class="seat-santri-name" title="{{ $seat['nama_santri'] }}">
-                                                            {{ strtoupper($seat['nama_santri']) }}
+                                                            <a href="{{ route('santri.showByNis', ['nis' => $seat['nis']]) }}"
+                                                                target="_blank">{{ strtoupper($seat['nama_santri']) }}</a>
                                                         </div>
                                                         <div class="seat-exam-number">
                                                             {{ $seat['nomor_ujian'] ?? '- BUKAN PESERTA -' }}
