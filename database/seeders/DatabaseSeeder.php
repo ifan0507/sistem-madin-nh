@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
         // SEEDER KELAS
         // $data = [];
 
-        // for ($i = 1; $i <= 6; $i++) {
+        // for ($i = 0; $i <= 6; $i++) {
         //     $data[] = [
-        //         'nama_kelas' => $i
+        //         'nama_kelas' => $i == 0 ? 'sifir' : $i
         //     ];
         // }
 
@@ -75,12 +75,27 @@ class DatabaseSeeder extends Seeder
         // // Kita pecah jadi chunk kecil jika data terlalu banyak, tapi 140 masih aman sekali insert
         // DB::table('santris')->insert($santris);
 
-        DB::table('pengaturans')->insert([
-            'tahun_ajaran' => '2025/2026',
-            'semester' => 'Ganjil',
-            'is_active' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        // DB::table('pengaturans')->insert([
+        //     'tahun_ajaran' => '2025/2026',
+        //     'semester' => 'Ganjil',
+        //     'is_active' => true,
+        //     'created_at' => now(),
+        //     'updated_at' => now(),
+        // ]);
+
+        // DB::table('ruang_ujians')->truncate();
+
+        $abjad = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+
+        $data = [];
+        foreach ($abjad as $huruf) {
+            $data[] = [
+                'nama_ruang' => 'Ruang ' . $huruf,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('ruang_ujians')->insert($data);
     }
 }

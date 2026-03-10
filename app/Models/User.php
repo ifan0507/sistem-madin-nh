@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(PelanggaranModel::class, 'user_id');
     }
 
+    public function jadwal_pengawas_ujian(): HasMany
+    {
+        return $this->hasMany(JadwalPengawasUjianModel::class, 'guru_id');
+    }
+
     #[Scope]
     public function is_guru(Builder $query)
     {

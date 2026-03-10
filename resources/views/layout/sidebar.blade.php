@@ -101,17 +101,17 @@
                 <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
                         : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#ujianMenu"
-                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-kbm', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'true' : 'false' }}">
+                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">assignment</i>
                     <span class="nav-link-text ms-1">Managemen Ujian</span>
                 </a>
 
-                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-kbm', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'show' : '' }}"
                     id="ujianMenu">
                     <ul class="nav ms-4">
                         <li class="nav-item">
-                            <a class="nav-link {{ $activePage == 'ujian-jadwal-kbm' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                            <a class="nav-link {{ $activePage == 'ujian-jadwal-ujian' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="{{ route('jadwal-ujian') }}">
                                 Jadwal Ujian
                             </a>
                         </li>

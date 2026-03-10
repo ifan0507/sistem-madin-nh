@@ -11,9 +11,16 @@ class JadwalUjianModel extends Model
     use HasFactory;
     protected $table = 'jadwal_ujians';
     protected $fillable = [
+        'hari_ke',
         'tanggal_ujian',
+        'kelas_id',
         'mapel_kelas_id',
     ];
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(KelasModel::class, 'kelas_id');
+    }
 
     public function mapel_kelas(): BelongsTo
     {

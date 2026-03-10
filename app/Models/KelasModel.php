@@ -25,6 +25,11 @@ class KelasModel extends Model
         return $this->hasMany(SantriModel::class, 'kelas_id');
     }
 
+    public function jadwal_ujian(): HasMany
+    {
+        return $this->hasMany(JadwalUjianModel::class, 'kelas_id');
+    }
+
     public function jadwal_kbms()
     {
         return $this->hasManyThrough(

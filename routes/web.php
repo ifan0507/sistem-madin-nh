@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\DashboardWebController;
 use App\Http\Controllers\Web\DenahUjianWebController;
 use App\Http\Controllers\Web\GuruWebController;
 use App\Http\Controllers\Web\JadwalKbmWebController;
+use App\Http\Controllers\Web\JadwalUjianWebController;
 use App\Http\Controllers\Web\KelasWebController;
 use App\Http\Controllers\Web\MapelKelasWebController;
 use App\Http\Controllers\Web\MapelWebController;
@@ -71,4 +72,8 @@ Route::get('/bank-soal/{id}/cetak', [BankSoalWebController::class, 'cetakSoal'])
 Route::get('/bank-soal/{id}/preview', [BankSoalWebController::class, 'show'])->name('bank-soal.preview');
 Route::post('/bank-soal/{id}/update-soal', [BankSoalWebController::class, 'update'])->name('bank-soal.update-soal');
 Route::post('/bank-soal/generate', [BankSoalWebController::class, 'generate'])->name('bank-soal.generate');
+
+// Jadwal Ujian
+Route::get('/jadwal-ujian', [JadwalUjianWebController::class, 'index'])->name('jadwal-ujian');
+Route::post('/jadwal-ujian/update-tanggal', [JadwalUjianWebController::class, 'updateTanggal'])->name('jadwal-ujian.update-tanggal');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

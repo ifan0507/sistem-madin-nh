@@ -331,6 +331,23 @@ body:not(.preload-active) main {
     color: #28a745 !important;
 }
 
+.cell-jadwal {
+    transition: all 0.2s ease-in-out;
+    border: 1px dashed #d2d6da;
+    background-color: #f8f9fa;
+}
+.cell-jadwal:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    border-color: #cb0c9f;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+.cell-jadwal.filled {
+    border: 1px solid #e9ecef;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
 @media (max-width: 767.98px) {
     .nav-pills.nav-fill,
     .card-body .nav-pills.nav-fill,
