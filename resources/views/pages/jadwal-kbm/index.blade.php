@@ -21,7 +21,7 @@
                             <thead>
                                 <tr class="align-middle text-center bg-light">
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                                        width="5%">No
+                                        width="3%">No
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                                         width="10%">
@@ -58,7 +58,7 @@
                                                 @if ($jadwal)
                                                     <div class="box-jadwal-isi btn-atur-jadwal"
                                                         data-kelas-id="{{ $k->id }}"
-                                                        data-kelas-nama="{{ $k->nama_kelas }}"
+                                                        data-kelas-nama="{{ getKelasArab($k->id) }}"
                                                         data-hari="{{ $hari }}" data-jadwal-id="{{ $jadwal->id }}"
                                                         data-mapel-kelas-id="{{ $jadwal->mapel_kelas_id }}">
                                                         <h6 class="mb-0 text-xs text-dark">
@@ -69,7 +69,7 @@
                                                 @else
                                                     <div class="box-jadwal-kosong btn-atur-jadwal"
                                                         data-kelas-id="{{ $k->id }}"
-                                                        data-kelas-nama="{{ $k->nama_kelas }}"
+                                                        data-kelas-nama="{{ getKelasArab($k->id) }}"
                                                         data-hari="{{ $hari }}" data-jadwal-id=""
                                                         data-mapel-kelas-id="">
                                                         <i class="fa-solid fa-plus text-xs mb-1 text-secondary"></i>
@@ -157,7 +157,7 @@
                 $('#modal-atur-jadwal').modal('show');
 
                 $.ajax({
-                    url: `/jadwal-kbm/get-mapel-kelas/${kelasId}`,
+                    url: `/mapel-kelas/kelas/${kelasId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {

@@ -63,7 +63,8 @@
                                                     @endif
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <button class="btn btn-outline-secondary btn-sm btn-icon-round"
+                                                    <button
+                                                        class="btn btn-outline-secondary btn-sm btn-icon-round btn-edit-guru"
                                                         data-bs-toggle="tooltip" title="Edit"
                                                         data-id="{{ $g->id }}" data-kode="{{ $g->kode_guru }}"
                                                         data-nama="{{ $g->name }}"

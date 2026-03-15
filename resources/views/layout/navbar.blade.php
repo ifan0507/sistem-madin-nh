@@ -34,7 +34,7 @@
                                 @csrf
 
                                 <h6 class="text-sm font-weight-bold mb-3 text-center border-bottom pb-2">
-                                    <i class="fa-solid fa-sliders text-info me-1"></i> Pengaturan Akademik
+                                    <i class="fa-solid fa-sliders text-success me-1"></i> Pengaturan Akademik
                                 </h6>
 
                                 <div class="input-group input-group-static mb-3">
@@ -68,7 +68,7 @@
                                     </select>
                                 </div>
 
-                                <button type="submit" class="btn btn-sm bg-gradient-info w-100 mb-0"
+                                <button type="submit" class="btn btn-sm bg-gradient-success w-100 mb-0"
                                     id="btnSimpanPengaturan">
                                     <i class="fa-solid fa-save me-1"></i> Terapkan
                                 </button>

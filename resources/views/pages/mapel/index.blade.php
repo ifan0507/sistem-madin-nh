@@ -39,7 +39,7 @@
                                                 </td>
                                                 <td>
                                                     <span
-                                                        class="text-secondary text-xs font-weight-bold">{{ $m->nama_mapel }}</span>
+                                                        class="text-secondary text-sm font-weight-bold">{{ $m->nama_mapel }}</span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <button
@@ -89,9 +89,10 @@
                     <div class="modal-body">
 
                         @csrf
-                        <div class="input-group input-group-outline my-3" id="group-kode">
+                        <div class="input-group input-group-outline is-filled my-3" id="group-kode">
                             <label class="form-label">Kode Mapel</label>
-                            <input type="text" class="form-control" name="kode_mapel" id="kode_mapel">
+                            <input type="text" class="form-control" name="kode_mapel" id="kode_mapel"
+                                value="{{ old('kode_mapel', $kode_mapel) }}" readonly>
                         </div>
                         <div class="input-group input-group-outline my-3" id="group-nama">
                             <label class="form-label">Nama Mapel</label>
@@ -99,8 +100,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn bg-gradient-success btn-simpan">Simpan</button>
                         <button type="button" class="btn ml-auto btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn bg-gradient-success btn-simpan">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -118,7 +119,7 @@
                 $('#form-mapel').attr('action', "{{ route('mapel.store') }}");
 
                 // HAPUS is-filled
-                $('#group-kode, #group-nama').removeClass('is-filled');
+                $('#group-nama').removeClass('is-filled');
                 $('#form-mapel').attr('action', "{{ route('mapel.store') }}");
                 submitMethod = 'POST';
                 $('#modal-mapel').modal('show');

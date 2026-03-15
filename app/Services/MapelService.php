@@ -28,6 +28,21 @@ class MapelService
         )->findOrFail($id);
     }
 
+    public function generateKodeMapel()
+    {
+        $lastMapel = MapelModel::orderBy('kode_mapel', 'desc')->first();
+
+        if (!$lastMapel) {
+            $kode = 'MP001';
+        } else {
+            $lastNumber = (int) substr($lastMapel->kode_mapel, 2);
+            $nextNumber = $lastNumber + 1;
+            $kode = 'MP' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+        }
+
+        return $kode;
+    }
+
     /**
      * Menyimpan data baru berdasarkan DTO
      */

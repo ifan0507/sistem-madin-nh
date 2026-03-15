@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class JadwalUjianRequest extends FormRequest
 {
@@ -15,13 +16,11 @@ class JadwalUjianRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'mapel_kelas_id' => [
+            'hari_ke' => 'required|integer|min:1|max:6',
+            'tanggal' => [
                 'required',
-                'exists:mapel_kelas,id'
-            ],
-            'tanggal_ujian' => [
-                'required',
-                'date'
+                'date',
+                Rule::unique('jadwal_ujians', 'tanggal_ujian')->whereNot('hari_ke', $this->hari_ke)
             ],
         ];
     }
@@ -29,7 +28,7 @@ class JadwalUjianRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // Tambahkan pesan error custom di sini (opsional)
+            'tanggal.unique' => 'Tanggal ujian sudah digunakan untuk hari lain.',
         ];
     }
 }

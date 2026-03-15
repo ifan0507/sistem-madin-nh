@@ -30,6 +30,7 @@ Route::put('/santri/bulk-update-kelas', [SantriWebController::class, 'updateKela
 
 // guru
 Route::get('/guru', [GuruWebController::class, 'index']);
+Route::get('/guru/get-guru', [GuruWebController::class, 'findAll'])->name('guru.getGuru');
 Route::get('/guru/generate-token', [GuruWebController::class, 'generateToken'])->name('guru.generate-token');
 Route::post('/guru/store', [GuruWebController::class, 'store'])->name('guru.store');
 Route::put('/guru/{id}/update', [GuruWebController::class, 'update'])->name('guru.update');
@@ -56,7 +57,6 @@ Route::delete('/mapel-kelas/{id}/delete', [MapelKelasWebController::class, 'dest
 
 // Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmWebController::class, 'index'])->name('jadwal-kbm');
-Route::get('/jadwal-kbm/get-mapel-kelas/{kelas_id}', [JadwalKbmWebController::class, 'getMapelKelasByKelas'])->name('jadwal-kbm.getMapelKelasByKelas');
 Route::post('/jadwal-kbm/store', [JadwalKbmWebController::class, 'store'])->name('jadwal-kbm.store');
 
 // Denah Ujian
@@ -76,4 +76,6 @@ Route::post('/bank-soal/generate', [BankSoalWebController::class, 'generate'])->
 // Jadwal Ujian
 Route::get('/jadwal-ujian', [JadwalUjianWebController::class, 'index'])->name('jadwal-ujian');
 Route::post('/jadwal-ujian/update-tanggal', [JadwalUjianWebController::class, 'updateTanggal'])->name('jadwal-ujian.update-tanggal');
+Route::post('/jadwal-ujian/update-mapel', [JadwalUjianWebController::class, 'updateMapel'])->name('jadwal-ujian.update-mapel');
+Route::post('/jadwal-ujian/update-pengawas', [JadwalUjianWebController::class, 'updatePengawas'])->name('jadwal-ujian.update-pengawas');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

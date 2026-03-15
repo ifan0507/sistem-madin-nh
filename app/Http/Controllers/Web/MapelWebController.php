@@ -6,7 +6,6 @@ use App\DTO\MapelDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MapelRequest;
 use App\Services\MapelService;
-use Illuminate\Http\Request;
 
 class MapelWebController extends Controller
 {
@@ -22,16 +21,16 @@ class MapelWebController extends Controller
             'activePage' => 'akademik-mapel',
             'activePageMaster' => 'akademik-management',
         ];
-
+        $kode_mapel = $this->mapel_service->generateKodeMapel();
         $mapels = $this->mapel_service->getAll();
 
-        return view('pages.mapel.index', compact('active', 'mapels'));
+        return view('pages.mapel.index', compact('active', 'mapels', 'kode_mapel'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() 
+    public function create()
     {
         // 
     }

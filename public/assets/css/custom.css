@@ -21,6 +21,7 @@
     padding: 0;
     border-radius: 50% !important;
 }
+
 /* preload */
 #preloader {
     position: fixed;
@@ -45,6 +46,7 @@
     visibility: hidden;
     pointer-events: none;
 }
+
 .dots-container {
     display: flex;
     align-items: center;
@@ -75,17 +77,20 @@
 }
 
 @keyframes dot-pulse {
+
     0%,
     80%,
     100% {
         transform: scale(0.5);
         opacity: 0.6;
     }
+
     40% {
         transform: scale(1.1);
         opacity: 1;
     }
 }
+
 body.preload-active main {
     visibility: hidden;
     opacity: 0;
@@ -148,21 +153,20 @@ body:not(.preload-active) main {
     height: 100%;
     object-fit: contain;
 }
+
 .select2-container .select2-selection--single {
     height: 40px;
     border: 1px solid #d2d6da;
     border-radius: 0.375rem;
 }
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__rendered {
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
     line-height: 40px;
     padding-left: 12px;
     color: #7b809a;
 }
-.select2-container--default
-    .select2-selection--single
-    .select2-selection__arrow {
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 40px;
 }
 
@@ -198,6 +202,7 @@ body:not(.preload-active) main {
     border-color: #4caf50;
     color: #4caf50 !important;
 }
+
 .box-jadwal-kosong:hover i,
 .box-jadwal-kosong:hover p {
     color: #4caf50 !important;
@@ -217,6 +222,7 @@ body:not(.preload-active) main {
     background-color: #e9ecef;
     border-color: #ff9800;
 }
+
 .modal-header .btn-close {
     background-size: 0.75rem 0.75rem;
     opacity: 1;
@@ -226,6 +232,7 @@ body:not(.preload-active) main {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .card-header-action:hover {
     background-color: #f8f9fa;
 }
@@ -233,6 +240,7 @@ body:not(.preload-active) main {
 .toggle-icon {
     transition: transform 0.3s ease;
 }
+
 [aria-expanded="true"] .toggle-icon {
     transform: rotate(180deg);
 }
@@ -242,6 +250,7 @@ body:not(.preload-active) main {
     padding: 20px;
     border-radius: 0 0 8px 8px;
 }
+
 .denah-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -294,6 +303,7 @@ body:not(.preload-active) main {
     white-space: normal;
     word-wrap: break-word;
 }
+
 .seat-exam-number {
     font-weight: bold;
     font-size: 0.95rem;
@@ -336,19 +346,24 @@ body:not(.preload-active) main {
     border: 1px dashed #d2d6da;
     background-color: #f8f9fa;
 }
+
 .cell-jadwal:hover {
     background-color: #e9ecef;
     transform: translateY(-2px);
-    border-color: #cb0c9f;
+    border-color: #28a745;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
+
 .cell-jadwal.filled {
     border: 1px solid #e9ecef;
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
+
+
 @media (max-width: 767.98px) {
+
     .nav-pills.nav-fill,
     .card-body .nav-pills.nav-fill,
     form .nav-pills.nav-fill {

@@ -27,18 +27,17 @@ class GuruWebController extends Controller
         return view('pages.guru.index', ['active' => $active, 'gurus' => $gurus]);
     }
 
+    public function findAll()
+    {
+        $data = $this->user_service->getAllGuru();
+        return response()->json(['data' => $data]);
+    }
+
     public function generateToken()
     {
         return $this->user_service->generateToken();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,25 +52,7 @@ class GuruWebController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update($id, UserRequest $request)
     {
         $dto = UserDto::fromRequest($request);

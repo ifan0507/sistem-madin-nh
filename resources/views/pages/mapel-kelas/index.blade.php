@@ -179,8 +179,8 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn bg-gradient-success btn-simpan-mapel">Simpan</button>
                         <button type="button" class="btn ml-auto btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn bg-gradient-success btn-simpan-mapel">Simpan</button>
                     </div>
                 </form>
             </div>

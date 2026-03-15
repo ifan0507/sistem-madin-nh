@@ -10,8 +10,7 @@
                                 <div class="d-flex justify-content-between align-items-center px-3">
                                     <h6 class="text-white text-capitalize mb-0">Data Santri</h6>
                                     <a class="btn bg-white mb-0" href="{{ route('santri.create') }}"><i
-                                            class="material-symbols-rounded text-sm">add</i>&nbsp;&nbsp;Tambah Data
-                                        Santri</a>
+                                            class="material-symbols-rounded text-sm">add</i>&nbsp;&nbsp;Tambah</a>
                                 </div>
                             </div>
                         </div>

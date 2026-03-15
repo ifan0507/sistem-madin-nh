@@ -66,8 +66,8 @@ class SantriWebController extends Controller
     public function show(string $id)
     {
         $active = (object)[
-            'menu' => 'santri',
-            'submenu' => '',
+            'activePage' => 'santri',
+            'activePageMaster' => 'user-management'
         ];
 
         $santri = $this->santri_service->getById($id);
@@ -78,8 +78,8 @@ class SantriWebController extends Controller
     public function showByNis(string $nis)
     {
         $active = (object)[
-            'menu' => 'santri',
-            'submenu' => '',
+            'activePage' => 'santri',
+            'activePageMaster' => 'user-management'
         ];
 
         $santri = $this->santri_service->getByNis($nis);
@@ -93,8 +93,8 @@ class SantriWebController extends Controller
     public function edit(string $id)
     {
         $active = (object)[
-            'menu' => 'santri',
-            'submenu' => '',
+            'activePage' => 'santri',
+            'activePageMaster' => 'user-management'
         ];
 
         $santri = $this->santri_service->getById($id);

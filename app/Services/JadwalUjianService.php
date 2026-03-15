@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use App\Dto\JadwalUjianDto;
+use App\Models\JadwalPengawasUjianModel;
 use App\Models\JadwalUjianModel;
 use App\Models\KelasModel;
+use App\Models\RuangUjianModel;
 
 class JadwalUjianService
 {
@@ -12,9 +13,10 @@ class JadwalUjianService
      * Mengambil semua data
      */
 
-    public function getJadwalGrid()
+    public function getJadwalAndPengawas()
     {
         $kelasList = KelasModel::orderBy('id', 'asc')->get();
+        $ruangList = RuangUjianModel::orderBy('id', 'asc')->get();
 
         if (JadwalUjianModel::count() == 0 && $kelasList->isNotEmpty()) {
             $dataKosong = [];
@@ -33,59 +35,71 @@ class JadwalUjianService
             JadwalUjianModel::insert($dataKosong);
         }
 
+        if (JadwalPengawasUjianModel::count() == 0 && $ruangList->isNotEmpty()) {
+            $dataKosongPengawas = [];
+            for ($hari = 1; $hari <= 6; $hari++) {
+                foreach ($ruangList as $ruang) {
+                    $dataKosongPengawas[] = [
+                        'hari_ke'       => $hari,
+                        'tanggal_ujian' => null,
+                        'ruang_id'      => $ruang->id,
+                        'guru_id'   => null,
+                        'created_at'    => now(),
+                        'updated_at'    => now(),
+                    ];
+                }
+            }
+            JadwalPengawasUjianModel::insert($dataKosongPengawas);
+        }
+
         $jadwalRaw = JadwalUjianModel::with(['mapel_kelas.mapel'])->get();
+        $pengawasRaw = JadwalPengawasUjianModel::with(['guru'])->get();
 
         $jadwalPerHari = [];
         $tanggalPerHari = [];
+        $pengawasPerHari = [];
 
         for ($hari = 1; $hari <= 6; $hari++) {
             $jadwalHariIni = $jadwalRaw->where('hari_ke', $hari)->keyBy('kelas_id');
             $jadwalPerHari[$hari] = $jadwalHariIni;
-
             $tanggalPerHari[$hari] = $jadwalHariIni->first()->tanggal_ujian ?? null;
+            $pengawasPerHari[$hari] = $pengawasRaw->where('hari_ke', $hari)->keyBy('ruang_id');
         }
 
         return [
-            'kelasList'      => $kelasList,
-            'jadwalPerHari'  => $jadwalPerHari,
-            'tanggalPerHari' => $tanggalPerHari,
+            'kelasList'       => $kelasList,
+            'ruangList'       => $ruangList,
+            'jadwalPerHari'   => $jadwalPerHari,
+            'pengawasPerHari' => $pengawasPerHari,
+            'tanggalPerHari'  => $tanggalPerHari,
         ];
     }
 
-    public function getAll()
+
+    public function updateTanggalUjian(int $hariKe, string $tanggal)
     {
-        return JadwalUjianModel::select('tanggal_ujian', 'mapel_kelas_id')->with('mapel_kelas')->get();
+        JadwalUjianModel::where('hari_ke', $hariKe)
+            ->update([
+                'tanggal_ujian' => $tanggal,
+                'updated_at'    => now()
+            ]);
     }
 
-    public function getById($id)
+    public function updateMapel(int $jadwal_id, int $mapel_kelas_id)
     {
-        return JadwalUjianModel::with('mapel_kelas')->findOrFail($id);
+        JadwalUjianModel::where('id', $jadwal_id)
+            ->update([
+                'mapel_kelas_id' => $mapel_kelas_id,
+                'updated_at'     => now()
+            ]);
     }
 
-    /**
-     * Menyimpan data baru berdasarkan DTO
-     */
-    public function create(JadwalUjianDto $data)
+    public function updatePengawas(int $guru_id, int $jadwal_pengawas_id)
     {
-        $payload = $data->toArray();
-        return JadwalUjianModel::create($payload);
-    }
-
-    /**
-     * Memperbarui data berdasarkan ID dan DTO
-     */
-    public function update($id, JadwalUjianDto $data)
-    {
-        $item = JadwalUjianModel::findOrFail($id);
-        $payload = $data->toArray();
-        return $item->update($payload);
-    }
-
-    /**
-     * Menghapus data
-     */
-    public function delete($id)
-    {
-        return JadwalUjianModel::destroy($id);
+        JadwalPengawasUjianModel::where('id', $jadwal_pengawas_id)
+            ->update([
+                'guru_id' => $guru_id,
+                'updated_at'  => now()
+            ]);
     }
 }
