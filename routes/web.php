@@ -58,6 +58,7 @@ Route::delete('/mapel-kelas/{id}/delete', [MapelKelasWebController::class, 'dest
 // Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmWebController::class, 'index'])->name('jadwal-kbm');
 Route::post('/jadwal-kbm/store', [JadwalKbmWebController::class, 'store'])->name('jadwal-kbm.store');
+Route::get('/jadwal-kbm/cetak', [JadwalKbmWebController::class, 'cetak'])->name('jadwal-kbm.cetak');
 
 // Denah Ujian
 Route::get('/denah-ujian', [DenahUjianWebController::class, 'index'])->name('denah-ujian');
@@ -78,4 +79,5 @@ Route::get('/jadwal-ujian', [JadwalUjianWebController::class, 'index'])->name('j
 Route::post('/jadwal-ujian/update-tanggal', [JadwalUjianWebController::class, 'updateTanggal'])->name('jadwal-ujian.update-tanggal');
 Route::post('/jadwal-ujian/update-mapel', [JadwalUjianWebController::class, 'updateMapel'])->name('jadwal-ujian.update-mapel');
 Route::post('/jadwal-ujian/update-pengawas', [JadwalUjianWebController::class, 'updatePengawas'])->name('jadwal-ujian.update-pengawas');
+Route::get('/jadwal-ujian/cetak', [JadwalUjianWebController::class, 'cetak'])->name('jadwal-ujian.cetak');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

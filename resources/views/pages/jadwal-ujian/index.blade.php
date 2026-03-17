@@ -4,9 +4,15 @@
 
         <div class="card shadow-sm border-radius-xl">
 
-            <div class="card-header p-4">
-                <h5 class="mb-0">Manajemen Jadwal Ujian</h5>
-                <p class="text-sm text-muted mb-0">Atur jadwal mata pelajaran dan pengawas ujian</p>
+            <div class="card-header p-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">Manajemen Jadwal Ujian</h5>
+                    <p class="text-sm text-muted mb-0">Atur jadwal mata pelajaran dan pengawas ujian</p>
+                </div>
+                <a href="{{ route('jadwal-ujian.cetak') }}" class="btn btn-dark btn-sm mb-0" target="_blank"
+                    title="Cetak Jadwal Ujian">
+                    <i class="fa-solid fa-print me-1"></i> Cetak Jadwal
+                </a>
             </div>
 
             <div class="card-body p-4 pt-0">
@@ -326,15 +332,7 @@
                                 tanggal: result.value
                             },
                             success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil!',
-                                    text: response.message,
-                                    timer: 1500,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('.tanggal-display-' + hariKe).text(result.value);
-                                });
+                                location.reload();
                             },
                             error: function(xhr) {
                                 let message = 'Terjadi kesalahan saat menyimpan data.';

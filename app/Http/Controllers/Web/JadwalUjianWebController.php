@@ -32,6 +32,12 @@ class JadwalUjianWebController extends Controller
         ]);
     }
 
+    public function cetak()
+    {
+        $data = $this->jadwalUjianService->getJadwalAndPengawas();
+        return view('pages.jadwal-ujian.cetak', $data);
+    }
+
     public function updateTanggal(JadwalUjianRequest $request)
     {
         try {

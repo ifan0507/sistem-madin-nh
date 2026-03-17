@@ -29,6 +29,15 @@ class JadwalKbmWebController extends Controller
             'kelas' => $kelas,
         ]);
     }
+
+    public function cetak()
+    {
+        $data = $this->jadwalKbmService->getDataCetak();
+        return view('pages.jadwal-kbm.cetak', [
+            'kelas' => $data['kelas'],
+        ]);
+    }
+
     public function store(JadwalKBMRequest $request)
     {
         $dto = JadwalKBMDto::fromRequest($request);

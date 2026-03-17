@@ -12,6 +12,10 @@
                     <div class="bg-gradient-success shadow-info border-radius-lg pt-3 pb-3">
                         <div class="d-flex justify-content-between align-items-center px-3">
                             <h6 class="text-white text-capitalize mb-0">Jadwal KBM</h6>
+                            <a href="{{ route('jadwal-kbm.cetak') }}" class="btn btn-sm bg-white text-success mb-0"
+                                target="_blank" title="Cetak Jadwal KBM">
+                                <i class="fa-solid fa-print me-1"></i> Cetak Jadwal
+                            </a>
                         </div>
                     </div>
                 </div>

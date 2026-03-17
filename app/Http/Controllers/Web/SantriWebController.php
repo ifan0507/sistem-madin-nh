@@ -25,7 +25,7 @@ class SantriWebController extends Controller
             'activePageMaster' => 'user-management'
         ];
 
-        $santris = $this->santri_service->getAll(); // Placeholder for santri data retrieval logic
+        $santris = $this->santri_service->getAll();
 
         return view('pages.santri.index', ['active' => $active, 'santris' => $santris]);
     }

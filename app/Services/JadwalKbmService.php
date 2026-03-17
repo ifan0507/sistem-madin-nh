@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Dto\JadwalKbmDto;
 use App\Models\JadwalKBMModel;
-use App\Models\MapelKelasModel;
+use App\Models\KelasModel;
 
 class JadwalKbmService
 {
@@ -24,6 +24,17 @@ class JadwalKbmService
         return JadwalKBMModel::with('mapel_kelas')->findOrFail($id);
     }
 
+    public function getDataCetak(): array
+    {
+        $kelas = KelasModel::with([
+            'jadwal_kbms.mapel_kelas.mapel',
+            'jadwal_kbms.mapel_kelas.guru'
+        ])->orderBy('id', 'asc')->get();
+
+        return [
+            'kelas' => $kelas,
+        ];
+    }
     /**
      * Menyimpan data baru berdasarkan DTO
      */
