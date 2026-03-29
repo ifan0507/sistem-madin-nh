@@ -23,6 +23,15 @@ class MapelKelasApiController extends Controller
         ], 200);
     }
 
+    public function findByKelas($id)
+    {
+        $mapel_kelas = $this->mapelKelasService->getMapelKelasByKelas($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $mapel_kelas
+        ], 200);
+    }
+
     public function findById($id)
     {
         $mapel_kelas = $this->mapelKelasService->getById($id);

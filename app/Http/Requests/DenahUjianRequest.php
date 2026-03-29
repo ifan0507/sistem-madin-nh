@@ -22,7 +22,6 @@ class DenahUjianRequest extends FormRequest
             'nama_ruangan' => [
                 'required',
                 'string',
-                'max:3',
                 'unique:denah_ujians,nama_ruangan'
             ],
             'kelas_ids' => [

@@ -32,6 +32,15 @@ class KelasApiController extends Controller
         ], 200);
     }
 
+    public function findSantriByKelas($id)
+    {
+        $santri = $this->kelasService->getSantriByKelas($id);
+        return response()->json([
+            'status' => 'success',
+            'data' => $santri
+        ], 200);
+    }
+
     public function store(KelasRequest $request)
     {
         $dto = KelasDto::fromRequest($request);

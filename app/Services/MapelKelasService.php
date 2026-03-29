@@ -16,8 +16,6 @@ class MapelKelasService
     public function getAll()
     {
         return MapelKelasModel::select(
-            'semester',
-            'tahun_ajaran',
             'guru_id',
             'kelas_id',
             'mapel_id',

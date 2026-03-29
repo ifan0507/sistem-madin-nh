@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dto\DenahUjianDto;
 use App\Models\DenahUjianModel;
+use App\Models\RuangUjianModel;
 use App\Models\SantriModel;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -179,6 +180,11 @@ class DenahUjianService
         return DenahUjianModel::select('id', 'nama_ruangan', 'total_kursi', 'susunan_denah')->orderby('nama_ruangan')->get();
     }
 
+    public function getAllRuang()
+    {
+        return RuangUjianModel::all();
+    }
+
     public function getDataCetakKartu($id)
     {
         $denah = DenahUjianModel::findOrFail($id);
@@ -187,6 +193,17 @@ class DenahUjianService
         return [
             'denah'   => $denah,
             'peserta' => $peserta
+        ];
+    }
+
+    public function getDataCetakDenah($id)
+    {
+        $denah = DenahUjianModel::findOrFail($id);
+
+        $susunan = is_string($denah->susunan_denah) ? json_decode($denah->susunan_denah, true) : $denah->susunan_denah;
+        return [
+            'denah'           => $denah,
+            'susunan'         => $susunan,
         ];
     }
 

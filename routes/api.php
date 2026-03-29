@@ -4,13 +4,14 @@ use App\Http\Controllers\Api\AbsensiGuruApiController;
 use App\Http\Controllers\Api\AbsensiSantriApiController;
 use App\Http\Controllers\Api\BankSoalApiController;
 use App\Http\Controllers\Api\DenahUjianApiController;
-use App\Http\Controllers\Api\JadwaKbmController;
 use App\Http\Controllers\Api\JadwalKbmApiController;
 use App\Http\Controllers\Api\JadwalUjianApiController;
 use App\Http\Controllers\Api\KelasApiController;
 use App\Http\Controllers\Api\MapelApiController;
-use App\Http\Controllers\Api\PegonApiController;
+use App\Http\Controllers\Api\MapelKelasApiController;
+use App\Http\Controllers\Api\NilaiUjianApiController;
 use App\Http\Controllers\Api\PelanggaranApiController;
+use App\Http\Controllers\Api\RaporApiController;
 use App\Http\Controllers\Api\SantriApiController;
 use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ Route::get('/kelas', [KelasApiController::class, 'findAll']);
 Route::get('/kelas/{id}', [KelasApiController::class, 'findById']);
 Route::post('/kelas', [KelasApiController::class, 'store']);
 Route::put('/kelas/{id}', [KelasApiController::class, 'update']);
+Route::get('/kelas/santri/{id}', [KelasApiController::class, 'findSantriByKelas']);
 Route::delete('/kelas/{id}', [KelasApiController::class, 'destroy']);
 
 // Api Mapel
@@ -48,11 +50,12 @@ Route::put('/mapel/{id}', [MapelApiController::class, 'update']);
 Route::delete('/mapel/{id}', [MapelApiController::class, 'destroy']);
 
 // Api Mapel Kelas
-Route::get('/mapel-kelas', [MapelApiController::class, 'findAll']);
-Route::get('/mapel-kelas/{id}', [MapelApiController::class, 'findById']);
-Route::post('/mapel-kelas', [MapelApiController::class, 'store']);
-Route::put('/mapel-kelas/{id}', [MapelApiController::class, 'update']);
-Route::delete('/mapel-kelas/{id}', [MapelApiController::class, 'destroy']);
+Route::get('/mapel-kelas', [MapelKelasApiController::class, 'findAll']);
+Route::get('/mapel-kelas/{id}', [MapelKelasApiController::class, 'findById']);
+Route::get('/mapel-kelas/kelas/{id}', [MapelKelasApiController::class, 'findByKelas']);
+Route::post('/mapel-kelas', [MapelKelasApiController::class, 'store']);
+Route::put('/mapel-kelas/{id}', [MapelKelasApiController::class, 'update']);
+Route::delete('/mapel-kelas/{id}', [MapelKelasApiController::class, 'destroy']);
 
 // Api Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmApiController::class, 'findAll']);
@@ -96,3 +99,8 @@ Route::post('/denah-ujian', [DenahUjianApiController::class, 'store']);
 // Api Bank Soal
 Route::get('/bank-soal', [BankSoalApiController::class, 'index']);
 Route::post('/bank-soal', [BankSoalApiController::class, 'store']);
+
+// Api Nilai Ujian
+Route::post('nilai-ujian', [NilaiUjianApiController::class, 'store']);
+Route::get('/rapor/kelas/{kelas_id}/santri/{santri_id}', [RaporApiController::class, 'getDetailRapor']);
+Route::post('rapor', [RaporApiController::class, 'store']);

@@ -86,14 +86,12 @@
 <body>
 
     @php
-        // LOGIKA SAKTI: Bikin Kamus Kode Pengawas Otomatis
         $kamusPengawas = [];
         $kodeUrut = 1;
 
         foreach (range(1, 6) as $hari) {
             foreach ($ruangList as $ruang) {
                 $jp = $pengawasPerHari[$hari][$ruang->id] ?? null;
-                // Hanya kalau ada pengawasnya
                 if ($jp && $jp->guru_id) {
                     if (!isset($kamusPengawas[$jp->guru_id])) {
                         $kamusPengawas[$jp->guru_id] = [
@@ -114,8 +112,8 @@
         </div>
 
         <div class="judul-simple">
-            <h4>JADWAL PENILAIAN AKHIR SEMESTER (PAS) GENAP</h4>
-            <h5>TAHUN PELAJARAN 2025/2026</h5>
+            <h4>JADWAL PENILAIAN AKHIR SEMESTER (PAS) {{ $pengaturanAktif->semester ?? 'Belum Diatur' }}</h4>
+            <h5>TAHUN AJARAN {{ $pengaturanAktif->tahun_ajaran ?? 'Belum Diatur' }}</h5>
         </div>
 
         <div class="judul-tabel">A. JADWAL MATA PELAJARAN</div>
@@ -152,7 +150,6 @@
             <div class="d-flex flex-wrap" style="gap: 10px; flex: 1;">
                 @foreach (range(1, 6) as $hari)
                     @php
-                        // Saring ruangan: hanya ambil yang GURU-nya ADA ISINYA
                         $ruangTerisi = [];
                         foreach ($ruangList as $ruang) {
                             $jp = $pengawasPerHari[$hari][$ruang->id] ?? null;
@@ -227,6 +224,9 @@
     <script>
         window.onload = function() {
             window.print();
+        };
+        window.onafterprint = function() {
+            window.close();
         };
     </script>
 </body>

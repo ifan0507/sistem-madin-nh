@@ -11,9 +11,13 @@ class NilaiUjianModel extends Model
     use HasFactory;
     protected $table = 'nilai_ujians';
     protected $fillable = [
-        'nilai',
         'santri_id',
         'mapel_id',
+        'kelas_id',
+        'tahun_ajaran',
+        'semester',
+        'guru_id',
+        'nilai',
     ];
 
     public function santri(): BelongsTo
@@ -24,5 +28,15 @@ class NilaiUjianModel extends Model
     public function mapel(): BelongsTo
     {
         return $this->belongsTo(MapelModel::class, 'mapel_id');
+    }
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(KelasModel::class, 'kelas_id');
+    }
+
+    public function guru(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'guru_id');
     }
 }

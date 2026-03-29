@@ -14,7 +14,6 @@ class DenahUjianWebController extends Controller
     public function __construct(
         protected DenahUjianService $denah_ujian_service,
         protected KelasService $kelas_service,
-
     ) {}
 
     public function index()
@@ -24,10 +23,12 @@ class DenahUjianWebController extends Controller
             'activePageMaster' => 'ujian-management',
         ];
 
+        $nama_ruang = $this->denah_ujian_service->getAllRuang();
         $kelas = $this->kelas_service->getAll();
         $denahList = $this->denah_ujian_service->getAll();
-        return view('pages.denah-ujian.index', compact('active', 'kelas', 'denahList'));
+        return view('pages.denah-ujian.index', compact('active', 'nama_ruang', 'kelas', 'denahList'));
     }
+
 
     public function generate(DenahUjianRequest $request)
     {
@@ -57,6 +58,12 @@ class DenahUjianWebController extends Controller
             'denah'   => $data['denah'],
             'peserta' => $data['peserta']
         ]);
+    }
+
+    public function cetakDenah($id)
+    {
+        $data = $this->denah_ujian_service->getDataCetakDenah($id);
+        return view('pages.denah-ujian.cetak-denah', $data);
     }
 
     public function destroy($id)

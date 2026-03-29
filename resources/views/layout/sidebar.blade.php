@@ -8,7 +8,7 @@
 
     <div class="sidenav-header" style="display:flex; justify-content:center; align-items:center; padding:12px 0;">
         <a class="navbar-brand m-0" href="/" style="display:flex; align-items:center; gap:8px; padding:0;">
-            <img src="{{ asset('assets/images/logo_pondok.jpg') }}" style="width:40px; height:40px; object-fit:contain;">
+            <img src="{{ asset('assets/images/logo_pondok.png') }}" style="width:40px; height:40px; object-fit:contain;">
             <span class="text-sm h2 mt-2 text-dark fw-semibold">Nurul Huda</span>
         </a>
     </div>
@@ -101,12 +101,12 @@
                 <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
                         : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#ujianMenu"
-                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'true' : 'false' }}">
+                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">assignment</i>
                     <span class="nav-link-text ms-1">Managemen Ujian</span>
                 </a>
 
-                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian']) ? 'show' : '' }}"
                     id="ujianMenu">
                     <ul class="nav ms-4">
                         <li class="nav-item">
@@ -125,6 +125,12 @@
                             <a class="nav-link {{ $activePage == 'ujian-bank-soal' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="{{ route('bank-soal') }}">
                                 Bank Soal
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'ujian-nilai-ujian' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="{{ route('nilai-ujian') }}">
+                                Nilai Ujian
                             </a>
                         </li>
                     </ul>

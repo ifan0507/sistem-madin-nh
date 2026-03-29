@@ -14,8 +14,12 @@
                         <div class="row g-3 align-items-center">
                             <div class="col-md-3">
                                 <div class="input-group input-group-outline">
-                                    <label class="form-label">Nama Ruangan</label>
-                                    <input type="text" name="nama_ruangan" class="form-control" required>
+                                    <select class="form-control" name="nama_ruangan" style="width: 100%;" required>
+                                        <option value="">-- Pilih Ruangan --</option>
+                                        @foreach ($nama_ruang as $r)
+                                            <option value="{{ $r->nama_ruang }}">Ruang {{ $r->nama_ruang }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -85,7 +89,7 @@
 
                                 <i class="fa-solid fa-chevron-down me-3 text-secondary toggle-icon"></i>
                                 <div>
-                                    <h6 class="mb-0 font-weight-bolder text-dark">{{ $denah->nama_ruangan }}</h6>
+                                    <h6 class="mb-0 font-weight-bolder text-dark">Ruang {{ $denah->nama_ruangan }}</h6>
                                     <p class="text-xs text-secondary mb-0">
                                         Kapasitas: <span class="font-weight-bold text-dark">{{ $denah->total_kursi }}
                                             Kursi</span>
@@ -94,10 +98,10 @@
                             </div>
 
                             <div class="btn-group ms-3" style="position: relative; z-index: 2;">
-                                <button type="button" class="btn btn-sm btn-outline-secondary mb-0 px-3"
-                                    onclick="cetakDenah({{ $denah->id }})" title="Cetak Denah Tempel">
+                                <a href="{{ route('denah-ujian.cetak-denah', $denah->id) }}" target="_blank"
+                                    class="btn btn-sm btn-outline-secondary mb-0 px-3" title="Cetak Denah Ujian">
                                     <i class="fa-solid fa-print me-1"></i> Denah
-                                </button>
+                                </a>
                                 <a href="{{ route('denah-ujian.cetak-kartu', $denah->id) }}" target="_blank"
                                     class="btn btn-sm btn-outline-secondary mb-0 px-3" title="Cetak Kartu Ujian">
                                     <i class="fa-solid fa-id-card-clip me-1"></i> Kartu

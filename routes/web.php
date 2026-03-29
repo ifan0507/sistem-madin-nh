@@ -9,6 +9,7 @@ use App\Http\Controllers\Web\JadwalUjianWebController;
 use App\Http\Controllers\Web\KelasWebController;
 use App\Http\Controllers\Web\MapelKelasWebController;
 use App\Http\Controllers\Web\MapelWebController;
+use App\Http\Controllers\Web\NilaiUjianWebController;
 use App\Http\Controllers\Web\PengaturanWebController;
 use App\Http\Controllers\Web\SantriWebController;
 use Illuminate\Support\Facades\Route;
@@ -65,7 +66,8 @@ Route::get('/denah-ujian', [DenahUjianWebController::class, 'index'])->name('den
 Route::post('/denah-ujian/generate', [DenahUjianWebController::class, 'generate'])->name('denah-ujian.generate');
 Route::post('/denah-ujian/{id}/acak-ulang', [DenahUjianWebController::class, 'acakUlang'])->name('denah-ujian.acak-ulang');
 Route::delete('/denah-ujian/{id}/delete', [DenahUjianWebController::class, 'destroy'])->name('denah.destroy');
-Route::get('/denah-ujian/{id}/cetak-kartu', [DenahUjianWebController::class, 'cetakKartu'])->name('denah-ujian.cetak-kartu');
+Route::get('/denah-ujian/cetak/{id}', [DenahUjianWebController::class, 'cetakDenah'])->name('denah-ujian.cetak-denah');
+Route::get('/denah-ujian/cetak-kartu/{id}', [DenahUjianWebController::class, 'cetakKartu'])->name('denah-ujian.cetak-kartu');
 
 // Bank Soal
 Route::get('/bank-soal', [BankSoalWebController::class, 'index'])->name('bank-soal');
@@ -80,4 +82,8 @@ Route::post('/jadwal-ujian/update-tanggal', [JadwalUjianWebController::class, 'u
 Route::post('/jadwal-ujian/update-mapel', [JadwalUjianWebController::class, 'updateMapel'])->name('jadwal-ujian.update-mapel');
 Route::post('/jadwal-ujian/update-pengawas', [JadwalUjianWebController::class, 'updatePengawas'])->name('jadwal-ujian.update-pengawas');
 Route::get('/jadwal-ujian/cetak', [JadwalUjianWebController::class, 'cetak'])->name('jadwal-ujian.cetak');
+
+// Route Nilai Ujian
+Route::get('/nilai-ujian', [NilaiUjianWebController::class, 'index'])->name('nilai-ujian');
+Route::get('/nilai-ujian/ajax', [NilaiUjianWebController::class, 'getNilaiAjax'])->name('nilai-ujian.ajax');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

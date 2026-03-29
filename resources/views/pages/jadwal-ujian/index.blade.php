@@ -150,7 +150,7 @@
                                                     @foreach ($ruangList as $ruang)
                                                         <th
                                                             class="text-center text-uppercase text-dark text-sm font-weight-bolder w-10 p-1">
-                                                            {{ $ruang->nama_ruang }}
+                                                            Ruang {{ $ruang->nama_ruang }}
                                                         </th>
                                                     @endforeach
                                                 </tr>
