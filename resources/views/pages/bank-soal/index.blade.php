@@ -1,18 +1,29 @@
 @extends('layout.template')
 @section('content')
+    <style>
+        .card-clickable {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1) !important;
+            cursor: pointer;
+        }
+    </style>
     <div class="content">
         <div class="container-fluid py-2">
             {{-- HEADER --}}
             <div class="row mb-4">
+
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-semua">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold text-secondary">Total Mapel
-                                            Diujikan
-                                        </p>
+                                            Diujikan</p>
                                         <h5 class="font-weight-bolder mb-0 text-success">
                                             {{ $totalMapel }} <span
                                                 class="text-sm font-weight-normal text-secondary">Mapel</span>
@@ -30,16 +41,14 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-sudah">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold text-secondary">Sudah
-                                            Mengumpulkan
-                                        </p>
+                                            Mengumpulkan</p>
                                         <h5 class="font-weight-bolder mb-0 text-success">
                                             {{ $sudahMengumpulkan }} <span
                                                 class="text-sm font-weight-normal text-secondary">Mapel</span>
@@ -59,14 +68,13 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-belum">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
                                     <div class="numbers">
                                         <p class="text-sm mb-0 text-uppercase font-weight-bold text-secondary">Belum
-                                            Mengumpulkan
-                                        </p>
+                                            Mengumpulkan</p>
                                         <h5 class="font-weight-bolder mb-0 text-danger">
                                             {{ $belumMengumpulkan }} <span
                                                 class="text-sm font-weight-normal text-secondary">Mapel</span>
@@ -93,16 +101,12 @@
                                     <div class="col-5">
                                         <div class="input-group input-group-static">
                                             <select class="form-control text-sm font-weight-bold" name="filter_tahun">
-                                                <option value="">-- Tahun --</option>
                                                 <option value="2024/2025"
-                                                    {{ request('filter_tahun') == '2024/2025' ? 'selected' : '' }}>2024/2025
-                                                </option>
+                                                    {{ $tahunAjaran == '2024/2025' ? 'selected' : '' }}>
+                                                    2024/2025</option>
                                                 <option value="2025/2026"
-                                                    {{ request('filter_tahun') == '2025/2026' ? 'selected' : '' }}>2025/2026
-                                                </option>
-                                                <option value="2026/2027"
-                                                    {{ request('filter_tahun') == '2026/2027' ? 'selected' : '' }}>2026/2027
-                                                </option>
+                                                    {{ $tahunAjaran == '2025/2026' ? 'selected' : '' }}>
+                                                    2025/2026</option>
                                             </select>
                                         </div>
                                     </div>
@@ -110,12 +114,9 @@
                                     <div class="col-5">
                                         <div class="input-group input-group-static">
                                             <select class="form-control text-sm font-weight-bold" name="filter_semester">
-                                                <option value="">-- Smt --</option>
-                                                <option value="Ganjil"
-                                                    {{ request('filter_semester') == 'Ganjil' ? 'selected' : '' }}>Ganjil
+                                                <option value="Ganjil" {{ $semester == 'Ganjil' ? 'selected' : '' }}>Ganjil
                                                 </option>
-                                                <option value="Genap"
-                                                    {{ request('filter_semester') == 'Genap' ? 'selected' : '' }}>Genap
+                                                <option value="Genap" {{ $semester == 'Genap' ? 'selected' : '' }}>Genap
                                                 </option>
                                             </select>
                                         </div>
@@ -190,7 +191,12 @@
                                                 <tbody>
                                                     @if (isset($mapelPerKelas[$kelas->id]))
                                                         @foreach ($mapelPerKelas[$kelas->id] as $mapel_kelas)
-                                                            <tr>
+                                                            @php
+                                                                $status = $mapel_kelas->bank_soal->isNotEmpty()
+                                                                    ? 'sudah'
+                                                                    : 'belum';
+                                                            @endphp
+                                                            <tr class="item-mapel" data-status="{{ $status }}">
                                                                 <td>
                                                                     <div class="d-flex px-3 py-1">
                                                                         <div
@@ -254,7 +260,7 @@
                                                         <tr>
                                                             <td colspan="4"
                                                                 class="text-center py-4 text-secondary text-sm">
-                                                                Belum ada mata pelajaran yang diatur untuk kelas ini.
+                                                                Data Soal Tidak Tersedia
                                                             </td>
                                                         </tr>
                                                     @endif
@@ -276,6 +282,53 @@
             $('#btnSubmitFilter').on('click', function() {
                 $(this).closest('form').submit();
             });
+
+
+            let currentFilter = 'semua';
+
+            $('#btn-filter-semua').on('click', function() {
+                if (currentFilter !== 'semua') {
+                    currentFilter = 'semua';
+
+                    $('.item-mapel').fadeIn();
+
+                    $('#btn-filter-sudah').removeClass('border border-success border-2');
+                    $('#btn-filter-belum').removeClass('border border-danger border-2');
+                }
+            });
+
+            $('#btn-filter-sudah').on('click', function() {
+                if (currentFilter === 'sudah') {
+                    currentFilter = null;
+                    $('.item-mapel').fadeIn();
+                    $(this).removeClass('border border-success border-1');
+                } else {
+                    currentFilter = 'sudah';
+
+                    $('.item-mapel').hide();
+                    $('.item-mapel[data-status="sudah"]').fadeIn();
+
+                    $(this).addClass('border border-success border-1');
+                    $('#btn-filter-belum').removeClass('border border-danger border-1');
+                }
+            });
+
+            $('#btn-filter-belum').on('click', function() {
+                if (currentFilter === 'belum') {
+                    currentFilter = null;
+                    $('.item-mapel').fadeIn();
+                    $(this).removeClass('border border-danger border-1');
+                } else {
+                    currentFilter = 'belum';
+
+                    $('.item-mapel').hide();
+                    $('.item-mapel[data-status="belum"]').fadeIn();
+
+                    $(this).addClass('border border-danger border-1');
+                    $('#btn-filter-sudah').removeClass('border border-success border-1');
+                }
+            });
+
         });
     </script>
 @endsection

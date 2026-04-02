@@ -70,6 +70,11 @@ class User extends Authenticatable
         return $this->hasMany(JadwalPengawasUjianModel::class, 'guru_id');
     }
 
+    public function kelas(): HasMany
+    {
+        return $this->hasMany(KelasModel::class, 'wali_kelas_id');
+    }
+
     #[Scope]
     public function is_guru(Builder $query)
     {

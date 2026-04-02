@@ -43,10 +43,13 @@ class JadwalKbmWebController extends Controller
         $dto = JadwalKBMDto::fromRequest($request);
         $jadwal = $this->jadwalKbmService->createOrUpdate($dto);
 
+        $bentrokIds = $this->jadwalKbmService->getJadwalBentrokIds();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Jadwal berhasil disimpan!',
-            'data' => $jadwal
+            'data' => $jadwal,
+            'bentrok_ids' => $bentrokIds
         ]);
     }
 }

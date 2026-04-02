@@ -101,12 +101,12 @@
                 <a class="nav-link text-dark" {{-- {{ in_array($activePage, ['akademik-management', 'akademik-kelas', 'akademik-pengampu-mapel', 'akademik-abses'])
                         ? 'active bg-gradient-primary text-white'
                         : 'text-dark' }}" --}} data-bs-toggle="collapse" href="#ujianMenu"
-                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian']) ? 'true' : 'false' }}">
+                    aria-expanded="{{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian', 'ujian-nilai-ujian-praktek']) ? 'true' : 'false' }}">
                     <i class="material-symbols-rounded">assignment</i>
                     <span class="nav-link-text ms-1">Managemen Ujian</span>
                 </a>
 
-                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array($activePage, ['ujian-jadwal-ujian', 'ujian-denah-ujian', 'ujian-bank-soal', 'ujian-nilai-ujian', 'ujian-nilai-ujian-praktek']) ? 'show' : '' }}"
                     id="ujianMenu">
                     <ul class="nav ms-4">
                         <li class="nav-item">
@@ -131,6 +131,12 @@
                             <a class="nav-link {{ $activePage == 'ujian-nilai-ujian' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="{{ route('nilai-ujian') }}">
                                 Nilai Ujian
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ $activePage == 'ujian-nilai-ujian-praktek' ? 'active fw-semibold' : 'text-dark' }}"
+                                href="{{ route('nilai-ujian-praktek') }}">
+                                Nilai Ujian Praktek
                             </a>
                         </li>
                     </ul>
@@ -164,7 +170,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'laporan-rapor-santri' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('rapor') }}">
                                 Rapor Santri
                             </a>
                         </li>

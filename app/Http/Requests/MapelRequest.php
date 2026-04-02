@@ -32,8 +32,8 @@ class MapelRequest extends FormRequest
                 Rule::unique('mapels', 'nama_mapel')->ignore($id, 'id')->where(function ($q) {
                     return $q->where('deleted_at', '0');
                 })
-            ]
-
+            ],
+            'kkm' => 'required|integer|min:0|max:100',
         ];
     }
 

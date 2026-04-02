@@ -1,11 +1,22 @@
 @extends('layout.template')
 @section('content')
+    <style>
+        .card-clickable {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card-clickable:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1) !important;
+        }
+    </style>
     <div class="content">
         <div class="container-fluid py-2">
             {{-- HEADER SUMMARY CARDS --}}
             <div class="row mb-4">
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-semua">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
@@ -31,7 +42,7 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-selesai">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
@@ -57,7 +68,7 @@
                 </div>
 
                 <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-sm card-clickable" id="btn-filter-belum">
                         <div class="card-body p-3">
                             <div class="row">
                                 <div class="col-8">
@@ -185,7 +196,11 @@
                                                 <tbody>
                                                     @if (count($kelas['list_mapel']) > 0)
                                                         @foreach ($kelas['list_mapel'] as $mapel)
-                                                            <tr>
+                                                            @php
+                                                                $statusNilai =
+                                                                    $mapel['status'] == 'Selesai' ? 'selesai' : 'belum';
+                                                            @endphp
+                                                            <tr class="item-mapel" data-status="{{ $statusNilai }}"">
                                                                 <td>
                                                                     <div class="d-flex px-3 py-1">
                                                                         <div
@@ -233,7 +248,7 @@
                                                                 <td class="align-middle text-center">
                                                                     <button type="button"
                                                                         class="btn btn-outline-info btn-sm d-inline-flex align-items-center justify-content-center rounded-circle btn-lihat-nilai"
-                                                                        data-bs-toggle="tooltip" title="Lihat/Edit Nilai'"
+                                                                        data-bs-toggle="tooltip" title="Lihat Nilai"
                                                                         data-kelas-id="{{ $kelas['kelas_id'] }}"
                                                                         data-mapel-id="{{ $mapel['mapel_id'] }}"
                                                                         data-mapel-nama="{{ $mapel['nama_mapel'] }}"
@@ -274,8 +289,7 @@
                         <i class="fa-solid fa-clipboard-list me-2"></i> Detail Nilai: <span
                             id="judulMapelModal">Loading...</span>
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
                     <div class="table-responsive">
@@ -377,6 +391,45 @@
                         );
                     }
                 });
+            });
+
+            let currentFilter = 'semua';
+
+
+            $('#btn-filter-semua').on('click', function() {
+                if (currentFilter !== 'semua') {
+                    currentFilter = 'semua';
+                    $('.item-mapel').fadeIn();
+
+                    $('#btn-filter-selesai').removeClass('border border-success border-1');
+                    $('#btn-filter-belum').removeClass('border border-danger border-1');
+                }
+            });
+
+            $('#btn-filter-selesai').on('click', function() {
+                if (currentFilter !== 'selesai') {
+                    currentFilter = 'selesai';
+
+                    $('.item-mapel').hide();
+                    $('.item-mapel[data-status="selesai"]').fadeIn();
+
+                    $(this).addClass('border border-success border-1');
+                    $('#btn-filter-semua').removeClass('border border-success border-1');
+                    $('#btn-filter-belum').removeClass('border border-danger border-1');
+                }
+            });
+
+            $('#btn-filter-belum').on('click', function() {
+                if (currentFilter !== 'belum') {
+                    currentFilter = 'belum';
+
+                    $('.item-mapel').hide();
+                    $('.item-mapel[data-status="belum"]').fadeIn();
+
+                    $(this).addClass('border border-danger border-1');
+                    $('#btn-filter-semua').removeClass('border border-success border-1');
+                    $('#btn-filter-selesai').removeClass('border border-success border-2');
+                }
             });
         });
     </script>

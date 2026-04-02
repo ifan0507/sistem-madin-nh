@@ -16,6 +16,7 @@ class MapelService
             'id',
             'kode_mapel',
             'nama_mapel',
+            'kkm',
         )->active()->orderby('created_at', 'asc')->get();
     }
 
@@ -25,6 +26,7 @@ class MapelService
             'id',
             'kode_mapel',
             'nama_mapel',
+            'kkm',
         )->findOrFail($id);
     }
 

@@ -39,11 +39,39 @@ class MapelKelasService
             ->get();
     }
 
+    public function getMapelKelasByKelasForJadwalKbm($id)
+    {
+        $mapelKelas = MapelKelasModel::select(
+            'mapel_kelas.id',
+            'mapel_kelas.guru_id',
+            'mapel_kelas.kelas_id',
+            'mapel_kelas.mapel_id',
+        )
+            ->join('mapels', 'mapels.id', '=', 'mapel_kelas.mapel_id')
+            ->with(['mapel', 'guru'])
+            ->active()
+            ->where('mapel_kelas.kelas_id', $id)
+            ->orderBy('mapels.kode_mapel', 'asc')
+            ->get();
+
+        return $mapelKelas->map(function ($item) {
+            $item->sudah_dijadwalkan = DB::table('jadwal_kbms')
+                ->where('mapel_kelas_id', $item->id)
+                ->exists();
+            return $item;
+        });
+    }
+
     public function getKelasCountMapel()
     {
-        return KelasModel::select('id', 'nama_kelas')
+        $kelas = KelasModel::select('id', 'nama_kelas')
             ->withCount('mapel_kelas')
             ->get();
+        return $kelas->sortBy(function ($k) {
+            $nama = strtolower(trim($k->nama_kelas));
+            if ($nama === 'sifir' || $nama === '0') return 0;
+            return (int) $nama;
+        })->values();
     }
 
     public function getById($id)

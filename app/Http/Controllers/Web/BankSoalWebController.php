@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Models\PengaturanModel;
 use App\Services\BankSoalService;
 use Illuminate\Http\Request;
 
@@ -21,9 +22,17 @@ class BankSoalWebController extends Controller
             'activePage' => 'ujian-bank-soal',
             'activePageMaster' => 'ujian-management',
         ];
-        $filterTahun = $request->query('filter_tahun');
-        $filterSemester = $request->query('filter_semester');
-        $data = $this->bank_soal_service->getBankSoal($filterTahun, $filterSemester);
+
+        $pengaturan = PengaturanModel::first();
+        $defaultTahun = $pengaturan ? $pengaturan->tahun_ajaran : '2025/2026';
+        $defaultSemester = $pengaturan ? $pengaturan->semester : 'Ganjil';
+
+        $tahunAjaran  = $request->query('filter_tahun', $defaultTahun);
+        $semester     = $request->query('filter_semester', $defaultSemester);
+        $status       = $request->query('filter_status');
+
+        $data = $this->bank_soal_service->getBankSoal($tahunAjaran, $semester, $status);
+
         return view('pages.bank-soal.index', [
             'active'            => $active,
             'kelasList'         => $data['kelasList'],
@@ -31,6 +40,9 @@ class BankSoalWebController extends Controller
             'totalMapel'        => $data['totalMapel'],
             'sudahMengumpulkan' => $data['sudahMengumpulkan'],
             'belumMengumpulkan' => $data['belumMengumpulkan'],
+            'tahunAjaran'       => $tahunAjaran,
+            'semester'          => $semester,
+            'status'            => $status,
         ]);
     }
 

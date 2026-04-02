@@ -12,14 +12,28 @@ class KelasService
      * Mengambil semua data
      */
 
+
     public function getAll()
     {
-        return KelasModel::select('id', 'nama_kelas')->get();
+        $kelas = KelasModel::select('id', 'nama_kelas', 'wali_kelas_id')
+            ->with('wali_kelas')
+            ->get();
+
+        return $kelas->sortBy(function ($k) {
+            $nama = strtolower(trim($k->nama_kelas));
+            if ($nama === 'sifir' || $nama === '0') return 0;
+            return (int) $nama;
+        })->values();
     }
 
     public function getAllKelasCountSantri()
     {
-        return KelasModel::select('id', 'nama_kelas')->withCount('santri')->get();
+        $kelas =  KelasModel::select('id', 'nama_kelas')->withCount('santri')->get();
+        return $kelas->sortBy(function ($k) {
+            $nama = strtolower(trim($k->nama_kelas));
+            if ($nama === 'sifir' || $nama === '0') return 0;
+            return (int) $nama;
+        })->values();
     }
 
     public function getById($id)
@@ -52,6 +66,26 @@ class KelasService
         $item = KelasModel::findOrFail($id);
         $payload = $data->toArray();
         return $item->update($payload);
+    }
+
+    public function updateWaliKelas($kelasId, $waliKelasId)
+    {
+        try {
+            $kelas = KelasModel::findOrFail($kelasId);
+
+            $kelas->wali_kelas_id = $waliKelasId ?: null;
+            $kelas->save();
+
+            return [
+                'success' => true,
+                'message' => 'Wali Kelas ' . getKelasArab($kelasId) . ' berhasil diperbarui.'
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem.'
+            ];
+        }
     }
 
     /**

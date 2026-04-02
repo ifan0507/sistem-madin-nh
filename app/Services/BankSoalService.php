@@ -16,11 +16,12 @@ class BankSoalService
         $this->rules = config('pegon_rules');
     }
 
-    public function getBankSoal($filterTahun = null, $filterSemester = null)
+    public function getBankSoal($filterTahun = null, $filterSemester = null, $filterStatus = null)
     {
         $pengaturan = PengaturanModel::select('semester', 'tahun_ajaran')->first();
         $tahunAjaranQuery = $filterTahun ?: ($pengaturan ? $pengaturan->tahun_ajaran : null);
         $semesterQuery = $filterSemester ?: ($pengaturan ? $pengaturan->semester : null);
+
         $kelasList = KelasModel::orderBy('id', 'asc')->get();
         $mapelKelas = MapelKelasModel::with([
             'mapel',
@@ -32,15 +33,28 @@ class BankSoalService
                 }
             }
         ])->active()->get();
+
         $totalMapel = $mapelKelas->count();
         $sudahMengumpulkan = $mapelKelas->filter(function ($item) {
             return $item->bank_soal->isNotEmpty();
         })->count();
         $belumMengumpulkan = $totalMapel - $sudahMengumpulkan;
+
+        if ($filterStatus === 'sudah') {
+            $mapelKelas = $mapelKelas->filter(function ($item) {
+                return $item->bank_soal->isNotEmpty();
+            });
+        } elseif ($filterStatus === 'belum') {
+            $mapelKelas = $mapelKelas->filter(function ($item) {
+                return $item->bank_soal->isEmpty();
+            });
+        }
+
         $mapelPerKelas = $mapelKelas->groupBy('kelas_id');
+
         return [
-            'kelasList'     => $kelasList,
-            'mapelPerKelas' => $mapelPerKelas,
+            'kelasList'         => $kelasList,
+            'mapelPerKelas'     => $mapelPerKelas,
             'totalMapel'        => $totalMapel,
             'sudahMengumpulkan' => $sudahMengumpulkan,
             'belumMengumpulkan' => $belumMengumpulkan,

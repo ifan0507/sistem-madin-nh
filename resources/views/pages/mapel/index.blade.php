@@ -46,7 +46,7 @@
                                                         class="btn btn-outline-secondary btn-sm btn-icon-round  btn-edit-mapel"
                                                         data-bs-toggle="tooltip" title="Edit"
                                                         data-id="{{ $m->id }}" data-kode="{{ $m->kode_mapel }}"
-                                                        data-nama="{{ $m->nama_mapel }}">
+                                                        data-nama="{{ $m->nama_mapel }}" data-kkm="{{ $m->kkm }}">
                                                         <i class="fa-solid fa-pencil" style="font-size: 12px;"></i>
                                                     </button>
 
@@ -98,6 +98,11 @@
                             <label class="form-label">Nama Mapel</label>
                             <input type="text" class="form-control" name="nama_mapel" id="nama_mapel">
                         </div>
+                        <div class="input-group input-group-outline my-3" id="group-kkm">
+                            <label class="form-label">KKM</label>
+                            <input type="number" class="form-control" name="kkm" id="kkm" min="0"
+                                max="100">
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn ml-auto btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -120,6 +125,7 @@
 
                 // HAPUS is-filled
                 $('#group-nama').removeClass('is-filled');
+                $('#group-kkm').removeClass('is-filled');
                 $('#form-mapel').attr('action', "{{ route('mapel.store') }}");
                 submitMethod = 'POST';
                 $('#modal-mapel').modal('show');
@@ -185,14 +191,18 @@
                 let id = $(this).data('id');
                 let kode = $(this).data('kode');
                 let nama = $(this).data('nama');
+                let kkm = $(this).data('kkm');
 
                 $('#modal-title-default').text('Edit Mata Pelajaran');
 
                 $('#kode_mapel').val(kode);
                 $('#nama_mapel').val(nama);
+                $('#kkm').val(kkm);
+
 
                 $('#group-kode').addClass('is-filled');
                 $('#group-nama').addClass('is-filled');
+                $('#group-kkm').addClass('is-filled');
 
                 let updateUrl = "{{ url('/mapel') }}/" + id + "/update";
                 $('#form-mapel').attr('action', updateUrl);

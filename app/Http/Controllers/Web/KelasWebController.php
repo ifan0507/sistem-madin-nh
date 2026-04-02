@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Services\KelasService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class KelasWebController extends Controller
 {
     public function __construct(
-        protected KelasService $kelas_service
+        protected KelasService $kelas_service,
+        protected UserService $user_service
     ) {}
 
     public function index()
@@ -20,7 +22,21 @@ class KelasWebController extends Controller
         ];
 
         $kelas = $this->kelas_service->getAllKelasCountSantri();
-        return view('pages.kelas.index', compact('active', 'kelas'));
+        return view('pages.kelas.index', compact('active', 'kelas',));
+    }
+
+    public function getDataModalWali()
+    {
+        $kelas = $this->kelas_service->getAll();
+        $gurus = $this->user_service->getAllGuru();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'kelas' => $kelas,
+                'gurus' => $gurus
+            ]
+        ]);
     }
 
     public function getSantriByKelas($id)
@@ -28,51 +44,23 @@ class KelasWebController extends Controller
         $data = $this->kelas_service->getSantriByKelas($id);
         return response()->json($data);
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function updateWali(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'kelas_id' => 'required|exists:kelas,id',
+            'wali_kelas_id' => 'nullable|exists:users,id'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $result = $this->kelas_service->updateWaliKelas(
+            $request->kelas_id,
+            $request->wali_kelas_id
+        );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if ($result['success']) {
+            return response()->json($result);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json($result, 500);
     }
 }

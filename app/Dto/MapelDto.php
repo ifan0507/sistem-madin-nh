@@ -9,6 +9,7 @@ class MapelDto
     public function __construct(
         private readonly string $kode_mapel,
         private readonly string $nama_mapel,
+        private readonly int $kkm,
     ) {}
 
     public static function fromRequest(Request $request): self
@@ -16,6 +17,7 @@ class MapelDto
         return new self(
             kode_mapel: $request->input('kode_mapel'),
             nama_mapel: $request->input('nama_mapel'),
+            kkm: $request->input('kkm'),
         );
     }
 
@@ -24,6 +26,7 @@ class MapelDto
         return [
             'kode_mapel' => $this->kode_mapel,
             'nama_mapel' => $this->nama_mapel,
+            'kkm' => $this->kkm,
         ];
     }
 }

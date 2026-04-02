@@ -14,6 +14,23 @@
             font-family: 'Times New Roman', Times, serif;
         }
 
+        .kop-surat {
+            width: 100%;
+            border-bottom: 3px double #000;
+            margin-bottom: 15px;
+        }
+
+        .kop-surat table {
+            width: 100%;
+            border: none;
+        }
+
+        .kop-surat td {
+            border: none;
+            padding: 0;
+            text-align: center;
+        }
+
         .judul-simple {
             text-align: center;
             font-weight: bold;
@@ -63,8 +80,8 @@
 
         @media print {
             @page {
-                size: 330mm 215mm landscape;
-                margin: 10mm;
+                size: 215.9mm 330mm portrait;
+                margin: 1cm 1.5cm;
             }
 
             body {
@@ -105,14 +122,39 @@
     @endphp
 
     <div class="container-fluid py-2">
-        <div class="text-end mb-3 btn-print">
-            <button onclick="window.print()" class="btn btn-dark btn-sm"><i class="fa-solid fa-print me-2"></i>
-                Print</button>
-            <button onclick="window.close()" class="btn btn-light btn-sm border">Tutup</button>
+
+        <div class="kop-surat">
+            <table style="width: 100%; border: none;">
+                <tr>
+                    <td width="15%" style="vertical-align: middle; padding-bottom: 5px;">
+                        <img src="{{ asset('assets/images/logo_pondok.png') }}" alt="Logo"
+                            style="width: 90px; height: auto;">
+                    </td>
+                    <td width="85%" style="vertical-align: middle; padding-bottom: 5px;">
+                        <div style="font-weight: bold; font-size: 14pt;">YAYASAN PONDOK PESANTREN
+                            NURUL HUDA</div>
+
+                        <div style="font-weight: bold; font-size: 11pt;">Akte Notaris : TAUFIQ HIDAYAT, SH., M, Kn
+                            No. 93 / 2015</div>
+                        <div style="font-weight: bold; font-size: 11pt;">(AHU-0558.AH.02.01.TAHUN 2010)</div>
+                        <div style="font-weight: bold; font-size: 18pt; margin: 3px 0;">MADIN NURUL
+                            HUDA</div>
+                        <div style="font-weight: bold; font-size: 12pt;">MANGUNSARI TEKUNG LUMAJANG 67381</div>
+                        <div style="font-weight: bold; font-size: 11pt;">NSMD : 123235080116</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"
+                        style="border-top: 1.5px solid #000; padding-top: 4px; padding-bottom: 2px; font-size: 10pt;">
+                        Sekretariat : Jl. Pesantren No.178 Mangunsari Tekung Lumajang Hp. 0822-4718-6060
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div class="judul-simple">
-            <h4>JADWAL PENILAIAN AKHIR SEMESTER (PAS) {{ $pengaturanAktif->semester ?? 'Belum Diatur' }}</h4>
+            <h4>JADWAL PENILAIAN AKHIR SEMESTER (PAS) {{ strtolower($pengaturanAktif->semester ?? 'Belum Diatur') }}
+            </h4>
             <h5>TAHUN AJARAN {{ $pengaturanAktif->tahun_ajaran ?? 'Belum Diatur' }}</h5>
         </div>
 

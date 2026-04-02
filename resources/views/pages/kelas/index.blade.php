@@ -6,46 +6,37 @@
                 <div class="ms-3">
                     <h3 class="mb-4 h4 font-weight-bolder">Kelas Madin</h3>
                 </div>
+                <div class="col-xl-3 col-sm-6 mb-4 cursor-pointer" id="btn-manage-wali">
+                    <div class="card h-100 hover-shadow transition-all">
+                        <div class="card-header p-2 ps-3">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <p class="text-sm mb-0 text-capitalize text-secondary">Pengaturan Sitem</p>
+                                    <h4 class="mb-0 text-dark font-weight-bold">Manage Wali Kelas</h4>
+                                </div>
+                                <div
+                                    class="icon icon-md icon-shape bg-gradient-success shadow-success shadow  border-radius-lg text-center align-items-center justify-content-center">
+                                    <i class="fa-solid fa-chalkboard-user text-white opacity-10 text-lg"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="dark horizontal my-0">
+                        <div class="card-footer p-2 ps-3 d-flex justify-content-between align-items-center">
+                            <p class="mb-0 text-sm text-secondary">Atur guru pengampu kelas</p>
+                            <i class="fa fa-arrow-right text-xs text-secondary"></i>
+                        </div>
+                    </div>
+                </div>
                 @foreach ($kelas as $index => $k)
-                    @php
-                        $textArab = $k->nama_kelas;
-                        $iconArab = '0';
-
-                        $cleanName = strtolower(trim($k->nama_kelas));
-
-                        if ($cleanName == 'sifir' || $cleanName == '0' || $index == 0) {
-                            $textArab = 'صفر';
-                            $iconArab = '٠';
-                        } elseif ($cleanName == '1') {
-                            $textArab = 'الأول';
-                            $iconArab = '١';
-                        } elseif ($cleanName == '2') {
-                            $textArab = 'الثاني';
-                            $iconArab = '٢';
-                        } elseif ($cleanName == '3') {
-                            $textArab = 'الثالث';
-                            $iconArab = '٣';
-                        } elseif ($cleanName == '4') {
-                            $textArab = 'الرابع';
-                            $iconArab = '٤';
-                        } elseif ($cleanName == '5') {
-                            $textArab = 'الخامس';
-                            $iconArab = '٥';
-                        } elseif ($cleanName == '6') {
-                            $textArab = 'السادس';
-                            $iconArab = '٦';
-                        }
-                    @endphp
-
                     <div class="col-xl-3 col-sm-6 mb-4 cursor-pointer btn-filter-kelas" data-id="{{ $k->id }}"
-                        data-nama="{{ $textArab }}">
+                        data-nama="{{ getKelasArab($k->id) }}">
                         <div class="card h-100">
                             <div class="card-header p-2 ps-3">
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <p class="text-sm mb-0 text-capitalize text-secondary">Kelas / الفَصْلُ</p>
 
-                                        <h4 class="mb-0 text-dark font-weight-bold"> {{ $textArab }}</h4>
+                                        <h4 class="mb-0 text-dark font-weight-bold"> {{ getKelasArab($k->id) }}</h4>
                                         {{-- <p class="text-xs text-success font-weight-bold mb-0 mt-1"
                                             style="font-family: 'Amiri', serif; font-size: 1.2rem !important;">
                                           
@@ -56,7 +47,7 @@
                                         class="icon icon-md icon-shape bg-gradient-success shadow-dark shadow text-center border-radius-lg d-flex align-items-center justify-content-center">
                                         <span class="text-white opacity-10"
                                             style="font-family: 'Amiri', serif; font-size: 1.8rem; font-weight: bold; line-height: 1;">
-                                            {{ $iconArab }}
+                                             {{ getKelasIconArab($k->id) }}
                                         </span>
                                     </div>
                                 </div>
@@ -150,6 +141,45 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Wali Kelas --}}
+    <div class="modal fade" id="modalWaliKelas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title text-white"><i class="fa-solid fa-chalkboard-user me-2"></i> Plotting Wali Kelas
+                        Madin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0 table-striped">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-center"
+                                        width="10%">No</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                                        width="30%">Kelas</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                                        width="60%">Wali Kelas / Guru Pengampu</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-wali-kelas">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="loading-wali-modal" class="text-center p-5" style="display: none;">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="text-sm text-secondary mt-2">Memuat data...</p>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         $(document).ready(function() {
 
@@ -171,7 +201,7 @@
                     type: "GET",
                     success: function(data) {
                         $('#loading-santri').hide();
-                        
+
                         if (data.length > 0) {
                             let html = '';
                             $.each(data, function(index, santri) {
@@ -426,6 +456,135 @@
                 });
             });
 
+            let globalGurus = [];
+
+            $('#btn-manage-wali').on('click', function() {
+                $('#modalWaliKelas').modal('show');
+                loadDataTabelWali();
+            });
+
+            function loadDataTabelWali() {
+                $('#tbody-wali-kelas').empty();
+                $('#loading-wali-modal').show();
+
+                $.ajax({
+                    url: "{{ route('kelas.modal-wali') }}",
+                    type: "GET",
+                    success: function(res) {
+                        $('#loading-wali-modal').hide();
+                        if (res.status === 'success') {
+                            globalGurus = res.data.gurus;
+
+                            let html = '';
+                            $.each(res.data.kelas, function(index, kelas) {
+                                let judulKelas = getKelasArabJS(kelas.nama_kelas);
+
+                                html += `<tr class="align-middle">
+                                    <td class="text-center text-sm">${index + 1}</td>
+                                    <td>
+                                        <h6 class="mb-0 text-sm font-weight-bold">${judulKelas}</h6>
+                                    </td>
+                                    <td>
+                                        <div class="input-group input-group-sm input-group-static my-1">
+                                            <select class="form-control text-sm select-wali-auto" data-kelas-id="${kelas.id}">
+                                                <option value="">-- Pilih Wali Kelas --</option>
+                                                ${generateOptionGuru(kelas.wali_kelas_id)}
+                                            </select>
+                                        </div>
+                                    </td>
+                                 </tr>`;
+                            });
+                            $('#tbody-wali-kelas').html(html);
+                            $('.select-wali-auto').select2({
+                                dropdownParent: $('#modalWaliKelas'),
+                                width: '100%',
+                                placeholder: "-- Ketik Nama Guru --",
+                                allowClear: true
+                            });
+                        }
+                    },
+                    error: function() {
+                        $('#loading-wali-modal').hide();
+                        $('#tbody-wali-kelas').html(
+                            '<tr><td colspan="3" class="text-center text-danger py-3">Gagal memuat data.</td></tr>'
+                        );
+                    }
+                });
+            }
+
+            function getKelasArabJS(namaKelas) {
+                let cleanName = String(namaKelas).toLowerCase().trim();
+                switch (cleanName) {
+                    case 'sifir':
+                    case '0':
+                        return 'صفر';
+                    case '1':
+                        return 'الأول';
+                    case '2':
+                        return 'الثاني';
+                    case '3':
+                        return 'الثالث';
+                    case '4':
+                        return 'الرابع';
+                    case '5':
+                        return 'الخامس';
+                    case '6':
+                        return 'السادس';
+                    default:
+                        return namaKelas;
+                }
+            }
+
+            function generateOptionGuru(selectedId) {
+                let options = '';
+                $.each(globalGurus, function(i, guru) {
+                    let selected = (guru.id == selectedId) ? 'selected' : '';
+                    options +=
+                        `<option value="${guru.id}" ${selected}>${guru.name} (${guru.kode_guru || ''})</option>`;
+                });
+                return options;
+            }
+
+            $(document).on('change', '.select-wali-auto', function() {
+                let selectEl = $(this);
+                let kelasId = selectEl.data('kelas-id');
+                let waliKelasId = selectEl.val();
+
+                $.ajax({
+                    url: "{{ route('kelas.update-wali') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kelas_id: kelasId,
+                        wali_kelas_id: waliKelasId
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'center',
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: res.message
+                            });
+
+                        }
+                    },
+                    error: function(xhr) {
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Gagal memperbarui wali kelas.',
+                            confirmButtonColor: '#2dce89'
+                        });
+                    }
+                });
+            });
         });
     </script>
 @endsection

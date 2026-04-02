@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Dto\NilaiUjianDto;
-use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
 use App\Models\NilaiUjianModel;
 use App\Models\SantriModel;
@@ -11,9 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class NilaiUjianService
 {
+    public function __construct(
+        protected KelasService $kelas_service
+    ) {}
     public function getNilaiUjian($tahunAjaran, $semester)
     {
-        $kelas = KelasModel::all();
+        $kelas = $this->kelas_service->getAll();
 
         $santriPerKelas = SantriModel::select('kelas_id', DB::raw('count(*) as total'))
             ->groupBy('kelas_id')

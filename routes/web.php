@@ -9,8 +9,10 @@ use App\Http\Controllers\Web\JadwalUjianWebController;
 use App\Http\Controllers\Web\KelasWebController;
 use App\Http\Controllers\Web\MapelKelasWebController;
 use App\Http\Controllers\Web\MapelWebController;
+use App\Http\Controllers\Web\NilaiUjianPraktekWebController;
 use App\Http\Controllers\Web\NilaiUjianWebController;
 use App\Http\Controllers\Web\PengaturanWebController;
+use App\Http\Controllers\Web\RaporWebController;
 use App\Http\Controllers\Web\SantriWebController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +42,8 @@ Route::delete('/guru/{id}/delete', [GuruWebController::class, 'destroy'])->name(
 // Kelas
 Route::get('/kelas', [KelasWebController::class, 'index'])->name('kelas');
 Route::get('/kelas/santri-kelas/{kelas_id}', [KelasWebController::class, 'getSantriByKelas'])->name('kelas.getSantriByKelas');
+Route::get('/kelas/data-modal-wali', [KelasWebController::class, 'getDataModalWali'])->name('kelas.modal-wali');
+Route::post('/kelas/update-wali', [KelasWebController::class, 'updateWali'])->name('kelas.update-wali');
 
 // Mapel
 Route::get('/mapel', [MapelWebController::class, 'index'])->name('mapel');
@@ -50,6 +54,7 @@ Route::delete('/mapel/{id}/delete', [MapelWebController::class, 'destroy'])->nam
 // Mapel Kelas
 Route::get('/mapel-kelas', [MapelKelasWebController::class, 'index'])->name('mapel-kelas');
 Route::get('/mapel-kelas/kelas/{kelas_id}', [MapelKelasWebController::class, 'getMapelKelasByKelas'])->name('mapel-kelas.getMapelKelasByKelas');
+Route::get('/mapel-kelas/kelas/jadwal-kbm/{kelas_id}', [MapelKelasWebController::class, 'getMapelKelasByKelasForJadwalKbm'])->name('mapel-kelas.getMapelKelasByKelasForJadwalKbm');
 Route::get('/mapel-kelas/guru', [MapelKelasWebController::class, 'getAllGuru'])->name('mapel-kelas.getAllGuru');
 Route::get('/mapel-kelas/mapel', [MapelKelasWebController::class, 'getAllMapel'])->name('mapel-kelas.getAllMapel');
 Route::post('/mapel-kelas/store', [MapelKelasWebController::class, 'store'])->name('mapel-kelas.store');
@@ -86,4 +91,20 @@ Route::get('/jadwal-ujian/cetak', [JadwalUjianWebController::class, 'cetak'])->n
 // Route Nilai Ujian
 Route::get('/nilai-ujian', [NilaiUjianWebController::class, 'index'])->name('nilai-ujian');
 Route::get('/nilai-ujian/ajax', [NilaiUjianWebController::class, 'getNilaiAjax'])->name('nilai-ujian.ajax');
+
+// Route Nilai Ujian Praktek
+Route::get('/nilai-ujian-praktek', [NilaiUjianPraktekWebController::class, 'index'])->name('nilai-ujian-praktek');
+Route::post('/nilai-ujian-praktek/store', [NilaiUjianPraktekWebController::class, 'store'])->name('nilai-ujian-praktek.store');
+Route::get('/nilai-praktek/get-santri/{kelasId}', [NilaiUjianPraktekWebController::class, 'getSantriByKelas']);
+Route::post('/nilai-praktek/store-bulk', [NilaiUjianPraktekWebController::class, 'storeBulk'])->name('nilai-ujian-praktek.store-bulk');
+
+// Rapor
+Route::get('/rapor', [RaporWebController::class, 'index'])->name('rapor');
+Route::get('/rapor/santri-kelas', [RaporWebController::class, 'getSantriKelasFromRapor'])->name('rapor.getSantriKelasFromRapor');
+Route::get('/rapor/kelas/{kelas_id}/santri/{santri_id}', [RaporWebController::class, 'detail'])->name('rapor.detail');
+Route::post('/rapor/bulk-create', [RaporWebController::class, 'bulkCreate'])->name('rapor.bulk-create');
+Route::get('/rapor/kelas/{kelasId}/ranking', [RaporWebController::class, 'getRankingKelas'])->name('rapor.getRankingKelas');
+Route::get('/rapor/kelas/{kelasId}/santri/{santriId}/cetak', [RaporWebController::class, 'cetakSingle'])->name('rapor.cetak-single');
+Route::get('/rapor/kelas/{kelasId}/cetak-massal', [RaporWebController::class, 'cetakBulk'])->name('rapor.cetak-bulk');
+Route::get('/rapor/kelas/{kelasId}/cetak-juara', [RaporWebController::class, 'cetakDaftarJuara'])->name('rapor.cetak-daftar-juara');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

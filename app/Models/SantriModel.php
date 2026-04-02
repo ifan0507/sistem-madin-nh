@@ -43,7 +43,13 @@ class SantriModel extends Model
     {
         return $this->hasMany(PelanggaranModel::class, 'santri_id');
     }
-     #[Scope]
+
+    public function nilai_praktek()
+    {
+        return $this->hasMany(NilaiUjianPraktekModel::class, 'santri_id');
+    }
+
+    #[Scope]
     protected function active(Builder $query): void
     {
         $query->where('deleted_at', '0');

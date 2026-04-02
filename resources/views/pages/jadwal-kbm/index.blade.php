@@ -4,6 +4,11 @@
         .table.table-bordered> :not(caption)>*>* {
             border: 1px solid #dee2e6 !important;
         }
+
+        .jadwal-bentrok {
+            background-color: #ffcccc !important;
+            border: 1px solid #ff7b7b !important;
+        }
     </style>
     <div class="content">
         <div class="container-fluid py-2">
@@ -43,6 +48,47 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $jadwalBentrokIds = [];
+                                    $hari_list = ['Sabtu', 'Ahad', 'Senin', 'Selasa', 'Rabu', 'Kamis'];
+
+                                    foreach ($hari_list as $h) {
+                                        $guru_per_hari = [];
+
+                                        foreach ($kelas as $kls) {
+                                            $isKelasMalam = in_array($kls->id, [6, 7]);
+
+                                            $jdwl = $kls->jadwal_kbms->where('hari', $h)->first();
+
+                                            if ($jdwl && $jdwl->mapel_kelas) {
+                                                $guruId = $jdwl->mapel_kelas->guru_id;
+
+                                                if (!isset($guru_per_hari[$guruId])) {
+                                                    $guru_per_hari[$guruId] = ['pagi' => [], 'malam' => []];
+                                                }
+
+                                                if ($isKelasMalam) {
+                                                    $guru_per_hari[$guruId]['malam'][] = $jdwl->id;
+                                                } else {
+                                                    $guru_per_hari[$guruId]['pagi'][] = $jdwl->id;
+                                                }
+                                            }
+                                        }
+
+                                        foreach ($guru_per_hari as $guruId => $jadwalGuru) {
+                                            if (count($jadwalGuru['pagi']) > 1) {
+                                                $jadwalBentrokIds = array_merge($jadwalBentrokIds, $jadwalGuru['pagi']);
+                                            }
+                                            if (count($jadwalGuru['malam']) > 1) {
+                                                $jadwalBentrokIds = array_merge(
+                                                    $jadwalBentrokIds,
+                                                    $jadwalGuru['malam'],
+                                                );
+                                            }
+                                        }
+                                    }
+                                @endphp
+
                                 @foreach ($kelas as $index => $k)
                                     <tr>
                                         <td class="align-middle text-center text-sm">
@@ -60,15 +106,23 @@
 
                                             <td class="align-middle text-center p-2">
                                                 @if ($jadwal)
-                                                    <div class="box-jadwal-isi btn-atur-jadwal"
+                                                    @php
+                                                        $isBentrok = in_array($jadwal->id, $jadwalBentrokIds);
+                                                    @endphp
+
+                                                    <div class="box-jadwal-isi btn-atur-jadwal {{ $isBentrok ? 'jadwal-bentrok' : '' }}"
+                                                        data-kelas-id="{{ $k->id }}"
                                                         data-kelas-id="{{ $k->id }}"
                                                         data-kelas-nama="{{ getKelasArab($k->id) }}"
                                                         data-hari="{{ $hari }}" data-jadwal-id="{{ $jadwal->id }}"
                                                         data-mapel-kelas-id="{{ $jadwal->mapel_kelas_id }}">
+
                                                         <h6 class="mb-0 text-xs text-dark">
-                                                            {{ $jadwal->mapel_kelas->mapel->nama_mapel }}</h6>
-                                                        <p class="text-xxs text-secondary mb-0">Ust.
-                                                            {{ $jadwal->mapel_kelas->guru->name }}</p>
+                                                            {{ $jadwal->mapel_kelas->mapel->nama_mapel }}
+                                                        </h6>
+                                                        <p class="text-xxs text-secondary mb-0">
+                                                            {{ $jadwal->mapel_kelas->guru->name }}
+                                                        </p>
                                                     </div>
                                                 @else
                                                     <div class="box-jadwal-kosong btn-atur-jadwal"
@@ -161,7 +215,7 @@
                 $('#modal-atur-jadwal').modal('show');
 
                 $.ajax({
-                    url: `/mapel-kelas/kelas/${kelasId}`,
+                    url: `/mapel-kelas/kelas/jadwal-kbm/${kelasId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
@@ -169,8 +223,10 @@
 
                         if (data.length > 0) {
                             $.each(data, function(key, item) {
+                                let icon = item.sudah_dijadwalkan ? '✅' : '❌';
+                                let namaGuruBersih = `${item.guru.name}`;
                                 options +=
-                                    `<option value="${item.id}">${item.mapel.nama_mapel}  —  Ust/Ustzh. ${item.guru.name}</option>`;
+                                    `<option value="${item.id}" data-mapel="${item.mapel.nama_mapel}" data-guru="${namaGuruBersih}">${item.mapel.nama_mapel}  —  ${item.guru.name} ${icon}</option>`;
                             });
                         } else {
                             options =
@@ -203,10 +259,9 @@
                     return;
                 }
 
-                let selectText = $('#select-jadwal-mapel option:selected').text();
-                let textParts = selectText.split('  —  ');
-                let mapelNama = textParts[0];
-                let guruNama = textParts[1] ? textParts[1] : '';
+                let selectedOption = $('#select-jadwal-mapel option:selected');
+                let mapelNama = selectedOption.data('mapel');
+                let guruNama = selectedOption.data('guru');
 
                 $('.btn-simpan-jadwal').prop('disabled', true).html(
                     '<span class="spinner-border spinner-border-sm"></span> Menyimpan...');
@@ -231,7 +286,6 @@
                         if (kotakJadwalTerpilih) {
                             kotakJadwalTerpilih.removeClass('box-jadwal-kosong').addClass(
                                 'box-jadwal-isi');
-
                             kotakJadwalTerpilih.html(`
                                 <h6 class="mb-0 text-xs text-dark">${mapelNama}</h6>
                                 <p class="text-xxs text-secondary mb-0">${guruNama}</p>
@@ -241,7 +295,14 @@
                             kotakJadwalTerpilih.hide().fadeIn(400);
                         }
 
+                        if (response.bentrok_ids) {
+                            $('.btn-atur-jadwal').removeClass('jadwal-bentrok');
 
+                            response.bentrok_ids.forEach(function(bentrokId) {
+                                $(`.btn-atur-jadwal[data-jadwal-id="${bentrokId}"]`)
+                                    .addClass('jadwal-bentrok');
+                            });
+                        }
                         $('#form-atur-jadwal')[0].reset();
                         $('#select-jadwal-mapel').val(null).trigger('change');
                     },

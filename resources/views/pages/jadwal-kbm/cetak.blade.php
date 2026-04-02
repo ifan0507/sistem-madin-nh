@@ -61,18 +61,39 @@
             padding: 8px;
         }
 
+
         @media print {
             @page {
-                size: landscape;
-                margin: 1cm;
+                size: 330mm 215.9mm;
+                margin: 10mm;
             }
 
             body {
                 -webkit-print-color-adjust: exact;
+                color-adjust: exact;
             }
 
             .btn-print {
                 display: none;
+            }
+
+            .container-fluid {
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid !important;
+                page-break-after: auto;
+            }
+
+            thead {
+                display: table-header-group;
             }
         }
     </style>
@@ -82,11 +103,11 @@
 
     <div class="container-fluid py-4">
 
-        <div class="text-end mb-3 btn-print">
+        {{-- <div class="text-end mb-3 btn-print">
             <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print me-2"></i> Print
                 Sekarang</button>
             <button onclick="window.close()" class="btn btn-light border">Tutup</button>
-        </div>
+        </div> --}}
 
         <table width="100%" style="font-family: 'Times New Roman', Times, serif; color: #000;">
             <tr>
@@ -115,7 +136,6 @@
             <div class="judul-dokumen">JADWAL PELAJARAN</div>
             <div class="sub-judul">TAHUN AJARAN {{ $pengaturanAktif->tahun_ajaran ?? 'Belum Diatur' }}</div>
         </div>
-
 
 
         <table class="table table-bordered text-center w-100 mt-4">

@@ -37,6 +37,12 @@ class MapelKelasWebController extends Controller
         return response()->json($data);
     }
 
+    public function getMapelKelasByKelasForJadwalKbm($id)
+    {
+        $data = $this->mapelKelasService->getMapelKelasByKelasForJadwalKbm($id);
+        return response()->json($data);
+    }
+
     public function getAllGuru()
     {
         $data = $this->guruService->getAllGuru();

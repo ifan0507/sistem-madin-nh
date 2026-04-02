@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 class JadwalKBMDto
 {
     public function __construct(
-        private readonly ?int $id,
-        private readonly int $mapel_kelas_id,
-        private readonly string $hari,
+        public readonly ?int $id,
+        public readonly int $mapel_kelas_id,
+        public readonly string $hari,
 
     ) {}
 
