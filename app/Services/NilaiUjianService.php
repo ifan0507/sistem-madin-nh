@@ -13,6 +13,7 @@ class NilaiUjianService
     public function __construct(
         protected KelasService $kelas_service
     ) {}
+
     public function getNilaiUjian($tahunAjaran, $semester)
     {
         $kelas = $this->kelas_service->getAll();

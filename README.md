@@ -57,3 +57,22 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## SOAL UJIAN
+{
+  "mapel_kelas_id": 4,
+  "tahun_ajaran" : "2025/2026",
+  "semester" : "Ganjil",
+  "soal": [
+    "apa yang dinamakan agama islam itu?",
+    "sebutkan rukun islam yang lima secara berurutan!",
+    "apa yang dinamakan iman dan sebutkan rukunnya!",
+    "apa yang dimaksud dengan thoharoh atau bersuci?",
+    "sebutkan macam macam air yang suci dan mensucikan!",
+    "sebutkan rukun wudhu yang enam secara berurutan!",
+    "hal hal apa saja yang bisa membatalkan wudhu?",
+    "apa yang dimaksud dengan najis dan berikan contohnya!",
+    "sebutkan syarat sahnya melakukan sholat fardhu!",
+    "hal hal apa saja yang dapat membatalkan sholat?"
+  ]
+}

@@ -12,11 +12,20 @@ class AbsensiSantriModel extends Model
     protected $table = 'absensi_santris';
     protected $fillable = [
         'santri_id',
+        'tanggal',
+        'kelas_id',
         'status',
+        'tahun_ajaran',
+        'semester',
     ];
 
     public function santri(): BelongsTo
     {
         return $this->belongsTo(SantriModel::class, 'santri_id');
+    }
+
+    public function kelas(): BelongsTo
+    {
+        return $this->belongsTo(KelasModel::class, 'kelas_id');
     }
 }

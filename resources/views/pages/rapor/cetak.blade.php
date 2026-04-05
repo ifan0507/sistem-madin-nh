@@ -67,7 +67,8 @@
 
         .bg-arsir {
             background-color: #d9d9d9 !important;
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, #888 2px, #888 3px) !important;
+            background-image: none !important;
+            /* Matikan efek gradient/gambar */
 
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;

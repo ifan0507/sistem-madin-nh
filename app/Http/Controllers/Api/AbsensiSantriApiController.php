@@ -41,6 +41,18 @@ class AbsensiSantriApiController extends Controller
         ], 201);
     }
 
+    public function storeBulk(Request $request)
+    {
+        $dto = AbsensiSantriDto::fromRequest($request);
+
+        $this->absensiSantriService->createBulkAbsensi($dto);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Data absensi berhasil disimpan!'
+        ]);
+    }
+
     public function update(Request $request, $id)
     {
         $dto = AbsensiSantriDto::fromRequest($request);

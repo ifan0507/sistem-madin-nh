@@ -281,7 +281,7 @@
                             });
 
                             $('#tabel-santri-body').html(html);
-
+                            $('[data-bs-toggle="tooltip"]').tooltip();
                             let urlBulkCetak =
                                 `/rapor/kelas/${kelasId}/cetak-massal?tahun_ajaran=${tahunAjaran}&semester=${semester}`;
                             $('#btn-bulk-cetak').attr('href', urlBulkCetak);

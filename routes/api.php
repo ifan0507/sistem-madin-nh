@@ -82,6 +82,7 @@ Route::delete('/absensi-guru/{id}', [AbsensiGuruApiController::class, 'destroy']
 Route::get('/absensi-santri', [AbsensiSantriApiController::class, 'findAll']);
 Route::get('/absensi-santri/{id}', [AbsensiSantriApiController::class, 'findById']);
 Route::post('/absensi-santri', [AbsensiSantriApiController::class, 'store']);
+Route::post('/absensi-santri/bulk', [AbsensiSantriApiController::class, 'storeBulk']);
 Route::put('/absensi-santri/{id}', [AbsensiSantriApiController::class, 'update']);
 Route::delete('/absensi-santri/{id}', [AbsensiSantriApiController::class, 'destroy']);
 

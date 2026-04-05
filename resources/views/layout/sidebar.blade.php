@@ -164,7 +164,7 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'laporan-absensi-santri' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('absensi-santri') }}">
                                 Absensi Santri
                             </a>
                         </li>

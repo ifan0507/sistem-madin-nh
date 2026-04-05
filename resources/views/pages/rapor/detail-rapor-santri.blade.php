@@ -53,7 +53,8 @@
                 <a href="{{ route('rapor') }}" class="btn btn-secondary btn-sm"><i class="fa fa-arrow-left"></i>
                     Kembali</a>
                 <div>
-                    <button type="button" class="btn btn-success btn-sm"><i class="fa fa-print"></i> Cetak</button>
+                    <a href="{{ route('rapor.cetak-single', ['santriId' => $santri->id, 'kelasId' => $kelas->id, 'semester' => $semester, 'tahun_ajaran' => $tahun_ajaran]) }}"
+                        class="btn btn-success btn-sm" target="_blank"><i class="fa fa-print"></i> Cetak</a>
                 </div>
             </div>
 

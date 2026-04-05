@@ -14,13 +14,26 @@ class AbsensiSantriRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'santri_id' => [
+            'kelas_id' => [
+                'required',
+                'exists:kelas,id'
+            ],
+            'tanggal' => [
+                'required',
+                'date'
+            ],
+            'absensi' => [
+                'required',
+                'array',
+                'min:1'
+            ],
+            'absensi.*.santri_id' => [
                 'required',
                 'exists:santris,id'
             ],
-            'status' => [
+            'absensi.*.status' => [
                 'required',
-                'in:1,2,3'
+                'in:1,2,3,4'
             ],
         ];
     }

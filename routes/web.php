@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\AbsensiSantriWebController;
 use App\Http\Controllers\Web\BankSoalWebController;
 use App\Http\Controllers\Web\DashboardWebController;
 use App\Http\Controllers\Web\DenahUjianWebController;
@@ -107,4 +108,10 @@ Route::get('/rapor/kelas/{kelasId}/ranking', [RaporWebController::class, 'getRan
 Route::get('/rapor/kelas/{kelasId}/santri/{santriId}/cetak', [RaporWebController::class, 'cetakSingle'])->name('rapor.cetak-single');
 Route::get('/rapor/kelas/{kelasId}/cetak-massal', [RaporWebController::class, 'cetakBulk'])->name('rapor.cetak-bulk');
 Route::get('/rapor/kelas/{kelasId}/cetak-juara', [RaporWebController::class, 'cetakDaftarJuara'])->name('rapor.cetak-daftar-juara');
+
+// Route Absensi Santri
+Route::get('/absensi-santri', [AbsensiSantriWebController::class, 'index'])->name('absensi-santri');
+Route::post('/absensi/ajax', [AbsensiSantriWebController::class, 'getAbsensiAjax'])->name('absensi.ajax');
+Route::get('/absensi/export-excel', [AbsensiSantriWebController::class, 'exportExcel'])->name('absensi.export_excel');
+Route::get('/absensi/export-rekap', [AbsensiSantriWebController::class, 'exportExcelRekap'])->name('absensi.export_rekap');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

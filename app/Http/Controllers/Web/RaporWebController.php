@@ -31,7 +31,7 @@ class RaporWebController extends Controller
         $tahunAjaran = $request->query('tahun_ajaran', $defaultTahun);
         $semester    = $request->query('semester', $defaultSemester);
 
-        $kelas = $this->kelas_service->getAllKelasCountSantri();;
+        $kelas = $this->kelas_service->getAllKelasCountSantri();
 
         return view('pages.rapor.index', [
             'active'      => $active,
