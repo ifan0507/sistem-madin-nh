@@ -15,6 +15,9 @@ class AbsensiGuruModel extends Model
         'status',
         'materi_pembelajaran',
         'ket_izin',
+        'semester',
+        'tahun_ajaran',
+        'tanggal',
     ];
 
     public function mapel_kelas(): BelongsTo

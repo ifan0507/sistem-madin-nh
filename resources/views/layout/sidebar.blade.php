@@ -158,7 +158,7 @@
                     <ul class="nav ms-4">
                         <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'laporan-absensi-guru' ? 'active fw-semibold' : 'text-dark' }}"
-                                href="#">
+                                href="{{ route('absensi-guru') }}">
                                 Absensi Guru
                             </a>
                         </li>
@@ -174,12 +174,12 @@
                                 Rapor Santri
                             </a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link {{ $activePage == 'laporan-pelanggaran-santri' ? 'active fw-semibold' : 'text-dark' }}"
                                 href="#">
                                 Pelanggaran Santri
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </li>

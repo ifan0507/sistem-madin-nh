@@ -39,7 +39,7 @@ class AbsensiSantriWebController extends Controller
 
         $data = $this->absensi_santri_service->getAbsensiData($kelasId, $filterWaktu, $customData);
 
-        $html = view('pages.absensi-santri.tabel_partial', array_merge($data, ['kelasId' => $kelasId]))->render();
+        $html = view('pages.absensi-santri.tabel-partial', array_merge($data, ['kelasId' => $kelasId]))->render();
 
         return response()->json([
             'status' => 'success',

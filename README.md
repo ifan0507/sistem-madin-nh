@@ -76,3 +76,31 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
     "hal hal apa saja yang dapat membatalkan sholat?"
   ]
 }
+
+## ABSENSI SANTRI
+{
+    "kelas_id": 1,
+    "tanggal": "2026-03-31",
+    "absensi": [
+        { "santri_id": 14, "status": "1" },
+        { "santri_id": 10, "status": "1" },
+        { "santri_id": 16, "status": "2" },
+        { "santri_id": 7, "status": "1" },
+        { "santri_id": 13, "status": "3" },
+        { "santri_id": 11, "status": "1" },
+        { "santri_id": 20, "status": "1" },
+        { "santri_id": 19, "status": "1" },
+        { "santri_id": 12, "status": "1" },
+        { "santri_id": 5, "status": "1" },
+        { "santri_id": 4, "status": "4" },
+        { "santri_id": 15, "status": "1" },
+        { "santri_id": 3, "status": "1" },
+        { "santri_id": 9, "status": "1" },
+        { "santri_id": 18, "status": "1" },
+        { "santri_id": 17, "status": "2" },
+        { "santri_id": 8, "status": "1" },
+        { "santri_id": 1, "status": "1" },
+        { "santri_id": 6, "status": "1" },
+        { "santri_id": 2, "status": "1" }
+    ]
+}

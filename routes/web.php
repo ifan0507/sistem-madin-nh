@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Web\AbsensiGuruWebController;
 use App\Http\Controllers\Web\AbsensiSantriWebController;
 use App\Http\Controllers\Web\BankSoalWebController;
 use App\Http\Controllers\Web\DashboardWebController;
@@ -114,4 +115,7 @@ Route::get('/absensi-santri', [AbsensiSantriWebController::class, 'index'])->nam
 Route::post('/absensi/ajax', [AbsensiSantriWebController::class, 'getAbsensiAjax'])->name('absensi.ajax');
 Route::get('/absensi/export-excel', [AbsensiSantriWebController::class, 'exportExcel'])->name('absensi.export_excel');
 Route::get('/absensi/export-rekap', [AbsensiSantriWebController::class, 'exportExcelRekap'])->name('absensi.export_rekap');
+
+Route::get('/absensi-guru', [AbsensiGuruWebController::class, 'index'])->name('absensi-guru');
+Route::post('/absensi-guru/ajax', [AbsensiGuruWebController::class, 'getAbsensiGuruAjax'])->name('absensi-guru.ajax');
 // Route::get('/transliterate', [PegonController::class, 'transliterate']);

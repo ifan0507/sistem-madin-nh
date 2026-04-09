@@ -22,6 +22,10 @@ class AbsensiGuruRequest extends FormRequest
                 'required',
                 'in:1,2,3'
             ],
+            'tanggal' => [
+                'required',
+                'date'
+            ],
             'materi_pembelajaran' => [
                 'required_if:status,1',
                 'nullable',
