@@ -58,25 +58,6 @@ class JadwalKbmApiController extends Controller
         }
     }
 
-    // public function store(JadwalKBMRequest $request)
-    // {
-    //     $dto = JadwalKBMDto::fromRequest($request);
-    //     $jadwa_kbm = $this->jadwalKbmService->create($dto);
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'data' => $jadwa_kbm
-    //     ], 201);
-    // }
-
-    // public function update(JadwalKBMRequest $request, $id)
-    // {
-    //     $dto = JadwalKBMDto::fromRequest($request);
-    //     $this->jadwalKbmService->update($id, $dto);
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Jadwal KBM updated successfully'
-    //     ], 200);
-    // }
 
     public function destroy($id)
     {
