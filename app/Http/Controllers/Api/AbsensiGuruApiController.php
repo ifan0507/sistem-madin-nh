@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\DTO\AbsensiGuruDto;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AbsensiGuruRequest;
 use App\Services\AbsensiGuruService;
 use Illuminate\Http\Request;
 
@@ -22,16 +23,16 @@ class AbsensiGuruApiController extends Controller
         ], 200);
     }
 
-    public function findById($id)
-    {
-        $absensi_guru = $this->absensiGuruService->getById($id);
-        return response()->json([
-            'status' => 'success',
-            'data' => $absensi_guru,
-        ], 200);
-    }
+    // public function findById($id)
+    // {
+    //     $absensi_guru = $this->absensiGuruService->getById($id);
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'data' => $absensi_guru,
+    //     ], 200);
+    // }
 
-    public function store(Request $request)
+    public function store(AbsensiGuruRequest $request)
     {
         $dto = AbsensiGuruDto::fromRequest($request);
         $absensi_guru = $this->absensiGuruService->create($dto);
@@ -41,7 +42,7 @@ class AbsensiGuruApiController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function update(AbsensiGuruRequest $request, $id)
     {
         $dto = AbsensiGuruDto::fromRequest($request);
         $this->absensiGuruService->update($id, $dto);

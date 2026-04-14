@@ -61,9 +61,41 @@ class BankSoalService
         ];
     }
 
-    public function getById($id)
+    public function getBankSoalGuru($guruId)
     {
-        // return Model::findOrFail($id);
+        $pengaturan = PengaturanModel::select('semester', 'tahun_ajaran')->first();
+        $tahunAjaran = $pengaturan ? $pengaturan->tahun_ajaran : null;
+        $semester = $pengaturan ? $pengaturan->semester : null;
+
+        $mapelGuru = MapelKelasModel::with([
+            'mapel',
+            'kelas',
+            'bank_soal' => function ($query) use ($tahunAjaran, $semester) {
+                $query->where('tahun_ajaran', $tahunAjaran)
+                    ->where('semester', $semester);
+            }
+        ])
+            ->where('guru_id', $guruId)
+            ->active()
+            ->get();
+
+        $formattedData = $mapelGuru->map(function ($item) {
+            return [
+                'id'             => $item->id,
+                'kelas_id'       => $item->kelas_id,
+                'mapel_id'       => $item->mapel_id,
+                'guru_id'        => $item->guru_id,
+                'mapel'          => $item->mapel,
+                'kelas'          => $item->kelas,
+                'is_created'     => $item->bank_soal->isNotEmpty(),
+            ];
+        });
+
+        return [
+            'tahun_ajaran' => $tahunAjaran,
+            'semester'     => $semester,
+            'data'         => $formattedData
+        ];
     }
 
     public function getDataCetakSoal($id)
@@ -74,6 +106,16 @@ class BankSoalService
             'bank_soal'   => $bankSoal,
             'mapel_kelas' => $bankSoal->mapel_kelas
         ];
+    }
+
+    public function getDataForMobile($mapelKelasId, $tahunAjaran, $semester)
+    {
+        $bankSoal = BankSoalModel::where('mapel_kelas_id', $mapelKelasId)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->first();
+
+        return $bankSoal;
     }
 
     public function create(BankSoalDto $data)

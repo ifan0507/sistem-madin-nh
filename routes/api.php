@@ -59,6 +59,7 @@ Route::delete('/mapel-kelas/{id}', [MapelKelasApiController::class, 'destroy']);
 
 // Api Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmApiController::class, 'findAll']);
+Route::get('/jadwal-kbm/hari-ini', [JadwalKbmApiController::class, 'jadwalHariIni']);
 Route::get('/jadwal-kbm/{id}', [JadwalKbmApiController::class, 'findById']);
 Route::post('/jadwal-kbm', [JadwalKbmApiController::class, 'store']);
 Route::put('/jadwal-kbm/{id}', [JadwalKbmApiController::class, 'update']);
@@ -98,8 +99,11 @@ Route::get('/denah-ujian', [DenahUjianApiController::class, 'findAll']);
 Route::post('/denah-ujian', [DenahUjianApiController::class, 'store']);
 
 // Api Bank Soal
-Route::get('/bank-soal', [BankSoalApiController::class, 'index']);
+Route::get('/bank-soal/guru/{guru_id}', [BankSoalApiController::class, 'getBankSoalGuru']);
+Route::get('/bank-soal', [BankSoalApiController::class, 'show']);
 Route::post('/bank-soal', [BankSoalApiController::class, 'store']);
+Route::post('/bank-soal/{id}/update-soal', [BankSoalApiController::class, 'update']);
+Route::post('/bank-soal/generate', [BankSoalApiController::class, 'generate']);
 
 // Api Nilai Ujian
 Route::post('nilai-ujian', [NilaiUjianApiController::class, 'store']);

@@ -32,25 +32,51 @@ class JadwalKbmApiController extends Controller
         ], 200);
     }
 
-    public function store(JadwalKBMRequest $request)
+    public function jadwalHariIni(Request $request)
     {
-        $dto = JadwalKBMDto::fromRequest($request);
-        $jadwa_kbm = $this->jadwalKbmService->create($dto);
-        return response()->json([
-            'status' => 'success',
-            'data' => $jadwa_kbm
-        ], 201);
+        try {
+            $guruId = $request->query('guru_id');
+
+            if (!$guruId) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'ID Guru tidak ditemukan'
+                ], 400);
+            }
+
+            $data = $this->jadwalKbmService->getJadwalHariIni($guruId);
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function update(JadwalKBMRequest $request, $id)
-    {
-        $dto = JadwalKBMDto::fromRequest($request);
-        $this->jadwalKbmService->update($id, $dto);
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Jadwal KBM updated successfully'
-        ], 200);
-    }
+    // public function store(JadwalKBMRequest $request)
+    // {
+    //     $dto = JadwalKBMDto::fromRequest($request);
+    //     $jadwa_kbm = $this->jadwalKbmService->create($dto);
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'data' => $jadwa_kbm
+    //     ], 201);
+    // }
+
+    // public function update(JadwalKBMRequest $request, $id)
+    // {
+    //     $dto = JadwalKBMDto::fromRequest($request);
+    //     $this->jadwalKbmService->update($id, $dto);
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Jadwal KBM updated successfully'
+    //     ], 200);
+    // }
 
     public function destroy($id)
     {

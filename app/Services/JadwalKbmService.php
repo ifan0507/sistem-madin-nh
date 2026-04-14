@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Dto\JadwalKbmDto;
+use App\Models\AbsensiGuruModel;
 use App\Models\JadwalKBMModel;
 use App\Models\KelasModel;
+use App\Models\PengaturanModel;
+use Carbon\Carbon;
 
 class JadwalKbmService
 {
@@ -95,6 +98,57 @@ class JadwalKbmService
         }
 
         return $jadwalBentrokIds;
+    }
+
+
+    public function getJadwalHariIni($guruId)
+    {
+        $hariInggris = date('l');
+        $mapHari = [
+            'Monday'    => 'Senin',
+            'Tuesday'   => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday'  => 'Kamis',
+            'Friday'    => 'Jumat',
+            'Saturday'  => 'Sabtu',
+            'Sunday'    => 'Minggu'
+        ];
+        $hariIni = $mapHari[$hariInggris];
+        $tanggalHariIni = date('Y-m-d');
+
+        $pengaturan = PengaturanModel::first();
+        $tahunAjaran = $pengaturan ? $pengaturan->tahun_ajaran : null;
+        $semester = $pengaturan ? $pengaturan->semester : null;
+
+        $jadwal = JadwalKBMModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
+            ->whereHas('mapel_kelas', function ($q) use ($guruId) {
+                $q->where('guru_id', $guruId);
+            })
+            ->where('hari', $hariIni)
+            ->get();
+
+        $data = $jadwal->map(function ($item) use ($tanggalHariIni) {
+
+            $sudahAbsen = AbsensiGuruModel::where('mapel_kelas_id', $item->mapel_kelas_id)
+                ->whereDate('tanggal', $tanggalHariIni)
+                ->exists();
+
+            return [
+                'jadwal_id'      => $item->id,
+                'mapel_kelas_id' => $item->mapel_kelas_id,
+                'nama_mapel'     => $item->mapel_kelas->mapel->nama_mapel ?? 'Tidak diketahui',
+                'kelas_id'     => $item->mapel_kelas->kelas->id ?? '-',
+                'jam_mulai'      => '15:30',
+                'jam_selesai'    => '16:30',
+                'sudah_absen'    => $sudahAbsen,
+            ];
+        });
+
+        return [
+            'hari'    => $hariIni,
+            'tanggal' => Carbon::now()->isoFormat('D MMMM Y'),
+            'jadwal'  => $data
+        ];
     }
 
     /**
