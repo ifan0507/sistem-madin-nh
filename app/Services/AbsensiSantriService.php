@@ -172,31 +172,24 @@ class AbsensiSantriService
 
     public function createBulkAbsensi($dto)
     {
-        $timestamp = now();
-        $upsertData = [];
-
         $pengaturan = PengaturanModel::first();
         $defaultTahun = $pengaturan ? $pengaturan->tahun_ajaran : '2025/2026';
         $defaultSemester = $pengaturan ? $pengaturan->semester : 'Ganjil';
 
         foreach ($dto->absensi as $item) {
-            $upsertData[] = [
-                'santri_id'  => $item['santri_id'],
-                'kelas_id'   => $dto->kelas_id,
-                'tanggal'    => $dto->tanggal,
-                'tahun_ajaran' => $defaultTahun,
-                'semester' => $defaultSemester,
-                'status'     => $item['status'],
-                'created_at' => $timestamp,
-                'updated_at' => $timestamp,
-            ];
+            AbsensiSantriModel::updateOrCreate(
+                [
+                    'santri_id' => $item['santri_id'],
+                    'kelas_id'  => $dto->kelas_id,
+                    'tanggal'   => $dto->tanggal,
+                ],
+                [
+                    'status'       => $item['status'],
+                    'tahun_ajaran' => $defaultTahun,
+                    'semester'     => $defaultSemester,
+                ]
+            );
         }
-
-        AbsensiSantriModel::upsert(
-            $upsertData,
-            ['santri_id', 'kelas_id', 'tanggal'],
-            ['status', 'tahun_ajaran', 'semester', 'updated_at']
-        );
 
         return true;
     }

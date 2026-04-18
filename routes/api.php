@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/users', [UserApiController::class, 'findAll']);
 Route::post('/users', [UserApiController::class, 'store']);
+
 Route::get('/users/{id}', [UserApiController::class, 'findById']);
 Route::put('/users/{id}', [UserApiController::class, 'update']);
 Route::delete('/users/{id}', [UserApiController::class, 'destroy']);
@@ -60,6 +61,7 @@ Route::delete('/mapel-kelas/{id}', [MapelKelasApiController::class, 'destroy']);
 // Api Jadwal KBM
 Route::get('/jadwal-kbm', [JadwalKbmApiController::class, 'findAll']);
 Route::get('/jadwal-kbm/hari-ini', [JadwalKbmApiController::class, 'jadwalHariIni']);
+Route::get('/jadwal-kbm/guru', [JadwalKbmApiController::class, 'getJadwalGuru']);
 Route::get('/jadwal-kbm/{id}', [JadwalKbmApiController::class, 'findById']);
 Route::post('/jadwal-kbm', [JadwalKbmApiController::class, 'store']);
 Route::put('/jadwal-kbm/{id}', [JadwalKbmApiController::class, 'update']);
@@ -74,7 +76,8 @@ Route::delete('/jadwal-ujian/{id}', [JadwalUjianApiController::class, 'destroy']
 
 // Api Absensi Guru
 Route::get('/absensi-guru', [AbsensiGuruApiController::class, 'findAll']);
-Route::get('/absensi-guru/{id}', [AbsensiGuruApiController::class, 'findById']);
+Route::get('/absensi-guru/detail', [AbsensiGuruApiController::class, 'detailAbsensiFromGuru']);
+Route::get('/absensi-guru/rekap-bulanan', [AbsensiGuruApiController::class, 'getRekapBulanan']);
 Route::post('/absensi-guru', [AbsensiGuruApiController::class, 'store']);
 Route::put('/absensi-guru/{id}', [AbsensiGuruApiController::class, 'update']);
 Route::delete('/absensi-guru/{id}', [AbsensiGuruApiController::class, 'destroy']);
@@ -106,6 +109,9 @@ Route::post('/bank-soal/{id}/update-soal', [BankSoalApiController::class, 'updat
 Route::post('/bank-soal/generate', [BankSoalApiController::class, 'generate']);
 
 // Api Nilai Ujian
-Route::post('nilai-ujian', [NilaiUjianApiController::class, 'store']);
+Route::get('/nilai-ujian/get-list-mapel-guru', [NilaiUjianApiController::class, 'getMapelNilaiUjian']);
+Route::get('/nilai-ujian/detail-nilai', [NilaiUjianApiController::class, 'detailNilai']);
+Route::post('/nilai-ujian', [NilaiUjianApiController::class, 'store']);
+
 Route::get('/rapor/kelas/{kelas_id}/santri/{santri_id}', [RaporApiController::class, 'getDetailRapor']);
-Route::post('rapor', [RaporApiController::class, 'store']);
+Route::post('/rapor', [RaporApiController::class, 'store']);

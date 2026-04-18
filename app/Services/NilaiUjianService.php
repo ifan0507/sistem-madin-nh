@@ -3,8 +3,10 @@
 namespace App\Services;
 
 use App\Dto\NilaiUjianDto;
+use App\Models\JadwalKBMModel;
 use App\Models\MapelKelasModel;
 use App\Models\NilaiUjianModel;
+use App\Models\PengaturanModel;
 use App\Models\SantriModel;
 use Illuminate\Support\Facades\DB;
 
@@ -112,6 +114,77 @@ class NilaiUjianService
                 'nama'  => $santri->nama,
                 'nilai' => $dataNilai ? $dataNilai->nilai : null,
                 'guru'  => $dataNilai && $dataNilai->guru ? $dataNilai->guru->name : '-'
+            ];
+        });
+
+        return $hasil;
+    }
+
+    public function getListNilaiMapelGuru($guruId)
+    {
+        $pengaturan = PengaturanModel::first();
+        $tahunAjaran = $pengaturan ? $pengaturan->tahun_ajaran : '2025/2026';
+        $semester = $pengaturan ? $pengaturan->semester : 'Ganjil';
+
+        $jadwalGuru = JadwalKBMModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
+            ->whereHas('mapel_kelas', function ($q) use ($guruId) {
+                $q->where('guru_id', $guruId);
+            })
+            ->get()
+            ->unique('mapel_kelas_id')
+            ->values();
+
+        $listMapel = $jadwalGuru->map(function ($jadwal) use ($guruId, $tahunAjaran, $semester) {
+
+            $mapelId = $jadwal->mapel_kelas->mapel_id;
+            $kelasId = $jadwal->mapel_kelas->kelas_id;
+
+            $sudahInput = NilaiUjianModel::where('guru_id', $guruId)
+                ->where('mapel_id', $mapelId)
+                ->where('kelas_id', $kelasId)
+                ->where('tahun_ajaran', $tahunAjaran)
+                ->where('semester', $semester)
+                ->exists();
+
+            return [
+                'mapel_kelas_id' => $jadwal->mapel_kelas_id,
+                'mapel_id'       => $mapelId,
+                'kelas_id'       => $kelasId,
+                'nama_mapel'     => $jadwal->mapel_kelas->mapel->nama_mapel ?? '-',
+                'sudah_dinilai'  => $sudahInput,
+                'tahun_ajaran'   => $tahunAjaran,
+                'semester'       => $semester
+            ];
+        });
+
+        return $listMapel;
+    }
+
+    public function getDetailNilaiForMobile($kelasId, $mapelId, $tahunAjaran, $semester)
+    {
+        $daftarSantri = SantriModel::select('id', 'nis', 'nama')
+            ->where('kelas_id', $kelasId)
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $nilaiMasuk = NilaiUjianModel::select('santri_id', 'nilai')
+            ->where('kelas_id', $kelasId)
+            ->where('mapel_id', $mapelId)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->get()
+            ->keyBy('santri_id');
+
+        $hasil = $daftarSantri->map(function ($santri) use ($nilaiMasuk) {
+            $dataNilai = $nilaiMasuk->get($santri->id);
+
+            return [
+                'santri' => [
+                    'id'   => $santri->id,
+                    'nis'  => $santri->nis,
+                    'nama' => $santri->nama,
+                ],
+                'nilai' => $dataNilai ? $dataNilai->nilai : null,
             ];
         });
 

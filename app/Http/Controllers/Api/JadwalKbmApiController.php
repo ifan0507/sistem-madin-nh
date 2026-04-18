@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\DTO\JadwalKBMDto;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\JadwalKBMRequest;
 use App\Services\JadwalKbmService;
 use Illuminate\Http\Request;
 
@@ -54,6 +52,32 @@ class JadwalKbmApiController extends Controller
             return response()->json([
                 'status'  => 'error',
                 'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getJadwalGuru(Request $request)
+    {
+        $guruId = $request->query('guru_id');
+
+        if (!$guruId) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'ID Guru wajib dikirim'
+            ], 400);
+        }
+
+        try {
+            $data = $this->jadwalKbmService->getJadwalByGuru($guruId);
+
+            return response()->json([
+                'status' => 'success',
+                'data'   => $data
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Gagal mengambil jadwal: ' . $e->getMessage()
             ], 500);
         }
     }

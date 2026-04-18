@@ -6,7 +6,6 @@ use App\Dto\JadwalKbmDto;
 use App\Models\AbsensiGuruModel;
 use App\Models\JadwalKBMModel;
 use App\Models\KelasModel;
-use App\Models\PengaturanModel;
 use Carbon\Carbon;
 
 class JadwalKbmService
@@ -116,10 +115,6 @@ class JadwalKbmService
         $hariIni = $mapHari[$hariInggris];
         $tanggalHariIni = date('Y-m-d');
 
-        $pengaturan = PengaturanModel::first();
-        $tahunAjaran = $pengaturan ? $pengaturan->tahun_ajaran : null;
-        $semester = $pengaturan ? $pengaturan->semester : null;
-
         $jadwal = JadwalKBMModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
             ->whereHas('mapel_kelas', function ($q) use ($guruId) {
                 $q->where('guru_id', $guruId);
@@ -129,18 +124,21 @@ class JadwalKbmService
 
         $data = $jadwal->map(function ($item) use ($tanggalHariIni) {
 
-            $sudahAbsen = AbsensiGuruModel::where('mapel_kelas_id', $item->mapel_kelas_id)
+            $absenHariIni = AbsensiGuruModel::where('mapel_kelas_id', $item->mapel_kelas_id)
                 ->whereDate('tanggal', $tanggalHariIni)
-                ->exists();
-
+                ->first();
+            $sudahAbsen = $absenHariIni ? true : false;
+            $jam_malam = in_array($item->mapel_kelas->kelas_id, [6, 7]);
             return [
                 'jadwal_id'      => $item->id,
                 'mapel_kelas_id' => $item->mapel_kelas_id,
                 'nama_mapel'     => $item->mapel_kelas->mapel->nama_mapel ?? 'Tidak diketahui',
-                'kelas_id'     => $item->mapel_kelas->kelas->id ?? '-',
-                'jam_mulai'      => '15:30',
-                'jam_selesai'    => '16:30',
+                'kelas_id'       => $item->mapel_kelas->kelas->id ?? '-',
+                'jam_mulai'      => $jam_malam ? '23:00' : '15:30',
+                'jam_selesai'    => $jam_malam ? '24:00' : '16:30',
                 'sudah_absen'    => $sudahAbsen,
+                'status_absen'   => $absenHariIni ? $absenHariIni->status : null,
+                'ket_izin'       => ($absenHariIni && $absenHariIni->status == '2') ? $absenHariIni->ket_izin : null,
             ];
         });
 
@@ -149,6 +147,31 @@ class JadwalKbmService
             'tanggal' => Carbon::now()->isoFormat('D MMMM Y'),
             'jadwal'  => $data
         ];
+    }
+
+    public function getJadwalByGuru($guruId)
+    {
+
+        $jadwalRaw = JadwalKBMModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas', 'mapel_kelas.guru'])
+            ->whereHas('mapel_kelas', function ($q) use ($guruId) {
+                $q->where('guru_id', $guruId);
+            })
+            ->orderBy('hari', 'asc')
+            ->get();
+
+        $jadwalFormatted = $jadwalRaw->map(function ($item) {
+            $mapelKelas = $item->mapel_kelas;
+            $jam_malam = in_array($item->mapel_kelas->kelas_id, [6, 7]);
+            return [
+                'hari'           => $item->hari,
+                'kelas_id'       => $mapelKelas->kelas->id,
+                'jam_mulai'      => $jam_malam ? '20:00' : '15:30',
+                'jam_selesai'    => $jam_malam ? '21:00' : '16:30',
+                'nama_mapel'     => $mapelKelas->mapel->nama_mapel,
+            ];
+        });
+
+        return $jadwalFormatted;
     }
 
     /**

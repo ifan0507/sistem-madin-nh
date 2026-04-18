@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Dto\AbsensiGuruDto;
 use App\Models\AbsensiGuruModel;
+use App\Models\AbsensiSantriModel;
 use App\Models\JadwalKBMModel;
 use App\Models\MapelKelasModel;
 use App\Models\PengaturanModel;
+use App\Models\SantriModel;
 use Carbon\Carbon;
 
 class AbsensiGuruService
@@ -23,7 +25,6 @@ class AbsensiGuruService
             'ket_izin',
         )->with('mapel_kelas')->get();
     }
-
 
     public function generateRekap($guruId, $filter, $customDates = [])
     {
@@ -246,6 +247,132 @@ class AbsensiGuruService
         return ['start' => $startDate, 'end' => $endDate];
     }
 
+    public function getRekapBulanan($guruId, $bulan, $tahun)
+    {
+        $absensiRaw = AbsensiGuruModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
+            ->whereHas('mapel_kelas', function ($query) use ($guruId) {
+                $query->where('guru_id', $guruId);
+            })
+            ->whereMonth('tanggal', $bulan)
+            ->whereYear('tanggal', $tahun)
+            ->get();
+
+        $jadwalGuru = JadwalKBMModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
+            ->whereHas('mapel_kelas', function ($query) use ($guruId) {
+                $query->where('guru_id', $guruId);
+            })
+            ->get();
+
+        $hariMap = [
+            0 => 'Minggu',
+            1 => 'Senin',
+            2 => 'Selasa',
+            3 => 'Rabu',
+            4 => 'Kamis',
+            5 => 'Jumat',
+            6 => 'Sabtu'
+        ];
+
+        $detail = [];
+        $summary = ['hadir' => 0, 'izin' => 0, 'alfa' => 0];
+
+        $jumlahHari = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
+        $hariIni = Carbon::now();
+
+        for ($i = 1; $i <= $jumlahHari; $i++) {
+            $tanggalLoop = Carbon::createFromDate($tahun, $bulan, $i);
+            $tanggalString = $tanggalLoop->format('Y-m-d');
+            $namaHariLoop = $hariMap[$tanggalLoop->dayOfWeek];
+
+            $jadwalHariIni = $jadwalGuru->filter(function ($j) use ($namaHariLoop) {
+                return strtolower(trim($j->hari)) === strtolower($namaHariLoop);
+            });
+
+            foreach ($jadwalHariIni as $jadwal) {
+                $recordAbsen = $absensiRaw->filter(function ($absen) use ($tanggalString, $jadwal) {
+                    $absenTanggal = $absen->tanggal instanceof \Carbon\Carbon
+                        ? $absen->tanggal->format('Y-m-d')
+                        : substr((string)$absen->tanggal, 0, 10);
+
+                        return $absenTanggal === $tanggalString &&
+                        $absen->mapel_kelas_id == $jadwal->mapel_kelas_id;
+                })->first();
+
+                if ($recordAbsen) {
+                    $statusArr = ['1' => 'hadir', '2' => 'izin', '3' => 'alfa'];
+                    $statusString = $statusArr[$recordAbsen->status] ?? 'none';
+
+                    $detail[] = [
+                        'tanggal'    => $tanggalString,
+                        'status'     => $statusString,
+                        'nama_mapel' => $jadwal->mapel_kelas->mapel->nama_mapel,
+                        'kelas_id'   => $jadwal->mapel_kelas->kelas->id,
+                        'keterangan' => ($recordAbsen->status == '2') ? $recordAbsen->ket_izin : null,
+                    ];
+
+                    if (isset($summary[$statusString])) $summary[$statusString]++;
+                } else {
+                    if ($tanggalLoop->startOfDay()->lte($hariIni->startOfDay())) {
+                        $detail[] = [
+                            'tanggal'    => $tanggalString,
+                            'status'     => 'alfa',
+                            'nama_mapel' => $jadwal->mapel_kelas->mapel->nama_mapel,
+                            'kelas_id'   => $jadwal->mapel_kelas->kelas->id,
+                            'keterangan' => 'Tanpa Keterangan',
+                        ];
+
+                        $summary['alfa']++;
+                    }
+                }
+            }
+        }
+
+        $firstRecord = $absensiRaw->first();
+
+        return [
+            'semester'     => $firstRecord->semester ?? 'Ganjil',
+            'tahun_ajaran' => $firstRecord->tahun_ajaran ?? '2025/2026',
+            'summary'      => $summary,
+            'detail'       => collect($detail)->sortByDesc('tanggal')->values()->all()
+        ];
+    }
+
+    public function getDetailAbsensi($mapelKelasId, $kelasId, $tanggal)
+    {
+        $absensiGuru = AbsensiGuruModel::where('mapel_kelas_id', $mapelKelasId)
+            ->where('tanggal', $tanggal)
+            ->first();
+
+        $absensiSantri = AbsensiSantriModel::where('kelas_id', $kelasId)
+            ->where('tanggal', $tanggal)
+            ->get()
+            ->keyBy('santri_id');
+
+        $santri = SantriModel::select('id', 'nis', 'nama')
+            ->where('kelas_id', $kelasId)
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        $detailSantri = $santri->map(function ($s) use ($absensiSantri) {
+            $statusKehadiran = isset($absensiSantri[$s->id]) ? $absensiSantri[$s->id]->status : 1;
+
+            return [
+                'santri' => [
+                    'id'   => $s->id,
+                    'nis'  => $s->nis,
+                    'nama' => $s->nama,
+                ],
+                'status' => $statusKehadiran
+            ];
+        });
+
+        return [
+            'materi_pembelajaran' => $absensiGuru ? $absensiGuru->materi_pembelajaran : '',
+            'list_absensi'        => $detailSantri
+        ];
+    }
+
+
     /**
      * Menyimpan data baru berdasarkan DTO
      */
@@ -254,12 +381,23 @@ class AbsensiGuruService
         $pengaturan = PengaturanModel::first();
         $payload = $data->toArray();
 
-        $payload['tahun_ajaran'] = $pengaturan->tahun_ajaran;
-        $payload['semester'] = $pengaturan->semester;
+        $tahun_ajaran = $pengaturan ? $pengaturan->tahun_ajaran : '2025/2026';
+        $semester = $pengaturan ? $pengaturan->semester : 'Ganjil';
 
-        return AbsensiGuruModel::create($payload);
+        return AbsensiGuruModel::updateOrCreate(
+            [
+                'mapel_kelas_id' => $payload['mapel_kelas_id'],
+                'tanggal'        => $payload['tanggal'],
+            ],
+            [
+                'status'              => $payload['status'],
+                'materi_pembelajaran' => $payload['materi_pembelajaran'] ?? null,
+                'ket_izin'            => $payload['ket_izin'] ?? null,
+                'tahun_ajaran'        => $tahun_ajaran,
+                'semester'            => $semester,
+            ]
+        );
     }
-
     /**
      * Memperbarui data berdasarkan ID dan DTO
      */
