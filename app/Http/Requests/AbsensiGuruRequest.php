@@ -20,7 +20,7 @@ class AbsensiGuruRequest extends FormRequest
             ],
             'status' => [
                 'required',
-                'in:1,2,3'
+                'in:1,2,3,4'
             ],
             'tanggal' => [
                 'required',

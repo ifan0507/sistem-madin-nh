@@ -349,9 +349,15 @@
                         'Tidak ada materi yang dicatat.');
                     $('#boxMateri').show();
                 } else if (status == 2) {
-                    $('#detailStatus').text('IZIN / SAKIT').removeClass('bg-success').addClass(
+                    $('#detailStatus').text('IZIN').removeClass('bg-success').addClass(
                         'bg-warning');
                     $('#detailKet').text(ket !== '' && ket !== 'null' ? ket : 'Tidak ada keterangan izin.');
+                    $('#boxKetIzin').show();
+                } else if (status == 4) {
+                    $('#detailStatus').text('SAKIT').removeClass('bg-success').addClass(
+                        'bg-warning');
+                    $('#detailKet').text(ket !== '' && ket !== 'null' ? ket :
+                    'Tidak ada keterangan sakit.');
                     $('#boxKetIzin').show();
                 }
 

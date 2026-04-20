@@ -39,15 +39,15 @@ class AbsensiGuruService
                 return $item->kelas->nama_kelas ?? '';
             })->values();
 
-        $mapelIds = $listMapel->pluck('id')->toArray();
+        $mapelKelasIds = $listMapel->pluck('id')->toArray();
 
-        $jadwalRaw = JadwalKBMModel::whereIn('mapel_kelas_id', $mapelIds)->get();
+        $jadwalRaw = JadwalKBMModel::whereIn('mapel_kelas_id', $mapelKelasIds)->get();
         $jadwalGrouped = [];
         foreach ($jadwalRaw as $jadwal) {
             $jadwalGrouped[$jadwal->mapel_kelas_id][] = strtolower(trim($jadwal->hari));
         }
 
-        $absensiRaw = AbsensiGuruModel::whereIn('mapel_kelas_id', $mapelIds)
+        $absensiRaw = AbsensiGuruModel::whereIn('mapel_kelas_id', $mapelKelasIds)
             ->whereBetween('tanggal', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
             ->get();
 
@@ -75,20 +75,30 @@ class AbsensiGuruService
 
             $dataRekapBulanIni = [];
             $maxPertemuanPerMinggu = [];
-            $grandTotalBulanIni = ['hadir' => 0, 'izin' => 0, 'alpha' => 0];
+            $grandTotalBulanIni = ['hadir' => 0, 'izin' => 0, 'alpha' => 0, 'sakit' => 0];
             $startWeek = $monthStart->copy()->startOfWeek();
 
             foreach ($listMapel as $mapel) {
                 $jadwalMapelIni = $jadwalGrouped[$mapel->id] ?? [];
                 $pertemuanMapel = [];
                 $pertemuanKe = 1;
-                $rekapMapel = ['hadir' => 0, 'izin' => 0, 'alpha' => 0];
+                $rekapMapel = ['hadir' => 0, 'izin' => 0, 'alpha' => 0, 'sakit' => 0];
 
                 $loopDate = $monthStart->copy();
                 while ($loopDate->lte($monthEnd)) {
                     $namaHari = strtolower($loopDate->translatedFormat('l'));
 
-                    if (in_array($namaHari, $jadwalMapelIni)) {
+                    $cekJadwal = in_array($namaHari, $jadwalMapelIni);
+
+                    if ($namaHari === 'minggu' && in_array('ahad', $jadwalMapelIni)) {
+                        $cekJadwal = true;
+                    }
+
+                    if ($namaHari === 'ahad' && in_array('minggu', $jadwalMapelIni)) {
+                        $cekJadwal = true;
+                    }
+
+                    if ($cekJadwal) {
                         $tanggalStr = $loopDate->format('Y-m-d');
                         $status = null;
                         $materi = null;
@@ -112,6 +122,9 @@ class AbsensiGuruService
                         } elseif ($status == '3') {
                             $rekapMapel['alpha']++;
                             $grandTotalBulanIni['alpha']++;
+                        } elseif ($status == '4') {
+                            $rekapMapel['sakit']++;
+                            $grandTotalBulanIni['sakit']++;
                         }
 
                         $currentWeek = $loopDate->copy()->startOfWeek();
@@ -264,7 +277,7 @@ class AbsensiGuruService
             ->get();
 
         $hariMap = [
-            0 => 'Minggu',
+            0 => 'Ahad',
             1 => 'Senin',
             2 => 'Selasa',
             3 => 'Rabu',
@@ -274,7 +287,7 @@ class AbsensiGuruService
         ];
 
         $detail = [];
-        $summary = ['hadir' => 0, 'izin' => 0, 'alfa' => 0];
+        $summary = ['hadir' => 0, 'izin' => 0, 'alfa' => 0, 'sakit' => 0];
 
         $jumlahHari = Carbon::createFromDate($tahun, $bulan, 1)->daysInMonth;
         $hariIni = Carbon::now();
@@ -294,12 +307,12 @@ class AbsensiGuruService
                         ? $absen->tanggal->format('Y-m-d')
                         : substr((string)$absen->tanggal, 0, 10);
 
-                        return $absenTanggal === $tanggalString &&
+                    return $absenTanggal === $tanggalString &&
                         $absen->mapel_kelas_id == $jadwal->mapel_kelas_id;
                 })->first();
 
                 if ($recordAbsen) {
-                    $statusArr = ['1' => 'hadir', '2' => 'izin', '3' => 'alfa'];
+                    $statusArr = ['1' => 'hadir', '2' => 'izin', '3' => 'alfa', '4' => 'sakit'];
                     $statusString = $statusArr[$recordAbsen->status] ?? 'none';
 
                     $detail[] = [
@@ -307,7 +320,7 @@ class AbsensiGuruService
                         'status'     => $statusString,
                         'nama_mapel' => $jadwal->mapel_kelas->mapel->nama_mapel,
                         'kelas_id'   => $jadwal->mapel_kelas->kelas->id,
-                        'keterangan' => ($recordAbsen->status == '2') ? $recordAbsen->ket_izin : null,
+                        'keterangan' => in_array($recordAbsen->status, ['2', '4']) ? $recordAbsen->ket_izin : null,
                     ];
 
                     if (isset($summary[$statusString])) $summary[$statusString]++;

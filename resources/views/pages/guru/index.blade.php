@@ -321,16 +321,34 @@
             });
 
             $('#btn-download-img').on('click', function() {
-                let img = $('#preview-qrcode img').attr('src');
+                let imgSrc = $('#preview-qrcode img').attr('src');
                 let nama = $('#preview-nama').text();
 
-                if (img) {
-                    let link = document.createElement('a');
-                    link.href = img;
-                    link.download = 'QR_' + nama + '.png';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                if (imgSrc) {
+                    let imgObj = new Image();
+                    imgObj.src = imgSrc;
+
+                    imgObj.onload = function() {
+                        let padding = 40;
+                        let canvas = document.createElement('canvas');
+                        canvas.width = imgObj.width + (padding * 2);
+                        canvas.height = imgObj.height + (padding * 2);
+
+                        let ctx = canvas.getContext('2d');
+
+                        ctx.fillStyle = "#ffffff";
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                        ctx.drawImage(imgObj, padding, padding);
+
+                        let link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/png');
+                        link.download = 'QR_' + nama + '.png';
+
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    };
                 }
             });
 

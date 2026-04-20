@@ -51,7 +51,7 @@
                                                 Minggu {{ $mingguKe }}</th>
                                         @endif
                                     @endforeach
-                                    <th colspan="3"
+                                    <th colspan="4"
                                         class="text-center text-secondary text-xs font-weight-bold align-middle border-start border-2 border-dark"
                                         style="min-width: 120px;">
                                         REKAP
@@ -71,6 +71,8 @@
                                     <th class="text-center text-success text-xs font-weight-bold py-2 border-start border-2 border-dark"
                                         title="Hadir">H</th>
                                     <th class="text-center text-warning text-xs font-weight-bold py-2" title="Izin">I
+                                    </th>
+                                    <th class="text-center text-warning text-xs font-weight-bold py-2" title="Sakit">S
                                     </th>
                                     <th class="text-center text-danger text-xs font-weight-bold py-2" title="Alpha">A
                                     </th>
@@ -94,7 +96,7 @@
                                             @for ($i = 0; $i < $colspan; $i++)
                                                 @php
                                                     $pert = $pertemuanDiMingguIni[$i] ?? null;
-                                                    $isClickable = $pert && in_array($pert['status'], ['1', '2']);
+                                                    $isClickable = $pert && in_array($pert['status'], ['1', '2', '4']);
                                                 @endphp
 
                                                 <td class="align-middle @if ($i == 0) border-start border-2 @endif @if ($isClickable) cursor-pointer detail-absen-btn @endif"
@@ -107,7 +109,7 @@
                                                 data-ket="{{ $pert['ket'] ?? '-' }}"
                                                 data-bs-toggle="tooltip" 
                                                 data-bs-placement="top" 
-                                                title="{{ $pert['status'] == '1' ? 'Hadir' : 'Izin' }}"
+                                                title="{{ $pert['status'] == '1' ? 'Hadir' : ($pert['status'] == '2' ? 'Izin' : 'Sakit') }}"
                                             @elseif($pert && $pert['status'] == '3')
                                                 data-bs-toggle="tooltip" 
                                                 data-bs-placement="top" 
@@ -125,6 +127,9 @@
                                                                 style="font-size: 1.2rem;"></i>
                                                         @elseif($pert['status'] == '3')
                                                             <i class="fas fa-times text-danger"
+                                                                style="font-size: 1.2rem;"></i>
+                                                        @elseif($pert['status'] == '4')
+                                                            <i class="fas fa-times text-warning"
                                                                 style="font-size: 1.2rem;"></i>
                                                         @else
                                                             <span class="text-secondary font-weight-bold"
@@ -147,6 +152,12 @@
                                             <span
                                                 style="display: inline-block; min-width: 26px; padding: 2px 6px; border-radius: 6px;  color: #d97706; font-weight: 700; font-size: 0.8rem;">
                                                 {{ $item['rekap']['izin'] }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <span
+                                                style="display: inline-block; min-width: 26px; padding: 2px 6px; border-radius: 6px;  color: #d97706; font-weight: 700; font-size: 0.8rem;">
+                                                {{ $item['rekap']['sakit'] }}
                                             </span>
                                         </td>
 
@@ -178,6 +189,12 @@
                                     <td class="text-center align-middle py-3">
                                         <span style="font-size: 1.05rem; font-weight: 700; color: #d97706;">
                                             {{ $dataBulan['grandTotal']['izin'] }}
+                                        </span>
+                                    </td>
+
+                                    <td class="text-center align-middle py-3">
+                                        <span style="font-size: 1.05rem; font-weight: 700; color: #d97706;">
+                                            {{ $dataBulan['grandTotal']['sakit'] }}
                                         </span>
                                     </td>
 

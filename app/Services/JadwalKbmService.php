@@ -110,7 +110,7 @@ class JadwalKbmService
             'Thursday'  => 'Kamis',
             'Friday'    => 'Jumat',
             'Saturday'  => 'Sabtu',
-            'Sunday'    => 'Minggu'
+            'Sunday'    => 'Ahad',
         ];
         $hariIni = $mapHari[$hariInggris];
         $tanggalHariIni = date('Y-m-d');
@@ -134,11 +134,11 @@ class JadwalKbmService
                 'mapel_kelas_id' => $item->mapel_kelas_id,
                 'nama_mapel'     => $item->mapel_kelas->mapel->nama_mapel ?? 'Tidak diketahui',
                 'kelas_id'       => $item->mapel_kelas->kelas->id ?? '-',
-                'jam_mulai'      => $jam_malam ? '23:00' : '15:30',
-                'jam_selesai'    => $jam_malam ? '24:00' : '16:30',
+                'jam_mulai'      => $jam_malam ? '20:00' : '15:30',
+                'jam_selesai'    => $jam_malam ? '21:00' : '16:30',
                 'sudah_absen'    => $sudahAbsen,
                 'status_absen'   => $absenHariIni ? $absenHariIni->status : null,
-                'ket_izin'       => ($absenHariIni && $absenHariIni->status == '2') ? $absenHariIni->ket_izin : null,
+                'ket_izin'       => ($absenHariIni && in_array($absenHariIni->status, ['2', '4'])) ? $absenHariIni->ket_izin : null,
             ];
         });
 
