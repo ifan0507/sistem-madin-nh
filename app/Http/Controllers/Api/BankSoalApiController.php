@@ -30,8 +30,6 @@ class BankSoalApiController extends Controller
             $result = $this->bankSoalService->getBankSoalGuru($guruId);
             return response()->json([
                 'status'       => 'success',
-                'tahun_ajaran' => $result['tahun_ajaran'],
-                'semester'     => $result['semester'],
                 'data'         => $result['data']
             ], 200);
         } catch (\Exception $e) {

@@ -7,6 +7,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +23,13 @@ class DatabaseSeeder extends Seeder
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
+        // ]);
+
+        // User::create([
+        //     'name' => 'Admin',
+        //     'username' => 'admin',
+        //     'password' => Hash::make('admin123'),
+        //     'role' => 2,
         // ]);
 
         // SEEDER KELAS
@@ -85,17 +93,17 @@ class DatabaseSeeder extends Seeder
 
         // DB::table('ruang_ujians')->truncate();
 
-        $abjad = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        // $abjad = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
-        $data = [];
-        foreach ($abjad as $huruf) {
-            $data[] = [
-                'nama_ruang' => 'Ruang ' . $huruf,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }
+        // $data = [];
+        // foreach ($abjad as $huruf) {
+        //     $data[] = [
+        //         'nama_ruang' => 'Ruang ' . $huruf,
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ];
+        // }
 
-        DB::table('ruang_ujians')->insert($data);
+        // DB::table('ruang_ujians')->insert($data);
     }
 }

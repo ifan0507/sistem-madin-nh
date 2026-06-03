@@ -134,7 +134,7 @@ class JadwalKbmService
                 'mapel_kelas_id' => $item->mapel_kelas_id,
                 'nama_mapel'     => $item->mapel_kelas->mapel->nama_mapel ?? 'Tidak diketahui',
                 'kelas_id'       => $item->mapel_kelas->kelas->id ?? '-',
-                'jam_mulai'      => $jam_malam ? '20:00' : '15:30',
+                'jam_mulai'      => $jam_malam ? '18:00' : '15:30',
                 'jam_selesai'    => $jam_malam ? '21:00' : '16:30',
                 'sudah_absen'    => $sudahAbsen,
                 'status_absen'   => $absenHariIni ? $absenHariIni->status : null,

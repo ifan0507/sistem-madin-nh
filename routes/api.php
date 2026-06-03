@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\MapelApiController;
 use App\Http\Controllers\Api\MapelKelasApiController;
 use App\Http\Controllers\Api\NilaiUjianApiController;
 use App\Http\Controllers\Api\PelanggaranApiController;
+use App\Http\Controllers\Api\PengaturanApiController;
 use App\Http\Controllers\Api\RaporApiController;
 use App\Http\Controllers\Api\SantriApiController;
 use App\Http\Controllers\Api\UserApiController;
@@ -118,6 +119,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/rapor/kelas/{kelas_id}/santri/{santri_id}', [RaporApiController::class, 'getDetailRapor']);
     Route::post('/rapor', [RaporApiController::class, 'store']);
+
+    Route::get('/pengaturan', [PengaturanApiController::class, 'getPengaturan']);
 
     Route::post('/logout', [AuthApiController::class, 'logout']);
 });

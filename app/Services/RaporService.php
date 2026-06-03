@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dto\RaporDto;
+use App\Models\AbsensiSantriModel;
 use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
 use App\Models\NilaiUjianModel;
@@ -141,6 +142,8 @@ class RaporService
             ->get()
             ->keyBy('santri_id');
 
+            
+
         $rekapTotalKelas = [];
         foreach ($santriIdsDiKelas as $sId) {
             $total = 0;
@@ -184,6 +187,24 @@ class RaporService
             ->where('semester', $semester)
             ->first();
 
+        $absenSakit = AbsensiSantriModel::where('santri_id', $santriId)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->where('status', '2') 
+            ->count();
+
+        $absenIzin = AbsensiSantriModel::where('santri_id', $santriId)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->where('status', '3')
+            ->count();
+
+        $absenAlfa = AbsensiSantriModel::where('santri_id', $santriId)
+            ->where('tahun_ajaran', $tahunAjaran)
+            ->where('semester', $semester)
+            ->where('status', '4') 
+            ->count();    
+
         return [
             'santri' => $santri,
             'kelas'  => $kelas,
@@ -197,6 +218,9 @@ class RaporService
             'rataPraktekQuran' => round($rataPraktekQuran, 2),
             'rataPraktekKitab' => round($rataPraktekKitab, 2),
             'rataPraktekMuhafadloh' => round($rataPraktekMuhafadloh, 2),
+            'absen_sakit' => $absenSakit,
+            'absen_izin'  => $absenIzin,
+            'absen_alfa'  => $absenAlfa,
         ];
     }
 

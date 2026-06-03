@@ -79,12 +79,6 @@ class User extends Authenticatable
     #[Scope]
     public function is_guru(Builder $query)
     {
-        return $query->where('role', '2');
-    }
-
-    #[Scope]
-    public function is_pengurus(Builder $query)
-    {
         return $query->where('role', '3');
     }
 

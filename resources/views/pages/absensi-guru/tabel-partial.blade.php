@@ -5,9 +5,9 @@
             style="width: 56px; height: 56px; background-color: #d1fae5; border-radius: 50%; color: #10b981;">
             <i class="far fa-calendar-times" style="font-size: 1.5rem;"></i>
         </div>
-        <h6 class="text-dark font-weight-bold mb-1" style="font-size: 0.95rem;">Tidak Ada Jadwal/Absen</h6>
+        <h6 class="text-dark font-weight-bold mb-1" style="font-size: 0.95rem;">Tidak Ada Absensi</h6>
         <p class="text-muted text-center mb-0" style="font-size: 0.85rem; max-width: 320px;">
-            Tidak ditemukan jadwal mengajar atau data absensi untuk periode ini.
+            Tidak ditemukan data absensi untuk periode ini.
         </p>
     </div>
 @else

@@ -223,13 +223,13 @@
                                             <option value="lastmonth">Bulan Lalu</option>
                                             <option value="last7days">7 Hari Terakhir</option>
                                             <option value="last30days">30 Hari Terakhir</option>
+                                            <option value="semester_aktif">Satu Semester</option>
                                         </optgroup>
                                         <optgroup label="Custom Filter">
                                             <option value="daily">Per Hari</option>
                                             <option value="weekly">Per Minggu</option>
                                             <option value="monthly">Per Bulan</option>
                                             <option value="range">Rentang Tanggal</option>
-                                            <option value="tahun_ajaran">Tahun Ajaran & Semester</option>
                                         </optgroup>
                                     </select>
                                 </div>
@@ -261,21 +261,6 @@
                                                 <span class="font-weight-bold">-</span>
                                                 <input type="date" class="form-control custom-outline-input px-2"
                                                     id="range_end" value="{{ date('Y-m-t') }}">
-                                            </div>
-                                        </div>
-                                        <div id="custom-tahun-ajaran" class="custom-filter-input" style="display: none;">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <select id="ta_tahun" class="form-control custom-outline-input">
-                                                    <option value="">-- Tahun Ajaran --</option>
-                                                    <option value="2024/2025">2024/2025</option>
-                                                    <option value="2025/2026">2025/2026</option>
-                                                    <option value="2026/2027">2026/2027</option>
-                                                </select>
-                                                <select id="ta_semester" class="form-control custom-outline-input">
-                                                    <option value="">-- Semester --</option>
-                                                    <option value="Ganjil">Ganjil</option>
-                                                    <option value="Genap">Genap</option>
-                                                </select>
                                             </div>
                                         </div>
                                         <button type="button" class="btn btn-success mb-0 px-3" id="btnTerapkanFilter"
@@ -314,7 +299,9 @@
     <script>
         $(document).ready(function() {
 
-            const staticFilters = ['thismonth', 'today', 'yesterday', 'lastmonth', 'last7days', 'last30days'];
+            const staticFilters = ['thismonth', 'today', 'yesterday', 'lastmonth', 'last7days', 'last30days',
+                'semester_aktif'
+            ];
 
             $('#filterWaktu').on('change', function() {
                 let val = $(this).val();
@@ -338,7 +325,6 @@
                     if (val === 'weekly') $('#input-weekly').show();
                     if (val === 'monthly') $('#input-monthly').show();
                     if (val === 'range') $('#input-range').show();
-                    if (val === 'tahun_ajaran') $('#custom-tahun-ajaran').show();
                 }
             });
 
@@ -358,8 +344,6 @@
                     monthly_date: $('#monthly_date').val(),
                     range_start: $('#range_start').val(),
                     range_end: $('#range_end').val(),
-                    ta_tahun: $('#ta_tahun').val(),
-                    ta_semester: $('#ta_semester').val(),
                     _token: '{{ csrf_token() }}'
                 };
 

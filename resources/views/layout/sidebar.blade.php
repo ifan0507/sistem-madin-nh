@@ -23,7 +23,7 @@
             <!-- Dashboard -->
             <li class="nav-item">
                 <a class="nav-link {{ $activePage == 'dashboard' ? 'active bg-gradient-primary text-white' : 'text-dark' }}"
-                    href="/">
+                    href="{{ route('dashboard') }}">
                     <i class="material-symbols-rounded">dashboard</i>
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
@@ -184,6 +184,14 @@
                 </div>
             </li>
 
+            {{-- SETTING --}}
+            <li class="nav-item">
+                <a class="nav-link {{ $activePage == 'setting' ? 'active bg-gradient-primary text-white' : 'text-dark' }}"
+                    href="{{ route('setting') }}">
+                    <i class="material-symbols-rounded">settings</i>
+                    <span class="nav-link-text ms-1">Pengaturan</span>
+                </a>
+            </li>
         </ul>
     </div>
 </aside>

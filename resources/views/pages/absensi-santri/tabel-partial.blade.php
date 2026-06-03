@@ -1,12 +1,23 @@
 @if (empty($months))
-    <div class="alert alert-warning text-white">Tidak ada data rentang waktu yang valid.</div>
+    <div class="d-flex flex-column align-items-center justify-content-center p-4 mt-3"
+        style="border: 1px dashed #cbd5e1; border-radius: 12px; background-color: #f8fafc; min-height: 200px;">
+        <div class="mb-3 d-flex align-items-center justify-content-center"
+            style="width: 56px; height: 56px; background-color: #d1fae5; border-radius: 50%; color: #10b981;">
+            <i class="far fa-calendar-times" style="font-size: 1.5rem;"></i>
+        </div>
+        <h6 class="text-dark font-weight-bold mb-1" style="font-size: 0.95rem;">Tidak Ada Absensi</h6>
+        <p class="text-muted text-center mb-0" style="font-size: 0.85rem; max-width: 320px;">
+            Tidak ditemukan data absensi untuk periode ini.
+        </p>
+    </div>
 @endif
 
 @foreach ($months as $monthKey => $month)
     <div class="card shadow-sm mb-4 card-detail">
         <div class="card-header bg-white border-bottom py-3 d-flex justify-content-between align-items-center">
             <h6 class="mb-0 text-dark">
-                Data Absensi Kelas <strong class="text-success">{{ getKelasArab($kelasId) ?? 'Aktif' }}</strong> Periode:
+                Data Absensi Kelas <strong class="text-success">{{ getKelasArab($kelasId) ?? 'Aktif' }}</strong>
+                Periode:
                 <strong class="text-success">{{ $month['start']->locale('id')->isoFormat('D MMMM YYYY') }}
                     s/d
                     {{ $month['end']->locale('id')->isoFormat('D MMMM YYYY') }}</strong>

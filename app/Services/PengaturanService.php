@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Dto\PengaturanDto;
 use App\Models\PengaturanModel;
+use Exception;
 
 class PengaturanService
 {
@@ -12,39 +12,64 @@ class PengaturanService
      */
     public function getAll()
     {
-        return PengaturanModel::all();
+        return PengaturanModel::first();
     }
 
-    public function getById($id)
+    public function getTahunAjaranAktif()
     {
-        return PengaturanModel::findOrFail($id);
+        return PengaturanModel::select('tahun_ajaran', 'semester')->first();
     }
 
-    /**
-     * Menyimpan data baru berdasarkan DTO
-     */
-    public function create(PengaturanDto $data)
+    public function getTglAwalSemester()
     {
-        $payload = $data->toArray();
-        // return Model::create($payload);
+        return PengaturanModel::select('tgl_awal_semester')->first()->tgl_awal_semester;
     }
 
-    /**
-     * Memperbarui data berdasarkan ID dan DTO
-     */
-    public function update($id, PengaturanDto $data)
+    public function getTglBatasPengumpulanSoal()
     {
-        $item = PengaturanModel::findOrFail($id);
-        $payload = $data->toArray();
-        $payload['is_active'] = true;
-        return $item->update($payload);
+        return PengaturanModel::select('tgl_mulai_kumpul_soal', 'tgl_akhir_kumpul_soal')->first();
+    }
+    public function getTglBatasPengumpulanNilai()
+    {
+        return PengaturanModel::select('tgl_mulai_kumpul_nilai', 'tgl_akhir_kumpul_nilai')->first();
     }
 
-    /**
-     * Menghapus data
-     */
-    public function delete($id)
+    public function updatePengaturan(array $data, string $tipeUpdate)
     {
-        // return Model::destroy($id);
+        try {
+            $pengaturan = PengaturanModel::first();
+            $fieldsToUpdate = match ($tipeUpdate) {
+                'tahun_ajaran' => [
+                    'tahun_ajaran' => $data['tahun_ajaran'] ?? $pengaturan->tahun_ajaran,
+                    'semester'     => $data['semester'] ?? $pengaturan->semester,
+                ],
+
+                'awal_semester' => [
+                    'tgl_awal_semester' => $data['tgl_awal_semester'] ?? $pengaturan->tgl_awal_semester,
+                ],
+
+                'kumpul_soal' => [
+                    'tgl_mulai_kumpul_soal' => $data['tgl_mulai_kumpul_soal'] ?? $pengaturan->tgl_mulai_kumpul_soal,
+                    'tgl_akhir_kumpul_soal' => $data['tgl_akhir_kumpul_soal'] ?? $pengaturan->tgl_akhir_kumpul_soal,
+                ],
+
+                'kumpul_nilai' => [
+                    'tgl_mulai_kumpul_nilai' => $data['tgl_mulai_kumpul_nilai'] ?? $pengaturan->tgl_mulai_kumpul_nilai,
+                    'tgl_akhir_kumpul_nilai' => $data['tgl_akhir_kumpul_nilai'] ?? $pengaturan->tgl_akhir_kumpul_nilai,
+                ],
+            };
+            $pengaturan->update($fieldsToUpdate);
+
+            return [
+                'status'  => true,
+                'message' => 'Pengaturan berhasil diperbarui.'
+            ];
+        } catch (Exception $e) {
+
+            return [
+                'status'  => false,
+                'message' => 'Terjadi kesalahan sistem'
+            ];
+        }
     }
 }

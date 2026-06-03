@@ -229,15 +229,18 @@
                                 <td rowspan="3" class="font-weight-bold text-center align-middle">KETIDAK<br>HADIRAN
                                 </td>
                                 <td colspan="2" class="ps-3">Sakit</td>
-                                <td colspan="3" class="text-center">{{ $rapor->absen_sakit ?? 0 }} Hari</td>
+                                <td colspan="3" class="text-center">{{ $absen_sakit }}
+                                    Hari</td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="ps-3">Izin</td>
-                                <td colspan="3" class="text-center">{{ $rapor->absen_izin ?? 0 }} Hari</td>
+                                <td colspan="3" class="text-center">{{ $absen_izin }}
+                                    Hari</td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="ps-3">Tanpa Keterangan</td>
-                                <td colspan="3" class="text-center">{{ $rapor->absen_alfa ?? 0 }} Hari</td>
+                                <td colspan="3" class="text-center">{{ $absen_alfa }}
+                                    Hari</td>
                             </tr>
 
                             <tr>
@@ -259,7 +262,7 @@
                             _____________________
                         </div>
                         <div class="col-4 position-relative">
-                            Mengetahui;<br>Kepala Madin
+                            Mengetahui<br>Kepala Madin
                             <br><br><br><br>
                             <u>M. ZUHRI YAQIN, S.Pd</u>
                         </div>

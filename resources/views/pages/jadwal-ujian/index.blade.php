@@ -296,7 +296,8 @@
         function editTanggal(hariKe) {
             Swal.fire({
                 title: 'Set Tanggal Hari Ke-' + hariKe,
-                input: 'date',
+                input: 'text',
+                inputPlaceholder: 'Pilih tanggal',
                 showCancelButton: true,
                 reverseButtons: true,
                 confirmButtonText: '<i class="fa-solid fa-save me-1"></i> Simpan',
@@ -305,13 +306,28 @@
                 customClass: {
                     confirmButton: 'btn btn-success ms-2',
                     cancelButton: 'btn btn-secondary',
+                    input: 'datepicker form-control'
                 },
                 didOpen: () => {
-                    const input = Swal.getInput();
-                    input.style.border = '1px solid #d2d6da';
-                    input.style.borderRadius = '8px';
-                    input.style.boxShadow = 'none';
-                    input.style.height = '43px';
+                    const originalInput = Swal.getInput();
+
+                    const fp = flatpickr(originalInput, {
+                        dateFormat: "Y-m-d",
+                        altInput: true,
+                        altFormat: "d-m-Y",
+                        allowInput: true
+                    });
+                    fp.altInput.classList.add('swal2-input');
+
+                    fp.altInput.style.boxSizing = 'border-box';
+                    fp.altInput.style.width = '85%';
+                    fp.altInput.style.margin = '15px auto';
+                    fp.altInput.style.display = 'block';
+
+                    fp.altInput.style.border = '1px solid #d2d6da';
+                    fp.altInput.style.borderRadius = '8px';
+                    fp.altInput.style.boxShadow = 'none';
+                    fp.altInput.style.height = '43px';
                 }
             }).then((result) => {
                 if (result.isConfirmed && result.value) {

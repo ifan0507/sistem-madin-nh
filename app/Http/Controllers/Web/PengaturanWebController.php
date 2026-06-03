@@ -14,13 +14,33 @@ class PengaturanWebController extends Controller
         protected PengaturanService $pengaturan_service
     ) {}
 
-    public function update($id, PengaturanRequest $request)
+
+    public function index()
     {
-        $dto = PengaturanDto::fromRequest($request);
-        $data = $this->pengaturan_service->update($id, $dto);
-        return response()->json([
-            'status' => 'success',
+        $data = $this->pengaturan_service->getAll();
+        $active = (object)[
+            'activePage' => 'setting',
+            'activePageMaster' => 'setting',
+        ];
+        return view('pages.pengaturan.index', [
+            'active' => $active,
             'data' => $data
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $result = $this->pengaturan_service->updatePengaturan($request->all(), $request->tipe_update);
+        if ($result['status']) {
+            return response()->json([
+                'status' => true,
+                'message' => $result['message']
+            ]);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => $result['message']
         ]);
     }
 }

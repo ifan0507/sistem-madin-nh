@@ -6,19 +6,19 @@ use App\Dto\BankSoalDto;
 use App\Models\BankSoalModel;
 use App\Models\KelasModel;
 use App\Models\MapelKelasModel;
-use App\Models\PengaturanModel;
 
 class BankSoalService
 {
     protected array $rules;
-    public function __construct()
-    {
+    public function __construct(
+        private PengaturanService $pengaturan_service
+    ) {
         $this->rules = config('pegon_rules');
     }
 
     public function getBankSoal($filterTahun = null, $filterSemester = null, $filterStatus = null)
     {
-        $pengaturan = PengaturanModel::select('semester', 'tahun_ajaran')->first();
+        $pengaturan = $this->pengaturan_service->getTahunAjaranAktif();
         $tahunAjaranQuery = $filterTahun ?: ($pengaturan ? $pengaturan->tahun_ajaran : null);
         $semesterQuery = $filterSemester ?: ($pengaturan ? $pengaturan->semester : null);
 
@@ -63,7 +63,7 @@ class BankSoalService
 
     public function getBankSoalGuru($guruId)
     {
-        $pengaturan = PengaturanModel::select('semester', 'tahun_ajaran')->first();
+        $pengaturan = $this->pengaturan_service->getTahunAjaranAktif();
         $tahunAjaran = $pengaturan ? $pengaturan->tahun_ajaran : null;
         $semester = $pengaturan ? $pengaturan->semester : null;
 
@@ -92,8 +92,6 @@ class BankSoalService
         });
 
         return [
-            'tahun_ajaran' => $tahunAjaran,
-            'semester'     => $semester,
             'data'         => $formattedData
         ];
     }

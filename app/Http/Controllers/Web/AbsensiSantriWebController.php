@@ -35,7 +35,7 @@ class AbsensiSantriWebController extends Controller
     {
         $kelasId = $request->kelas_id;
         $filterWaktu = $request->filter_waktu;
-        $customData = $request->only(['daily_date', 'weekly_date', 'monthly_date', 'range_start', 'range_end', 'ta_tahun', 'ta_semester']);
+        $customData = $request->only(['daily_date', 'weekly_date', 'monthly_date', 'range_start', 'range_end']);
 
         $data = $this->absensi_santri_service->getAbsensiData($kelasId, $filterWaktu, $customData);
 

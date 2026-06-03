@@ -78,6 +78,9 @@ class RaporWebController extends Controller
             'rataPraktekQuran' => $data['rataPraktekQuran'],
             'rataPraktekKitab' => $data['rataPraktekKitab'],
             'rataPraktekMuhafadloh' => $data['rataPraktekMuhafadloh'],
+            'absen_sakit' => $data['absen_sakit'],
+            'absen_izin'  => $data['absen_izin'],
+            'absen_alfa'  => $data['absen_alfa'],
         ]);
     }
 

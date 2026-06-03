@@ -10,6 +10,10 @@ use Carbon\Carbon;
 
 class AbsensiSantriService
 {
+
+    public function __construct(
+        private PengaturanService $pengaturan_service
+    ) {}
     /**
      * Mengambil semua data
      */
@@ -62,17 +66,17 @@ class AbsensiSantriService
                 }
                 break;
             case 'tahun_ajaran':
-                $tahunAjaran = $customDates['ta_tahun'] ?? null;
-                $semester = $customDates['ta_semester'] ?? null;
+
+                $pengaturanAktif = $this->pengaturan_service->getTahunAjaranAktif();
 
                 $tanggalMulai = AbsensiSantriModel::where('kelas_id', $kelasId)
-                    ->where('tahun_ajaran', $tahunAjaran)
-                    ->where('semester', $semester)
+                    ->where('tahun_ajaran', $pengaturanAktif->tahun_ajaran)
+                    ->where('semester', $pengaturanAktif->semester)
                     ->min('tanggal');
 
                 $tanggalAkhir = AbsensiSantriModel::where('kelas_id', $kelasId)
-                    ->where('tahun_ajaran', $tahunAjaran)
-                    ->where('semester', $semester)
+                    ->where('tahun_ajaran', $pengaturanAktif->tahun_ajaran)
+                    ->where('semester', $pengaturanAktif->semester)
                     ->max('tanggal');
 
                 if ($tanggalMulai && $tanggalAkhir) {

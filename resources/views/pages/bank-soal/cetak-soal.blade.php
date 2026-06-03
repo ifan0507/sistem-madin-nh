@@ -183,7 +183,7 @@
         <img src="{{ asset('assets/images/logo_pondok.png') }}" class="logo" alt="Logo">
 
         <div class="header-text">
-            <h3>لجنة الامتحان الدور {{ $pengaturanAktif->semester == 'Ganjil' ? 'الأولى' : 'الثانى' }} للمدرسة الدينية
+            <h3>لجنة الامتحان الدور {{ $bank_soal->semester == 'Ganjil' ? 'الأولى' : 'الثانى' }} للمدرسة الدينية
             </h3>
             <h1>نور الهدى</h1>
             <h4>ماغون سارى تيكوغ لوماجاغ</h4>

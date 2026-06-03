@@ -13,6 +13,10 @@ use Carbon\Carbon;
 
 class AbsensiGuruService
 {
+
+    public function __construct(
+        private  PengaturanService $pengaturan_service
+    ) {}
     /**
      * Mengambil semua data
      */
@@ -28,9 +32,12 @@ class AbsensiGuruService
 
     public function generateRekap($guruId, $filter, $customDates = [])
     {
-        $dateRange = $this->parseDateRange($guruId, $filter, $customDates);
+
+        $tglAwalSemester = $this->pengaturan_service->getTglAwalSemester();
+        $dateRange = $this->parseDateRange($guruId, $filter, $customDates, $tglAwalSemester);
         $startDate = $dateRange['start'];
         $endDate   = $dateRange['end'];
+        $batasMulaiAlfa = $dateRange['batas_mulai_alfa'];
 
         $listMapel = MapelKelasModel::with(['mapel', 'kelas'])
             ->where('guru_id', $guruId)
@@ -109,7 +116,7 @@ class AbsensiGuruService
                             $status = $dataAbsen->status;
                             $materi = $dataAbsen->materi_pembelajaran;
                             $ket    = $dataAbsen->ket_izin;
-                        } elseif ($loopDate->lt($hariIni)) {
+                        } elseif ($loopDate->lt($hariIni) && $loopDate->gte($batasMulaiAlfa)) {
                             $status = '3';
                         }
 
@@ -176,17 +183,29 @@ class AbsensiGuruService
         }
 
         $stringPeriode = $startDate->translatedFormat('d M Y') . ' - ' . $endDate->translatedFormat('d M Y');
+        $totalAktivitas = 0;
+        foreach ($rekapBulanan as $bulan) {
+            $totalAktivitas += $bulan['grandTotal']['hadir'] +
+                $bulan['grandTotal']['izin'] +
+                $bulan['grandTotal']['sakit'] +
+                $bulan['grandTotal']['alpha'];
+        }
 
+        if ($totalAktivitas === 0) {
+            $rekapBulanan = [];
+        }
         return [
             'rekapBulanan'  => $rekapBulanan,
-            'stringPeriode' => $stringPeriode
+            'stringPeriode' => $stringPeriode,
         ];
     }
 
-    private function parseDateRange($guruId, $filter, $customDates)
+    private function parseDateRange($guruId, $filter, $customDates, $tglAwalSemester = null)
     {
         $startDate = Carbon::now()->startOfMonth();
         $endDate   = Carbon::now()->endOfMonth();
+
+        $batasMulaiAlfa = $tglAwalSemester ? Carbon::parse($tglAwalSemester)->startOfDay() : null;
 
         switch ($filter) {
             case 'today':
@@ -230,38 +249,53 @@ class AbsensiGuruService
                     $endDate   = Carbon::parse($customDates['monthly_date'])->endOfMonth();
                 }
                 break;
-            case 'tahun_ajaran':
-                $tahunAjaran = $customDates['ta_tahun'] ?? null;
-                $semester = $customDates['ta_semester'] ?? null;
 
-                $absenGuru = AbsensiGuruModel::whereHas('mapel_kelas', function ($q) use ($guruId) {
-                    $q->where('guru_id', $guruId);
-                })
-                    ->where('tahun_ajaran', $tahunAjaran)
-                    ->where('semester', $semester);
+            case 'semester_aktif':
+                $pengaturanAktif = $this->pengaturan_service->getTahunAjaranAktif();
 
-                $tanggalMulai = $absenGuru->min('tanggal');
-                $tanggalAkhir = $absenGuru->max('tanggal');
 
-                if ($tanggalMulai && $tanggalAkhir) {
-                    $startDate = Carbon::parse($tanggalMulai)->startOfDay();
-                    $endDate   = Carbon::parse($tanggalAkhir)->endOfDay();
+                if ($pengaturanAktif && $batasMulaiAlfa) {
+                    $startDate = $batasMulaiAlfa->copy();
+
+                    $absenGuruMax = AbsensiGuruModel::whereHas('mapel_kelas', function ($q) use ($guruId) {
+                        $q->where('guru_id', $guruId);
+                    })
+                        ->where('tahun_ajaran', $pengaturanAktif->tahun_ajaran)
+                        ->where('semester', $pengaturanAktif->semester)
+                        ->max('tanggal');
+
+                    $endDate = $absenGuruMax ? Carbon::parse($absenGuruMax)->endOfDay() : Carbon::now()->endOfDay();
                 } else {
                     $startDate = Carbon::now()->startOfMonth();
                     $endDate   = Carbon::now()->endOfMonth();
+                    $batasMulaiAlfa = $startDate->copy();
                 }
                 break;
+
             case 'range':
                 $startDate = Carbon::parse($customDates['range_start']);
                 $endDate   = Carbon::parse($customDates['range_end']);
                 break;
         }
 
-        return ['start' => $startDate, 'end' => $endDate];
+        if (!$batasMulaiAlfa) {
+            $batasMulaiAlfa = $startDate->copy();
+        }
+
+        return [
+            'start' => $startDate,
+            'end' => $endDate,
+            'batas_mulai_alfa' => $batasMulaiAlfa,
+        ];
     }
 
     public function getRekapBulanan($guruId, $bulan, $tahun)
     {
+        $tglAwalSemester = $this->pengaturan_service->getTglAwalSemester();
+        $batasMulaiAlfa = $tglAwalSemester ? Carbon::parse($tglAwalSemester)->startOfDay() : null;
+
+        $pengaturanAktif = $this->pengaturan_service->getTahunAjaranAktif();
+
         $absensiRaw = AbsensiGuruModel::with(['mapel_kelas.mapel', 'mapel_kelas.kelas'])
             ->whereHas('mapel_kelas', function ($query) use ($guruId) {
                 $query->where('guru_id', $guruId);
@@ -325,7 +359,10 @@ class AbsensiGuruService
 
                     if (isset($summary[$statusString])) $summary[$statusString]++;
                 } else {
-                    if ($tanggalLoop->startOfDay()->lte($hariIni->startOfDay())) {
+                    $isPastOrToday = $tanggalLoop->startOfDay()->lte($hariIni->startOfDay());
+                    $isAfterStart  = $batasMulaiAlfa ? $tanggalLoop->startOfDay()->gte($batasMulaiAlfa) : true;
+
+                    if ($isPastOrToday && $isAfterStart) {
                         $detail[] = [
                             'tanggal'    => $tanggalString,
                             'status'     => 'alfa',
@@ -340,11 +377,9 @@ class AbsensiGuruService
             }
         }
 
-        $firstRecord = $absensiRaw->first();
-
         return [
-            'semester'     => $firstRecord->semester ?? 'Ganjil',
-            'tahun_ajaran' => $firstRecord->tahun_ajaran ?? '2025/2026',
+            'semester'     => $pengaturanAktif->semester ?? 'Ganjil',
+            'tahun_ajaran' => $pengaturanAktif->tahun_ajaran ?? '2025/2026',
             'summary'      => $summary,
             'detail'       => collect($detail)->sortByDesc('tanggal')->values()->all()
         ];

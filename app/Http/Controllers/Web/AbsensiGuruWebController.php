@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Services\AbsensiGuruService;
 use App\Services\MapelKelasService;
+use App\Services\PengaturanService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class AbsensiGuruWebController extends Controller
         protected AbsensiGuruService $absensi_guru_service,
         protected UserService $user_service,
         protected MapelKelasService $mapel_kelas_service,
+        protected PengaturanService $pengaturan_service
     ) {}
 
     public function index()
@@ -42,8 +44,6 @@ class AbsensiGuruWebController extends Controller
             'monthly_date',
             'range_start',
             'range_end',
-            'ta_tahun',
-            'ta_semester'
         ]);
 
         $guru = $this->user_service->getById($guruId);
@@ -57,6 +57,7 @@ class AbsensiGuruWebController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'warning' => $result['warning'] ?? null,
             'html' => $html
         ]);
     }

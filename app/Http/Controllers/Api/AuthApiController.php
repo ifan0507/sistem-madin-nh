@@ -16,7 +16,7 @@ class AuthApiController extends Controller
         ]);
 
         $user = User::where('qr_activation', $request->qr_token)
-            ->where('role', '2')
+            ->where('role', '3')
             ->first();
 
         if (!$user) {
